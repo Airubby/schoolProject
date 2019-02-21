@@ -1,0 +1,5 @@
+{
+  "production":"/ismacsite",
+  "develop":"/ISmac/ismacsite",
+  "webSocket":"/ismacsite/websocket"
+}
