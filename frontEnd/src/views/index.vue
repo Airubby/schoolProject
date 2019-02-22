@@ -5,7 +5,7 @@
             <em class="loncom_index_top_line1"></em>
             <div class="loncom_index_top_text"><span>元岗校区能效管理系统</span></div>
         </div>
-        <div class="loncom_index_con">
+        <div class="loncom_index_con" v-loading="loading">
             <div class="loncom_index_con_top">
                 <div class="loncom_index_con_topcon loncom_fl">
                     <el-row :gutter="20">
@@ -13,23 +13,23 @@
                             <div class="loncom_index_publicbox loncom_index_con_topbox">
                                 <div class="loncom_fl">
                                     <h2>教室概况</h2>
-                                    <span><em>180</em>间</span>
+                                    <span><em>{{overview.classroomcount}}</em>间</span>
                                 </div>
                                 <div class="loncom_fr loncom_index_progress">
-                                    <h2>空调开机率<em class="loncom_fr">40%</em></h2>
-                                    <el-progress :text-inside="true" :stroke-width="15" :percentage="40" style="padding-top: 5px;"></el-progress>
+                                    <h2>空调开机率<em class="loncom_fr">{{overview.classair}}%</em></h2>
+                                    <el-progress :text-inside="true" :stroke-width="15" :percentage="overview.classair" style="padding-top: 5px;"></el-progress>
                                 </div>
                             </div>
                         </el-col>
                         <el-col :span="12">
                             <div class="loncom_index_publicbox loncom_index_con_topbox loncom_index_con_topboxr">
                                 <div class="loncom_fl">
-                                    <h2>宿舍概况</h2>
-                                    <span><em>180</em>间</span>
+                                    <h2>办公室概况</h2>
+                                    <span><em>{{overview.dormcount}}</em>间</span>
                                 </div>
                                 <div class="loncom_fr loncom_index_progress">
-                                    <h2>空调开机率<em class="loncom_fr">40%</em></h2>
-                                    <el-progress :text-inside="true" :stroke-width="15" :percentage="40" style="padding-top: 5px;"></el-progress>
+                                    <h2>空调开机率<em class="loncom_fr">{{overview.dormair}}%</em></h2>
+                                    <el-progress :text-inside="true" :stroke-width="15" :percentage="overview.dormair" style="padding-top: 5px;"></el-progress>
                                 </div>
                             </div>
                         </el-col>
@@ -41,7 +41,7 @@
                             <div class="loncom_index_publicbox loncom_index_con_topbox loncom_index_con_topboxl">
                                 <div class="loncom_fl">
                                     <h2>校园建筑面积</h2>
-                                    <span><em>124563</em>平方米</span>
+                                    <span><em>{{overview.acreage}}</em>平方米</span>
                                 </div>
                             </div>
                         </el-col>
@@ -49,7 +49,7 @@
                             <div class="loncom_index_publicbox loncom_index_con_topbox">
                                 <div class="loncom_fl">
                                     <h2>校园人口规模</h2>
-                                    <span><em>563</em></span>
+                                    <span><em>{{overview.countnumber}}</em></span>
                                 </div>
                             </div>
                         </el-col>
@@ -107,7 +107,7 @@
 
 export default {
   created () {
-    
+      this.queryOverview();
   },
   mounted() {
         let yData=[
@@ -125,11 +125,30 @@ export default {
   },
   data() {
     return {
-       
+       loading:false,
+       overview:{
+           acreage:0,
+           classair:0,
+           classroomcount:0,
+           countnumber:0,
+           dormair:0,
+           dormcount:0,
+       },
     }
   },
     methods:{
-        
+        queryOverview:function(){
+            this.loading=true;
+            this.$api.get('/service/queryOverview', {}, r => {
+                console.log(r)
+                this.loading=false;
+                if(r.err_code=="0"){
+                   this.overview=r.data
+                }else{
+                    this.$message.warning(r.err_msg);
+                }
+            });
+        },
     },
     watch: {
         

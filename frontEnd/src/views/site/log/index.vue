@@ -4,11 +4,11 @@
             <div class="bg1C2443 loncom_pd20 loncom_content custom">
                 <el-scrollbar style="height:100%">
                     <el-search-table-pagination class="loncom_position_relative" border 
-                        :url="$prefixUrl+'/syslog/query'"
+                        :url="$ajaxUrl+'/syslog/query'"
                             list-field="data.items" 
                             total-field="data.count"
                             method='post'
-                        :data="table_data" :columns="table_info_columns"
+                            :data="table_data" :columns="table_info_columns"
                             :formOptions="table_forms" >                                        
                             <el-table-column slot="prepend" type="selection"></el-table-column>
                     </el-search-table-pagination>

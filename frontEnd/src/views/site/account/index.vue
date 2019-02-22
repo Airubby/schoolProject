@@ -25,14 +25,10 @@
                         >   
                         
                         <el-table-column slot="prepend" type="selection"></el-table-column>
-                        <template slot-scope="scope" slot="preview-addrorrole">
-                            <div>
-                                {{scope.row.addrorrole|idToNameFilter(options)}}
-                            </div>
-                        </template>
+                        
                         <template slot-scope="scope" slot="preview-state">
                             <div>
-                                {{scope.row.state|stateFilter(scope.row.state1)}}
+                                {{scope.row.state|stateFilter}}
                             </div>
                         </template>
                         <template slot-scope="scope" slot="preview-handle">
@@ -100,7 +96,7 @@ export default {
               { prop: 'email', label: '邮箱',minWidth:15},
               { prop: 'time_start', label: '开始时间',minWidth:15},
               { prop: 'time_end', label: '结束时间',minWidth:15},
-              { prop: 'addrorrole', label: '管理域',slotName:'preview-addrorrole',minWidth:20},
+              { prop: 'addrname', label: '管理域',minWidth:25},
               { prop: 'state', label: '状态',slotName:'preview-state',minWidth:8},
               { prop: 'handel', label: '操作',slotName:'preview-handle',width:100},
           ],

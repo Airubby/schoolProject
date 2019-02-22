@@ -86,6 +86,12 @@ public class UtilTool {
 		return Float.parseFloat(fl);
 	}
 
+	public static int parseInt(String fl) {
+		if (UtilTool.isNull(fl))
+			return 0;
+		return Integer.parseInt(fl);
+	}
+	
 	public static String getIntStr(int i) {
 		if (i < 10)
 			return "0" + i;
@@ -390,11 +396,7 @@ public class UtilTool {
 		return "" + Integer.parseInt(n, 16);
 	}
 
-	public static int parseInt(String obj) {
-		if (UtilTool.isNull(obj))
-			return 0;
-		return Integer.parseInt(obj.toString());
-	}
+	
 
 	private static String bo(String hex) {
 		if (hex.length() == 1)

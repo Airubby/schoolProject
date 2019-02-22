@@ -13,6 +13,12 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 @XStreamAlias("classroomgroup")
 public class ClassroomgroupXml {
 	
+	@XStreamAsAttribute
+	private String name;
+	
+	@XStreamAsAttribute
+	private String roomno;
+	
 	@XStreamImplicit(itemFieldName = "classroom")
 	private List<ClassroomXml> item = new ArrayList<ClassroomXml>();
 	
@@ -25,4 +31,25 @@ public class ClassroomgroupXml {
 	public void setItem(List<ClassroomXml> item) {
 		this.item = item;
 	}
+	
+	@XmlAttribute(name="name")
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	@XmlAttribute(name="roomno")
+	public String getRoomno() {
+		return roomno;
+	}
+
+	public void setRoomno(String roomno) {
+		this.roomno = roomno;
+	}
+	
+	
+	
 }

@@ -276,13 +276,13 @@ public class UtilTime {
 		return ymd_f.format(new Date()) + " " + hors + ":59:59";
 	}
 
-	public static Date getTimes(String data) {
-		DateUtils a = new DateUtils(data, "yyyyMMddHHmmss");
-		return a.getCalendar().getTime();
-	}
+//	public static Date getTimes(String data) {
+//		DateUtils a = new DateUtils(data, "yyyyMMddHHmmss");
+//		return a.getCalendar().getTime();
+//	}
 
-	public static Date getTimess(String data) {
-		DateUtils a = new DateUtils(data, "yyyy-MM-dd HH:mm");
+	public static Date getTimes(String data) {
+		DateUtils a = new DateUtils(data, "yyyy-MM-dd HH:mm:ss");
 		return a.getCalendar().getTime();
 	}
 

@@ -8,7 +8,7 @@
         <img class="pic-404__child right" :src="require('@/assets/images/'+img_404_cloud)" alt="404">
       </div>
       <div class="bullshit">
-        <div class="bullshit__oops">OOPS!</div>
+        <div class="bullshit__oops">依米康·龙控</div>
         <div class="bullshit__info">版权所有
           <a class='link-type' href='https://github.com/Airubby/' target='_blank'>Airubby</a>
         </div>

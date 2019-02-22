@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.loncom.ismac.annotation.MethodInfo;
 import com.loncom.ismac.annotation.Modular;
+import com.loncom.ismac.application.AppContext;
 import com.loncom.ismac.bean.RquestObject;
 import com.loncom.ismac.user.bean.UserBean;
 import com.loncom.ismac.util.BaseUtil;
@@ -44,11 +45,11 @@ public class UserAction extends BaseServlet {
 				remsg.setErr_code("1");
 				remsg.setErr_msg("此用户无法登陆系统!");
 			}else {
-				if("1".equals(obj.getRoleid())) {
+				if("1".equals(obj.getState())) {
 					long startTime=UtilTime.getTimes(obj.getTime_start()).getTime();
 					long endTime=UtilTime.getTimes(obj.getTime_end()).getTime();
 					long time=new Date().getTime();
-					if(startTime<time&&time<endTime) {
+					if(startTime<time && time<endTime) {
 						remsg.setErr_code("0");
 						remsg.setErr_msg("登录成功!");
 						remsg.setData(JSONObject.fromObject(obj).toString());
@@ -63,6 +64,12 @@ public class UserAction extends BaseServlet {
 			remsg.setErr_msg("用户不存在或密码错误!");
 		}
 		return remsg;
+	}
+	
+	@MethodInfo(METHOD="/user/out",LOGSNAME="退出系统")
+	public String out() throws Exception{
+		AppContext.getSID().remove(getRequest().getSession().getId());
+		return "true";
 	}
 	
 	@MethodInfo(METHOD="/user/add",LOGSNAME="新增")

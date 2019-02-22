@@ -20,6 +20,7 @@ public class UserBean extends PageBean {
 	private String time_end;// 结束时间
 	private String state;// 是否启用
 	private String addrorrole;//可以访问站点权限
+	private String addrname;//可以访问站点权限名称
 	private String details;
 	public String getId() {
 		return id;
@@ -92,6 +93,13 @@ public class UserBean extends PageBean {
 	}
 	public void setAddrorrole(String addrorrole) {
 		this.addrorrole = addrorrole;
+	}
+	
+	public String getAddrname() {
+		return addrname;
+	}
+	public void setAddrname(String addrname) {
+		this.addrname = addrname;
 	}
 	public String getDetails() {
 		return details;

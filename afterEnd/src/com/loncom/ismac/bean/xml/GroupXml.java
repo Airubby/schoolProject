@@ -20,7 +20,7 @@ public class GroupXml {
 	@XStreamAsAttribute
 	private String classroomcount;//教室总数
 	@XStreamAsAttribute
-	private String dormcount;//宿舍总数
+	private String dormcount;//办公室总数
 	
 	private ClassroomgroupXml classroomgroup=new ClassroomgroupXml();//教室对象
 	

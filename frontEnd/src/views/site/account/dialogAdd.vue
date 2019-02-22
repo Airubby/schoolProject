@@ -51,20 +51,7 @@
                         </el-col>  
                         <el-col :span="12">
                             <el-form-item label="管理域" prop="addrorrole" size="small">
-                                <el-select
-                                    v-model="ruleForm.addrorrole"
-                                    multiple
-                                    :disabled="loginInfo.userid!='admin'"
-                                    style="width: 100%;"
-                                    size="small"
-                                    placeholder="请选择">
-                                    <el-option
-                                    v-for="item in options"
-                                    :key="item.id"
-                                    :label="item.name"
-                                    :value="item.id">
-                                    </el-option>
-                                </el-select>
+                                <el-input v-model="ruleForm.addrname" :disabled="loginInfo.userid!='admin'" @focus="selectTree"></el-input>
                             </el-form-item>
                         </el-col>    
                         </div>
@@ -83,18 +70,19 @@
             </div>
         </el-scrollbar>
         <dialogBtnInfo v-bind:dialogInfobtn="dialogInfo" v-on:dialogSure="dialogSure()"></dialogBtnInfo>
+        <tree :dialogInfo="ruleForm" v-if="ruleForm.visible"></tree>
     </el-dialog>
 </template>
 
 <script>
 import dialogBtnInfo from '@/components/dialogBtnInfo.vue'
 import store from '@/store/index'
+import tree from './tree.vue'
 export default {
     created () {
         if(sessionStorage.loginInfo){
             this.loginInfo=JSON.parse(sessionStorage.loginInfo);
         }
-        this.options=this.$parent.options;
         if(this.dialogInfo.id){
             this.readonly=true;
             this.$api.get('/user/details', {id:this.dialogInfo.id}, r => {
@@ -105,12 +93,12 @@ export default {
                     }
                     this.ruleForm['tpassword']=r.data['psword'];
                     this.ruleForm['_psword']=r.data['psword'];
-                    this.ruleForm['addrorrole']=this.ruleForm.addrorrole?r.data['addrorrole'].split(','):[];
                 }else{
                     this.$message.warning(r.err_msg);
                 }
             });
         }
+        this.getArea();
     },
     mounted() {
 
@@ -189,6 +177,7 @@ export default {
             loginInfo:{},
             readonly:false,
             options: [],
+            treedata:[],
             ruleForm: {
                 id:'',
                 userid:'',
@@ -196,13 +185,15 @@ export default {
                 _psword:'',
                 tpassword:'',
                 name: '',
-                addrorrole: [],
+                addrorrole: "",
+                addrname: "",
                 time_start: '',
                 time_end:'',
                 phone: '',
                 email: '',
                 roleid:'2',
                 state:'1',
+                visible:false,
             },
             rules: {
                 userid: [
@@ -233,13 +224,26 @@ export default {
         }
     },
     methods:{
+        getArea:function(){
+            this.$api.get("/service/tree",{},r =>{
+                console.log(r)
+                if(r.err_code=="0"){
+                    this.treedata=r.data;
+                }
+            });
+        },
+        selectTree:function(){
+            if(this.loginInfo.userid=='admin'){
+                this.ruleForm.visible=true;
+            }
+        },
         //保存的操作
         dialogSure:function(){
             this.$refs['ruleForm'].validate((valid) => {
                 if (valid) {
                     let url=this.ruleForm.id?'/user/update':'/user/add';
                     this.ruleForm.addrorrole=this.ruleForm.addrorrole.toString();
-                    this.$api.post(url, {"model":{"obj":this.ruleForm}}, r => {
+                    this.$api.post(url, {"obj":this.ruleForm}, r => {
                         console.log(r)
                         if(r.err_code=="0"){
                             this.$message.success(r.err_msg);
@@ -263,7 +267,7 @@ export default {
     },
     watch:{
     },
-    components:{dialogBtnInfo},
+    components:{dialogBtnInfo,tree},
     props:["dialogInfo"]
 }
 </script>

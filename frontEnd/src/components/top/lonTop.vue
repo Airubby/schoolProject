@@ -111,7 +111,7 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
                 }).then(() => {
-                    this.$api.get('/Response/out', {}, r => {
+                    this.$api.get('/user/out', {}, r => {
                         if(r.err_code=="0"){
                             sessionStorage.clear();
                             this.$router.push({path:'/login'});

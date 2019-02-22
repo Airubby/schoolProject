@@ -29,13 +29,9 @@ Vue.filter('onoffFilter', function(s) {
   if (s==''||s==null) return ONOFF_MAP['0'];
   return ONOFF_MAP[s];
 })
-Vue.filter('stateFilter', function(s,v) {
-  if(v){
-    return STATE_MAP['2'];
-  }else{
-    if (s==''||s==null) return STATE_MAP['0'];
-    return STATE_MAP[s];
-  }
+Vue.filter('stateFilter', function(s) {
+  if (s==''||s==null) return STATE_MAP['2'];
+  return STATE_MAP[s];
 })
 
 //账号管理，管理域用
