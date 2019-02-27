@@ -22,7 +22,7 @@ public class DataPack {
 	/**
 	 * 测点ID
 	 */
-	private String id;
+	private String propertyId;
 
 	/**
 	 * 数据类  CommStatus 通讯  Digital 状态 Analogy 数字量 
@@ -49,7 +49,7 @@ public class DataPack {
 	
 
 	public String getKey() {
-		return this.getAgentbm()+"_"+this.getMgrobjid()+"_"+this.getId();
+		return this.getAgentbm()+"_"+this.getMgrobjid()+"_"+this.getPropertyId();
 	}
 
 	public void setKey(String key) {
@@ -72,12 +72,14 @@ public class DataPack {
 		this.mgrobjid = mgrobjid;
 	}
 
-	public String getId() {
-		return id;
+	
+
+	public String getPropertyId() {
+		return propertyId;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setPropertyId(String propertyId) {
+		this.propertyId = propertyId;
 	}
 
 	public String getDatachar() {

@@ -38,7 +38,12 @@ public class UtilTime {
 	public static SimpleDateFormat ymd = new SimpleDateFormat("yyyyMMdd");
 	public static SimpleDateFormat hh = new SimpleDateFormat("HH");
 	public static SimpleDateFormat hwd = new SimpleDateFormat("yyyy/MM/dd HH:mm");// 华为时间戳格式
-
+	
+	public static Date stringToDate(String s) throws ParseException {
+		Date date=ymdhms_f.parse(s);
+		return date;
+	}
+	
 	public static String getNowymdhm_f() {
 		return ymdhm_f.format(new Date());
 	}
@@ -51,7 +56,8 @@ public class UtilTime {
 	public static String getNow() {
 		return ymdhms_f.format(new Date());
 	}
-
+	
+	
 	// yyyyMMddHHmmss
 	public static String getNows() {
 		return ymdhms.format(new Date());
@@ -282,7 +288,7 @@ public class UtilTime {
 //	}
 
 	public static Date getTimes(String data) {
-		DateUtils a = new DateUtils(data, "yyyy-MM-dd HH:mm:ss");
+		DateUtils a = new DateUtils(data, "yyyy-MM-dd HH:mm");
 		return a.getCalendar().getTime();
 	}
 
@@ -517,7 +523,7 @@ public class UtilTime {
 	 * @throws ParseException
 	 */
 	public static List getDatesBetweenTwoDate(String beginTime, String endTime) throws ParseException {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date beginDate = sdf.parse(beginTime);
 		Date endDate = sdf.parse(endTime);
 		List lDate = new ArrayList();

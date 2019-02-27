@@ -46,15 +46,20 @@ public class CMD {
 
 	public static int UUIDNUMBER = 5;
 
+	public final static String IS_HIS_BASE="select count(1) from information_schema.tables where table_schema='ismacnx' and table_name='%s'";
 	public final static String HIS_DEVTABLE = "HISDEV%s";
-	public final static String HSI_DEVINSERT = "INSERT INTO %s (MGROBJID, POINTID, VALUE,TIME) VALUES ";// 历史表新增格式模板
+	public final static String HIS_DEVINSERT = "INSERT INTO %s (MGROBJID, POINTID, VALUE,TIME) VALUES ";// 历史表新增格式模板
 
 	public final static String HIS_DEVINSERT_VALUES = " ('%s','%s','%s','%s'),";// 历史表新增数据模板
 
-	public final static String CREATE_HIS_DEV = " CREATE TABLE %s ( " + "  ID INTEGER IDENTITY(1, 1) NOT NULL ,"
-			+ "  MGROBJID VARCHAR(50) DEFAULT NULL," + "  POINTID VARCHAR(50) DEFAULT NULL,"
-			+ "  VALUE VARCHAR(20) DEFAULT NULL," + "  TIME DATETIME DEFAULT NULL," + "	  NOT CLUSTER PRIMARY KEY  (ID)"
-			+ "	)";
+	public final static String CREATE_HIS_DEV=" CREATE TABLE %s ( "+
+    		"  `id` int(11) NOT NULL AUTO_INCREMENT,"+
+    		"  `mgrobjid` varchar(50) DEFAULT NULL,"+
+    		"  `pointid` varchar(50) DEFAULT NULL,"+
+    		"  `value` varchar(20) DEFAULT NULL,"+
+    		"  `time` datetime DEFAULT NULL,"+
+    	"	  PRIMARY KEY (`id`)"+
+    	"	)";
 	// 历史能效
 	public final static String HIS_ENERGY_HEAD = "INSERT INTO %s (NAME, VALUE, HDATA,ENERGYID) VALUES ";
 	public final static String HIS_ENERGY_CONTENT = " ('%s','%s','%s','%s','%s'),";

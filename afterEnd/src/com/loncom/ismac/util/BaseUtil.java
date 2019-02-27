@@ -1302,7 +1302,7 @@ public class BaseUtil {
 			datapcack.setAgentbm(bean.get("agentBM") + "");
 			datapcack.setDatachar(bean.get("dataType") + "");
 			datapcack.setMgrobjid(bean.get("mgrObjId") + "");
-			datapcack.setId(bean.get("propertyId") + "");
+			datapcack.setPropertyId(bean.get("propertyId") + "");
 			datapcack.setValue(bean.get("value") + "");
 			datapcack.setMarktime(bean.get("markTime") + "");
 			datalist.add(datapcack);
@@ -1383,6 +1383,15 @@ public class BaseUtil {
 		}
 		return list;
 	}
+	public static List<GroupXml> getFloor(){
+		List<GroupXml> list=new ArrayList<GroupXml>();
+		for(Service service : AppContext.getService()) {
+			for (GroupXml groupXml : service.getGroupcontrol().getGroup()) {
+				list.add(groupXml);
+			}
+		}
+		return list;
+	}
 	/**
 	 * 对象转换XML
 	 * 
@@ -1400,6 +1409,18 @@ public class BaseUtil {
 		}
 	}
 	
-	
+	public static List downSort(List<Map<String, Object>> list,String type) {
+		List backlist=new ArrayList<>();
+		for(int i=0;i<list.size()-1;i++) {
+			for(int j=0;j<list.size()-1-i;j++) {
+				if(UtilTool.parseFloat(list.get(j).get(type)+"")<UtilTool.parseFloat(list.get(j+1).get(type)+"")) {
+					Map<String, Object> temp=list.get(j);
+					list.set(j, list.get(j+1));
+					list.set(j+1, temp);
+				}
+			}
+		}
+		return list;
+	}
 
 }

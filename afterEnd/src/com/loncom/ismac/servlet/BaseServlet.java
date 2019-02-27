@@ -385,9 +385,10 @@ public class BaseServlet extends HttpServlet {
 		if("admin".equals(roleid)){
 			return "0";
 		}
-		 /*if(AppContext.getUser().get(roleid)!=null){
-			return  AppContext.getUser().get(roleid).getAddrorrole().equals("")?"-1":AppContext.getUser().get(roleid).getAddrorrole();
-		 }*/
+		System.out.println();
+		if(AppContext.getUserMap().get(roleid)!=null) {
+			return  AppContext.getUserMap().get(roleid).getAddrorrole().equals("")?"-1":AppContext.getUserMap().get(roleid).getAddrorrole();
+		}
 		return "-1";
 	}
 

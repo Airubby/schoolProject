@@ -18,6 +18,7 @@ import com.loncom.ismac.bean.xml.DevheadXml;
 import com.loncom.ismac.bean.xml.DevvouXml;
 import com.loncom.ismac.bean.xml.RootXml;
 import com.loncom.ismac.bean.xml.XmlEdiParser;
+import com.loncom.ismac.jdbc.DB;
 import com.loncom.ismac.jdbc.PropertyReader;
 import com.loncom.ismac.logs.Logs;
 import com.loncom.ismac.lservice.bean.Service;
@@ -32,9 +33,13 @@ import com.loncom.ismac.soket.service.impl.LoncomipDataSocketClient;
 import com.loncom.ismac.soket.service.impl.LoncomipDataSocketClientV1;
 import com.loncom.ismac.soket.service.impl.LoncomipDataSocketClientV2;
 import com.loncom.ismac.thread.AutoProcesserData;
+import com.loncom.ismac.thread.HisProcesser;
+import com.loncom.ismac.user.bean.UserBean;
 import com.loncom.ismac.util.BaseUtil;
+import com.loncom.ismac.util.CMD;
 import com.loncom.ismac.util.FileUtil;
 import com.loncom.ismac.util.JaxbUtil;
+import com.loncom.ismac.util.UtilTime;
 import com.loncom.ismac.util.UtilTool;
 
 @SuppressWarnings({ "rawtypes", "unchecked", "unused" })
@@ -47,12 +52,17 @@ public class AppContext {
 	private static Map<String, Object> SID = new HashMap<String, Object>();
 	public static Properties prop = PropertyReader.getProperties("config.properties");
 	public static Properties proptbale = PropertyReader.getProperties("tablename.properties");
+	
 	// 消息队列
 	public static LinkedBlockingQueue<Object> dataQueueVouData = new LinkedBlockingQueue<Object>();
+	// 历史消息队列
+	public static LinkedBlockingQueue<DataPack> hisQueueVouData = new LinkedBlockingQueue<DataPack>();
 	/**
 	 * 设备列表
 	 */
 	private static Map<String, DevheadBean> devhead = new HashMap<String, DevheadBean>();
+	//用户权限
+	private static Map<String,UserBean> userMap=new HashMap<String,UserBean>();
 	// 数据服务连接对象集合
 	private static List<Service> service = new ArrayList<Service>();
 	// 数据服务对象缓存
@@ -76,17 +86,57 @@ public class AppContext {
 	}
 
 	public static void sysInit() throws Exception {
-		
+
 		Thread a = new AutoProcesserData();
 		a.setPriority(10);
 		a.start();
 		
+		Thread his=new HisProcesser();
+		his.setPriority(10);
+		his.start();
+
 		PackageScanner scan = new ClasspathPackageScanner("com.loncom.ismac.servlet");
 		packagelist = scan.getFullyQualifiedClassNameList(new PackageClass());
 		// 开启扫描数据库实体模型
 		scan = new ClasspathPackageScanner("com.loncom.ismac.bean");
 		packgeTableList = scan.getFullyQualifiedClassNameList(new PackageClassTable());
-		InitService();//初始化服务
+		
+		InitUser();  //初始化用户权限队列
+		InitTable();  //历史数据等
+		InitService();// 初始化服务
+	}
+
+	private static void InitTable() {
+		// TODO Auto-generated method stub
+		try {
+			isHisDevTable();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} //判断是否有历史表
+	}
+
+	private static void isHisDevTable() throws Exception {
+		// TODO Auto-generated method stub
+		String table=String.format(CMD.HIS_DEVTABLE, UtilTime.getYMD());
+		int count=baseservice.getCount(String.format(CMD.IS_HIS_BASE, table), DB.HIS);
+		if(count<=0) {
+			baseservice.exeSql(String.format(CMD.CREATE_HIS_DEV, table), DB.HIS);
+		}
+	}
+
+	/**
+	 * 初始化用户
+	 * @throws Exception 
+	 */
+	public static void InitUser() throws Exception {
+		UserBean userBean=new UserBean();
+		List userList=new ArrayList<>();
+		userList=baseservice.query(userBean);
+		for (Object object : userList) {
+			userBean=(UserBean) object;
+			userMap.put(userBean.getUserid(), userBean);
+		}
 	}
 
 	/**
@@ -104,10 +154,8 @@ public class AppContext {
 			for (Service object : service) {
 				if (BaseUtil.isNotNull(object.getXmlurl())) {
 					/*
-					 * String classpath =
-					 * this..getResource("/").getPath().replaceFirst("/", "");
-					 * String docRoot = classpath.replaceAll("WEB-INF/classes/",
-					 * "upload");
+					 * String classpath = this..getResource("/").getPath().replaceFirst("/", "");
+					 * String docRoot = classpath.replaceAll("WEB-INF/classes/", "upload");
 					 */
 
 					// String url =
@@ -116,8 +164,8 @@ public class AppContext {
 					String xmlurl = Thread.currentThread().getContextClassLoader().getResource("/").toURI().getPath();
 					System.out.println();
 					/*
-					 * if (XmlEdiParser.class.getClassLoader().getResource(
-					 * "../../xml/" + object.getXmlurl()) != null) {
+					 * if (XmlEdiParser.class.getClassLoader().getResource( "../../xml/" +
+					 * object.getXmlurl()) != null) {
 					 */
 					String url = FileUtil
 							.readToString(xmlurl.replaceAll("WEB-INF/classes/", "xml/") + object.getXmlurl());
@@ -167,11 +215,11 @@ public class AppContext {
 		 * map.put("OUT", tcp); socketall.put(object.getId(), map);
 		 */
 		/*
-		 * ServicePool.execute(tcp.initConnect(object)); Map<String,
-		 * BaseSocketClient> map=new HashMap<String, BaseSocketClient>();
-		 * map.put(CMD.TCP_DATA, tcp); tcp=new LoncomipDataAddOutClient();
-		 * ServicePool.execute(tcp.initConnect(object)); map.put(CMD.TCP_OUT,
-		 * tcp); socketall.put(object.getId(), map);
+		 * ServicePool.execute(tcp.initConnect(object)); Map<String, BaseSocketClient>
+		 * map=new HashMap<String, BaseSocketClient>(); map.put(CMD.TCP_DATA, tcp);
+		 * tcp=new LoncomipDataAddOutClient();
+		 * ServicePool.execute(tcp.initConnect(object)); map.put(CMD.TCP_OUT, tcp);
+		 * socketall.put(object.getId(), map);
 		 */
 		// InitFictitiousDev(object.getAgentbm());
 
@@ -210,7 +258,7 @@ public class AppContext {
 		for (DataPack statePack : datalist) {
 			DevheadBean devhead = getDevhead().get(statePack.getAgentbm() + "_" + statePack.getMgrobjid());
 			if (devhead != null) {
-				DevvouXml devvou = devhead.getItem().get(statePack.getMgrobjid() + "_" + statePack.getId());
+				DevvouXml devvou = devhead.getItem().get(statePack.getMgrobjid() + "_" + statePack.getPropertyId());
 				// System.out.println("设备ID数据更新:"+statePack.getMgrobjid());
 				if (devvou != null) {
 					if ("CommStatus".equals(devvou.getDatachar())) {
@@ -277,5 +325,15 @@ public class AppContext {
 	public static void setSocketall(Map<String, Map<String, BaseSocketClient>> socketall) {
 		AppContext.socketall = socketall;
 	}
+
+	public static Map<String, UserBean> getUserMap() {
+		return userMap;
+	}
+
+	public static void setUserMap(Map<String, UserBean> userMap) {
+		AppContext.userMap = userMap;
+	}
+	
+	
 
 }

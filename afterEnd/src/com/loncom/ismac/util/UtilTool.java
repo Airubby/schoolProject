@@ -31,6 +31,7 @@ public class UtilTool {
 	public static DecimalFormat decimalFormat2 = new DecimalFormat("#0.00");
 	public static DecimalFormat decimalFormat1 = new DecimalFormat("#0.0");
 	public static DecimalFormat decimalFormat3 = new DecimalFormat("#0.000");
+	public static DecimalFormat decimalFormat4 = new DecimalFormat("#0.0000");
 
 	/**
 	 * 取配置文件数据
@@ -51,6 +52,12 @@ public class UtilTool {
 	}
 
 	public static String cutFloat3(String value) {
+		if (isNull(value))
+			return "";
+		return decimalFormat3.format(Float.parseFloat(value));
+	}
+	
+	public static String cutFloat4(String value) {
 		if (isNull(value))
 			return "";
 		return decimalFormat3.format(Float.parseFloat(value));

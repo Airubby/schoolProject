@@ -113,10 +113,11 @@ function annulus(ID,xData,yData){
     return myChart;
 }
 
-function lineChar(ID,xData,yData){
+function lineChar(ID,xData,yData,type){
     // let xData=["2018-10-11 09:00:11", "2018-10-11 09:03", "2018-10-11 09:13", "2018-10-11 09:14",
     //  "2018-10-11 09:24","2018-10-11 09:34","2018-10-11 09:44","2018-10-11 09:54","2018-10-11 10:04","2018-10-11 10:14","2018-10-11 10:24"];
     // let yData=[320, 232, 301, 234, 390, 230, 310,18, 391, 234, 290, 343, 310];
+    // type=day,week,month
     let myChart = echarts.init(document.getElementById(ID));
     let option = {
         color:["#4A78FF"],
@@ -165,7 +166,12 @@ function lineChar(ID,xData,yData){
                     color:"#B9C6F2",
                     formatter: function (value, index) {
                         // 格式化成月/日，只在第一个刻度显示年份
-                        return Format('hh:mm',value);
+                        if(type=="day"){
+                            return Format('hh:mm',value);
+                        }else{
+                            return Format('yyyy-MM-dd hh:mm:ss',value);
+                        }
+                        
                     }
                 },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
                 data :xData
