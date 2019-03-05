@@ -43,9 +43,12 @@ import com.loncom.ismac.bean.xml.ClassroomXml;
 import com.loncom.ismac.bean.xml.DevvouXml;
 import com.loncom.ismac.bean.xml.GroupXml;
 import com.loncom.ismac.bean.xml.RootXml;
+import com.loncom.ismac.jdbc.DB;
 import com.loncom.ismac.lservice.bean.Service;
 import com.loncom.ismac.scanning.PackageClass;
 import com.loncom.ismac.scanning.PackageClassTable;
+import com.loncom.ismac.service.IBaseService;
+import com.loncom.ismac.service.impl.BaseServiceImpl;
 
 import net.sf.ezmorph.bean.MorphDynaBean;
 import net.sf.json.JSONArray;
@@ -1392,6 +1395,7 @@ public class BaseUtil {
 		}
 		return list;
 	}
+	
 	/**
 	 * 对象转换XML
 	 * 

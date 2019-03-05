@@ -124,7 +124,7 @@ function lineChar(ID,xData,yData,type){
          title: {
             text: '用电量',
             top:0,
-            left:10,
+            left:30,
             textStyle:{
                 color:"#B9C6F2",
                 verticalAlign:'top',
@@ -143,7 +143,7 @@ function lineChar(ID,xData,yData,type){
         //     data:["用电量"]
         // },
         grid: {
-            left: '15px',
+            left: '45px',
             right: '45px',
             top:'15%',
             bottom: '15%',
@@ -169,7 +169,7 @@ function lineChar(ID,xData,yData,type){
                         if(type=="day"){
                             return Format('hh:mm',value);
                         }else{
-                            return Format('yyyy-MM-dd hh:mm:ss',value);
+                            return Format('MM-dd hh:mm',value);
                         }
                         
                     }

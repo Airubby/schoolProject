@@ -14,8 +14,10 @@ import org.apache.commons.logging.LogFactory;
 
 import com.loncom.ismac.bean.DataPack;
 import com.loncom.ismac.bean.DevheadBean;
+import com.loncom.ismac.bean.xml.ClassroomXml;
 import com.loncom.ismac.bean.xml.DevheadXml;
 import com.loncom.ismac.bean.xml.DevvouXml;
+import com.loncom.ismac.bean.xml.GroupXml;
 import com.loncom.ismac.bean.xml.RootXml;
 import com.loncom.ismac.bean.xml.XmlEdiParser;
 import com.loncom.ismac.jdbc.DB;
@@ -32,6 +34,7 @@ import com.loncom.ismac.soket.service.impl.BaseSocketClient;
 import com.loncom.ismac.soket.service.impl.LoncomipDataSocketClient;
 import com.loncom.ismac.soket.service.impl.LoncomipDataSocketClientV1;
 import com.loncom.ismac.soket.service.impl.LoncomipDataSocketClientV2;
+import com.loncom.ismac.task.TaskQuartz;
 import com.loncom.ismac.thread.AutoProcesserData;
 import com.loncom.ismac.thread.HisProcesser;
 import com.loncom.ismac.user.bean.UserBean;
@@ -102,29 +105,64 @@ public class AppContext {
 		packgeTableList = scan.getFullyQualifiedClassNameList(new PackageClassTable());
 		
 		InitUser();  //初始化用户权限队列
-		InitTable();  //历史数据等
 		InitService();// 初始化服务
+		InitTable();  //历史数据等
 	}
 
 	private static void InitTable() {
 		// TODO Auto-generated method stub
 		try {
 			isHisDevTable();
+			isClassTable();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} //判断是否有历史表
+		TaskQuartz task = new TaskQuartz();// 任务调度
+		task.executes();// 启动任务调度
 	}
 
 	private static void isHisDevTable() throws Exception {
-		// TODO Auto-generated method stub
+		// 历史表
 		String table=String.format(CMD.HIS_DEVTABLE, UtilTime.getYMD());
 		int count=baseservice.getCount(String.format(CMD.IS_HIS_BASE, table), DB.HIS);
 		if(count<=0) {
 			baseservice.exeSql(String.format(CMD.CREATE_HIS_DEV, table), DB.HIS);
 		}
+		
 	}
 
+	private static void isClassTable() throws Exception {
+		List<ClassroomXml> classlist=new ArrayList<ClassroomXml>();
+		List<ClassroomXml> dormlist=new ArrayList<ClassroomXml>();
+		IBaseService baseservice= new BaseServiceImpl();
+		String rpttable="";
+		for(Service service : AppContext.getService()) {
+			for (GroupXml groupXml : service.getGroupcontrol().getGroup()) {
+				classlist=BaseUtil.getService(groupXml.getGroupno(), "classroom", null, null);
+				dormlist=BaseUtil.getService(groupXml.getGroupno(), "officeroom", null, null);
+				for (ClassroomXml classroomXml : classlist) {
+					rpttable=String.format(CMD.RPT_DEVTABLE, classroomXml.getCode());
+					int count=baseservice.getCount(String.format(CMD.IS_HIS_BASE, rpttable), DB.HIS);
+					if(count<=0) {
+						baseservice.exeSql(String.format(CMD.CREATE_RPT_DEV, rpttable), DB.HIS);
+					}
+				}
+				for (ClassroomXml classroomXml : dormlist) {
+					rpttable=String.format(CMD.RPT_DEVTABLE, classroomXml.getCode());
+					int count=baseservice.getCount(String.format(CMD.IS_HIS_BASE, rpttable), DB.HIS);
+					if(count<=0) {
+						baseservice.exeSql(String.format(CMD.CREATE_RPT_DEV, rpttable), DB.HIS);
+					}
+				}
+			}
+		}
+		// 教室表
+		
+		
+	}
+
+	
 	/**
 	 * 初始化用户
 	 * @throws Exception 

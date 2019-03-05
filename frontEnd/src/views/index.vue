@@ -86,7 +86,7 @@
                 <div class="loncom_index_conbody_right loncom_index_publicbox">
                     <h2 class="loncom_index_top10title">教室能效排名TOP10</h2>
                     <ul class="loncom_index_top10">
-                        <li v-for="(item,index) in top_data"><em>{{index+1}}</em><span>{{item.classname}}</span><span class="loncom_fr">{{item.value}}</span></li>
+                        <li v-for="(item,index) in top_data" v-if="index<10"><em>{{index+1}}</em><span>{{item.classname}}</span><span class="loncom_fr">{{item.value}}</span></li>
                     </ul>
                 </div>
             </div>
@@ -98,9 +98,7 @@
 
 export default {
   created () {
-      this.getOverview();
-      this.getPowerTop();
-      this.getRate();
+      this.getInfo();
   },
   mounted() {
         // let yData=[
@@ -138,51 +136,64 @@ export default {
     }
   },
     methods:{
-        getPowerTop:function(){
+        async getInfo(){
             this.loading=true;
-            let startTime=this.$tool.Format("yyyy-MM-dd 00:00:00",new Date());
-            let endTime=this.$tool.Format("yyyy-MM-dd hh:mm:ss",new Date());
-            this.$api.post('/service/top', {startTime:startTime,endTime:endTime,type:"classroom"}, r => {
-                console.log(r)
-                this.loading=false;
-                if(r.err_code=="0"){
-                    this.top_data=r.data.top;
-                }else{
-                    this.$message.warning(r.err_msg);
-                }
+            console.log(1)
+            await this.getOverview();
+            await this.getPowerTop();
+            await this.getRate();
+            console.log(2)
+            this.loading=false;
+        },
+        getPowerTop:function(){
+            return new Promise ((resolve, reject) => {
+                let startTime=this.$tool.Format("yyyy-MM-dd 00:00:00",new Date());
+                let endTime=this.$tool.Format("yyyy-MM-dd hh:mm:ss",new Date());
+                this.$api.post('/service/top', {startTime:startTime,endTime:endTime,type:"classroom"}, r => {
+                    console.log(r)
+                    if(r.err_code=="0"){
+                        this.top_data=r.data.data;
+                    }else{
+                        this.$message.warning(r.err_msg);
+                    }
+                    resolve();
+                })
             })
         },
         getOverview:function(){
-            this.loading=true;
-            this.$api.get('/service/queryOverview', {}, r => {
-                console.log(r)
-                this.loading=false;
-                if(r.err_code=="0"){
-                   this.overview=r.data
-                }else{
-                    this.$message.warning(r.err_msg);
-                }
-            });
+            return new Promise ((resolve, reject) => {
+                this.$api.get('/service/queryOverview', {}, r => {
+                    console.log(r)
+                    this.loading=false;
+                    if(r.err_code=="0"){
+                    this.overview=r.data
+                    }else{
+                        this.$message.warning(r.err_msg);
+                    }
+                    resolve();
+                });
+            })
         },
         getRate:function(){
-            this.loading=true;
-            this.$api.get('/service/rate', {}, r => {
-                console.log(r)
-                this.loading=false;
-                if(r.err_code=="0"){
-                    this.echart.allPower=r.data.allPower;
-                    this.echart.areaPower=r.data.areaPower;
-                    this.echart.peoplePower=r.data.peoplePower;
-                    let yData=r.data.value;
-                    let xData=r.data.name;
-                    let myChart=this.$tool.annulus('myChart',xData,yData);
-                    window.onresize=function(){
-                        myChart.resize();
+            return new Promise ((resolve, reject) => {
+                this.$api.get('/service/rate', {}, r => {
+                    console.log(r)
+                    if(r.err_code=="0"){
+                        this.echart.allPower=r.data.allPower;
+                        this.echart.areaPower=r.data.areaPower;
+                        this.echart.peoplePower=r.data.peoplePower;
+                        let yData=r.data.value;
+                        let xData=r.data.name;
+                        let myChart=this.$tool.annulus('myChart',xData,yData);
+                        window.onresize=function(){
+                            myChart.resize();
+                        }
+                    }else{
+                        this.$message.warning(r.err_msg);
                     }
-                }else{
-                    this.$message.warning(r.err_msg);
-                }
-            });
+                    resolve();
+                });
+            })
         },
     },
     watch: {

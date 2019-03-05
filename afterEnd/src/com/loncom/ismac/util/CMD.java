@@ -77,15 +77,27 @@ public class CMD {
 			+ " ID INTEGER IDENTITY(1, 1) NOT NULL  ," + " ENERGY VARCHAR(11) DEFAULT NULL,"
 			+ " UNITPRICE VARCHAR(11) DEFAULT NULL," + " TITME VARCHAR(255) DEFAULT NULL,"
 			+ " ENERGYID VARCHAR(50) DEFAULT NULL," + " NOT CLUSTER PRIMARY KEY  (ID)" + ")";
+	
 	// Rpt设备历史
 	public final static String RPT_DEVTABLE = "RPT%s";
 	public final static String RPT_COLUMN = " %s VARCHAR(50) DEFAULT NULL,";
-	public final static String CREATE_RPT_DEV = " CREATE TABLE %s ( " + "  ID INTEGER IDENTITY(1, 1) NOT NULL ,"
-			+ "  UUID VARCHAR(50) DEFAULT NULL," + "  HDATA VARCHAR(50) DEFAULT NULL," + "%s"
-			+ "	  NOT CLUSTER PRIMARY KEY  (ID)" + "	)";
+//	public final static String CREATE_RPT_DEV = " CREATE TABLE %s ( " + "  ID INTEGER IDENTITY(1, 1) NOT NULL ,"
+//			+ "  UUID VARCHAR(50) DEFAULT NULL," + "  HDATA VARCHAR(50) DEFAULT NULL," + "%s"
+//			+ "	  NOT CLUSTER PRIMARY KEY  (ID)" + "	)";
+	public final static String CREATE_RPT_DEV=" CREATE TABLE %s ( "+
+    		"  `id` int(11) NOT NULL AUTO_INCREMENT,"+
+    		"  `mgrobjid` varchar(50) DEFAULT NULL,"+
+    		"  `pointid` varchar(50) DEFAULT NULL,"+
+    		"  `value` varchar(20) DEFAULT NULL,"+
+    		"  `time` datetime DEFAULT NULL,"+
+    		"  `onevalue` varchar(20) DEFAULT NULL,"+
+    		"  `twovalue` varchar(20) DEFAULT NULL,"+
+    		"  `allvalue` varchar(20) DEFAULT NULL,"+
+    	"	  PRIMARY KEY (`id`)"+
+    	"	)";
 
-	public final static String INSERT_RPT_TABLE = "INSERT INTO %s (UUID, HDATA, %s) VALUES ";
-	public final static String INSERT_RPT_VALUES = "('%s','%s',%s)";
+	public final static String INSERT_RPT_TABLE = "INSERT INTO %s (MGROBJID, POINTID, VALUE,TIME,ONEVALUE,TWOVALUE,ALLVALUE) VALUES ";
+	public final static String INSERT_RPT_VALUES = "('%s','%s',%s,%s,%s,%s,%s)";
 	// 空调群控RPT报表
 
 	public final static String IS_BASE = " select count(1) from `INFORMATION_SCHEMA`.`TABLES` where table_name ='%s'";

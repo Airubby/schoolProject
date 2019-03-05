@@ -12,7 +12,7 @@
                     size="small"
                     class="loncom_mr20"
                     v-model="search"
-                    value-format="yyyy-MM-dd hh:mm:ss"
+                    value-format="yyyy-MM-dd HH:mm:ss"
                     type="datetimerange"
                     range-separator="至"
                     start-placeholder="开始日期"
@@ -37,7 +37,7 @@
                                         border :data="top_data" :columns="top_columns" stripe>   
                                         <el-table-column slot="prepend" type="index" label="排名" width="100"></el-table-column>
                                         <template slot-scope="scope" slot="preview-rate">
-                                            <el-progress :text-inside="true" :stroke-width="14" :percentage="Number(Number(scope.row.rate).toFixed(2))"></el-progress>
+                                            <el-progress :text-inside="true" :stroke-width="14" :percentage="Number(scope.row.rate)"></el-progress>
                                         </template>
                                         <template slot-scope="scope" slot="preview-value">
                                             <div style="text-align:right">
@@ -60,7 +60,7 @@
                             <div class="loncom_analyze_table bg1C2443">
                                 <h2 class="loncom_analyze_title">
                                     用电数据
-                                    <el-button type="primary" size="small" class="loncom_fr" style="margin-top:12px;">导出</el-button>    
+                                    <el-button type="primary" size="small" class="loncom_fr" style="margin-top:12px;" @click="exportPower">导出</el-button>    
                                 </h2>
                                 <div class="loncom_analyze_table_con">
                                     <el-scrollbar style="height:100%;">
@@ -87,7 +87,7 @@
 export default {
     
     created () {
-        this.search=[this.$tool.Format("yyyy-MM-dd hh:mm:ss",new Date(new Date().getTime()-3600*1000*24)),this.$tool.Format("yyyy-MM-dd hh:mm:ss",new Date())]
+        this.search=[this.$tool.Format("yyyy-MM-dd 00:00:00",new Date()),this.$tool.Format("yyyy-MM-dd hh:mm:ss",new Date())]
         this.getInfo();
     },
     mounted() {
@@ -131,94 +131,174 @@ export default {
        }
     },
     methods:{
-        getInfo:function(){
-            this.getPowerTop();
+        async getInfo(){
+            this.loading=true;
+            await this.getTitle();
+            await this.getPowerTop();
+            // await this.getLine();
+            // await this.getTable();
             this.getPower();
-            // this.getReport();
+            this.loading=false;
         },
         //top10及累计用电量
         getPowerTop:function(){
-            this.loading=true;
-            this.$api.post('/service/top', {startTime:this.search[0],endTime:this.search[1]}, r => {
-                console.log(r)
-                this.loading=false;
-                if(r.err_code=="0"){
-                    this.allpower=r.data.allPower;
-                    this.top_data=r.data.top;
-                }else{
-                    this.$message.warning(r.err_msg);
-                }
+            return new Promise ((resolve, reject) => {
+                this.$api.post('/service/top', {startTime:this.search[0],endTime:this.search[1]}, r => {
+                    console.log(r)
+                    if(r.err_code=="0"){
+                        this.allpower=r.data.all;
+                        this.top_data=r.data.data;
+                    }else{
+                        this.$message.warning(r.err_msg);
+                    }
+                    resolve();
+                })
+
+            })
+            
+        },
+        getLine:function(){
+            return new Promise ((resolve, reject) => {
+                this.$api.post('/service/lineInfo', {startTime:'2019-02-28 17:30:00',endTime:'2019-02-28 17:36:00'}, r => {
+                    console.log(r)
+                    if(r.err_code=="0"){
+                        let xData=[],yData=[];
+                        let min=this.table_data[0].allpower,max=this.table_data[0].allpower,allpower=0;
+                        for(let i=0;i<this.table_data.length;i++){
+                            allpower+=parseFloat(this.table_data[i].allpower);
+                            if (this.table_data[i].allpower < min){ 
+                                min = this.table_data[i].allpower; 
+                            }
+                            if (this.table_data[i].allpower > max){ 
+                                max = this.table_data[i].allpower; 
+                            }
+                            xData.push(this.$tool.Format("yyyy-MM-dd hh:mm:ss",this.table_data[i].TIME));
+                            yData.push(this.table_data[i].allpower);
+                        }
+                        this.echart.min=min;
+                        this.echart.max=max;
+                        this.echart.average=(allpower/(this.table_data.length)).toFixed(2);
+                        let myChart=this.$tool.lineChar('lineChar',xData,yData,this.time);
+                        window.onresize=function(){
+                            myChart.resize();
+                        }
+                    }else{
+                        this.$message.warning(r.err_msg);
+                    }
+                    resolve();
+                })
+            })
+            
+        },
+        getTitle:function(){
+            return new Promise ((resolve, reject) => {
+                this.$api.post('/service/tableTitle', {}, r => {
+                    console.log(r)
+                    if(r.err_code=="0"){
+                        let table_columns=[
+                            { prop: 'TIME', label: '时间',minWidth:20,slotName:'preview-time'},
+                            { prop: 'ALLVALUE', label: '总用电量',minWidth:10},
+                        ];
+                        this.table_columns=table_columns.concat(r.data);
+                    }else{
+                        this.$message.warning(r.err_msg);
+                    }
+                    resolve();
+                })
+            })
+        },
+        getTable:function(){
+            return new Promise ((resolve, reject) => {
+                this.$api.post('/service/tableInfo', {startTime:'2019-02-28 17:30:00',endTime:'2019-02-28 17:36:00'}, r => {
+                    console.log(r)
+                    if(r.err_code=="0"){
+                        this.table_data=r.data;
+                    }else{
+                        this.$message.warning(r.err_msg);
+                    }
+                    resolve();
+                })
             })
         },
         //用电数据
         getPower:function(){
-            this.loading=true;
-            this.$api.post('/service/allInfo', {startTime:this.search[0],endTime:this.search[1]}, r => {
-                console.log(r)
-                this.loading=false;
-                if(r.err_code=="0"){
-                    let table_columns=[
-                        { prop: 'TIME', label: '时间',minWidth:20,slotName:'preview-time'},
-                        { prop: 'allpower', label: '总用电量',minWidth:10},
-                    ];
-                    this.table_columns=table_columns.concat(r.data.tableTitle);
-                    this.table_data=r.data.tableBody;
-                    let xData=[],yData=[];
-                    let min=this.table_data[0].allpower,max=this.table_data[0].allpower,allpower=0;
-                    for(let i=0;i<this.table_data.length;i++){
-                        allpower+=parseFloat(this.table_data[i].allpower);
-                        if (this.table_data[i].allpower < min){ 
-                            min = this.table_data[i].allpower; 
+            return new Promise ((resolve, reject) => {
+                this.$api.post('/service/tableInfo', {startTime:this.search[0],endTime:this.search[1]}, r => {
+                    console.log(r)
+                    if(r.err_code=="0"){
+                        let xData=[],yData=[];
+                        this.table_data=r.data;
+                        if(this.table_data.length>0){
+                            let min=this.table_data[0].ALLVALUE,max=this.table_data[0].ALLVALUE,allpower=0;
+                            for(let i=0;i<this.table_data.length;i++){
+                                allpower+=parseFloat(this.table_data[i].ALLVALUE);
+                                if (this.table_data[i].ALLVALUE < min){ 
+                                    min = this.table_data[i].ALLVALUE; 
+                                }
+                                if (this.table_data[i].ALLVALUE > max){ 
+                                    max = this.table_data[i].ALLVALUE; 
+                                }
+                                xData.push(this.$tool.Format("yyyy-MM-dd hh:mm:ss",this.table_data[i].TIME));
+                                yData.push(this.table_data[i].ALLVALUE);
+                            }
+                            this.echart.min=min;
+                            this.echart.max=max;
+                            this.echart.average=(allpower/(this.table_data.length)).toFixed(2);
+                            let myChart=this.$tool.lineChar('lineChar',xData,yData,this.time);
+                            window.onresize=function(){
+                                myChart.resize();
+                            }
                         }
-                        if (this.table_data[i].allpower > max){ 
-                            max = this.table_data[i].allpower; 
-                        }
-                        xData.push(this.$tool.Format("yyyy-MM-dd hh:mm:ss",this.table_data[i].TIME));
-                        yData.push(this.table_data[i].allpower);
+                    }else{
+                        this.$message.warning(r.err_msg);
                     }
-                    this.echart.min=min;
-                    this.echart.max=max;
-                    this.echart.average=(allpower/(this.table_data.length)).toFixed(2);
-                    let myChart=this.$tool.lineChar('lineChar',xData,yData,this.time);
-                    window.onresize=function(){
-                        myChart.resize();
-                    }
-                }else{
-                    this.$message.warning(r.err_msg);
-                }
+                    resolve();
+                })
             })
         },
-        //获取echarts报表
-    //     getReport:function(){
-    //         this.loading=true;
-    //         this.$api.post('/service/report', {startTime:this.search[0],endTime:this.search[1]}, r => {
-    //             console.log(r)
-    //             this.loading=false;
-    //             if(r.err_code=="0"){
-    //                 this.echart.min=r.data.min;
-    //                 this.echart.max=r.data.max;
-    //                 this.echart.average=r.data.average;
-    //                 let xData=r.data.time;
-    //                 let yData=r.data.value;
-    //                 let myChart=this.$tool.lineChar('lineChar',xData,yData);
-    //                 window.onresize=function(){
-    //                     myChart.resize();
-    //                 }
-    //             }else{
-    //                 this.$message.warning(r.err_msg);
-    //             }
-    //         })
-    //     },
+        //导出报表
+        exportPower:function(){
+            // this.loading=true;
+            let startTime=this.search[0],endTime=this.search[1];
+            let link = document.createElement('a')
+            link.style.display = 'none'
+            link.href = this.$ajaxUrl+"/service/export?startTime="+startTime+"&endTime="+endTime;
+            // link.href = this.$ajaxUrl+"/service/export?startTime=2019-02-28 17:30:00&endTime=2019-02-28 17:36:00";
+            link.setAttribute('download', "用电量统计报表")
+
+            document.body.appendChild(link)
+            link.click();
+            window.URL.revokeObjectURL(link.href); // 释放URL 对象
+            document.body.removeChild(link);
+        },
     },
     watch:{
         time:function(val){
             console.log(val)
             if(val=="day"){
-                this.search=[this.$tool.Format("yyyy-MM-dd hh:mm:ss",new Date(new Date().getTime()-3600*1000*24)),this.$tool.Format("yyyy-MM-dd hh:mm:ss",new Date())];
+                this.search=[this.$tool.Format("yyyy-MM-dd 00:00:00",new Date()),this.$tool.Format("yyyy-MM-dd hh:mm:ss",new Date())];
             }else if(val=="week"){
-                this.search=[this.$tool.Format("yyyy-MM-dd hh:mm:ss",new Date(new Date().getTime()-3600*1000*24*7)),this.$tool.Format("yyyy-MM-dd hh:mm:ss",new Date())];
+                let theDate = new Date();
+                let nowDay=theDate.getDay();
+                let start=null;
+                let end=null;
+                if(nowDay!=0){
+                    start=this.$tool.Format("yyyy-MM-dd 00:00:00",new Date(theDate.getTime()-3600*1000*24*(nowDay-1)));
+                    end=this.$tool.Format("yyyy-MM-dd 23:59:59",new Date(theDate.getTime()+3600*1000*24*(7-nowDay)));
+                }else{
+                    start=this.$tool.Format("yyyy-MM-dd 00:00:00",new Date(theDate.getTime()-3600*1000*24*6));
+                    end=this.$tool.Format("yyyy-MM-dd 23:59:59",theDate);
+                }
+                this.search=[start,end];
+                // this.search=[this.$tool.Format("yyyy-MM-dd hh:mm:ss",new Date(new Date().getTime()-3600*1000*24*7)),this.$tool.Format("yyyy-MM-dd hh:mm:ss",new Date())];
             }else if(val=="month"){
-                this.search=[this.$tool.Format("yyyy-MM-dd hh:mm:ss",new Date(new Date().getTime()-3600*1000*24*30)),this.$tool.Format("yyyy-MM-dd hh:mm:ss",new Date())];
+                let theDate = new Date();
+                let theMonth=theDate.getMonth();
+                let start = this.$tool.Format("yyyy-MM-dd 00:00:00",new Date(theDate.getFullYear(),theMonth,1));
+                let nextMonth=theMonth+1;
+                let end=this.$tool.Format("yyyy-MM-dd 23:59:59",new Date(new Date(theDate.getFullYear(),nextMonth,1)-1000*60*60*24));
+                this.search=[start,end];
+                // this.search=[this.$tool.Format("yyyy-MM-dd hh:mm:ss",new Date(new Date().getTime()-3600*1000*24*30)),this.$tool.Format("yyyy-MM-dd hh:mm:ss",new Date())];
             }
             this.getInfo();
         }

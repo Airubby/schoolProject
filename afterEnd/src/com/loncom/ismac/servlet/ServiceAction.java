@@ -2,26 +2,27 @@ package com.loncom.ismac.servlet;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.openxml4j.opc.internal.marshallers.ZipPackagePropertiesMarshaller;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+
 import com.loncom.ismac.annotation.MethodInfo;
 import com.loncom.ismac.annotation.Modular;
 import com.loncom.ismac.application.AppContext;
-import com.loncom.ismac.bean.DataPack;
 import com.loncom.ismac.bean.zTreeByOther;
 import com.loncom.ismac.bean.xml.ClassroomXml;
-import com.loncom.ismac.bean.xml.ClassroomgroupXml;
 import com.loncom.ismac.bean.xml.GroupXml;
-import com.loncom.ismac.bean.xml.OfficegroupXml;
 import com.loncom.ismac.bean.xml.RootXml;
 import com.loncom.ismac.bean.xml.XmlEdiParser;
 import com.loncom.ismac.jdbc.DB;
 import com.loncom.ismac.lservice.bean.Service;
 import com.loncom.ismac.util.BaseUtil;
 import com.loncom.ismac.util.CMD;
+import com.loncom.ismac.util.ExcelExportUtil;
 import com.loncom.ismac.util.FileUtil;
 import com.loncom.ismac.util.UtilTime;
 import com.loncom.ismac.util.UtilTool;
@@ -103,96 +104,7 @@ public class ServiceAction extends BaseServlet {
 		return map;
 		
 	}
-	/**
-	 * 获取总能耗及教室或办公室的排序
-	 */
-	public static Map<String, Object> typeSort(List<Map<String, Object>> list){
-		List<ClassroomXml> classlist=new ArrayList<ClassroomXml>();
-		List<ClassroomXml> dormlist=new ArrayList<ClassroomXml>();
-		List<Map<String, Object>> alist=new ArrayList<Map<String, Object>>();
-		List<Map<String, Object>> clist=new ArrayList<Map<String, Object>>();
-		List<Map<String, Object>> dlist=new ArrayList<Map<String, Object>>();
-		classlist=BaseUtil.getService(null, "classroom", null, null);
-		dormlist=BaseUtil.getService(null, "officeroom", null, null);
-		Map<String, Object> map=new HashMap<String,Object>();
-		float classroom = 0,officeroom=0,allpower=0;
-		for (Map<String, Object> map2 : list) {
-			
-			
-			for (ClassroomXml classroomXml : classlist) {
-				if(classroomXml.getAmmeterdev().getDevid().equals(map2.get("MGROBJID"))) {
-					allpower+=Float.parseFloat((String) map2.get("VALUE"));
-					classroom+=Float.parseFloat((String) map2.get("VALUE"));
-					map2.put("classname", classroomXml.getClassname());
-					clist.add(map2);
-					alist.add(map2);
-				}
-			}
-			for (ClassroomXml classroomXml : dormlist) {
-				if(classroomXml.getAmmeterdev().getDevid().equals(map2.get("MGROBJID"))) {
-					allpower+=Float.parseFloat((String) map2.get("VALUE"));
-					officeroom+=Float.parseFloat((String) map2.get("VALUE"));
-					map2.put("classname", classroomXml.getClassname());
-					dlist.add(map2);
-					alist.add(map2);
-				}
-			}
-		}
-		map.put("allpower", UtilTool.cutFloat2(allpower+""));
-		map.put("classroom", UtilTool.cutFloat2(classroom+""));
-		map.put("officeroom", UtilTool.cutFloat2(officeroom+""));
-		map.put("classList", clist);
-		map.put("dormlist", dlist);
-		map.put("alllist", alist);
-		return map;
-	}
-	
-	public static Map<String, Object> allSort(List<Map<String, Object>> list){
-		List<ClassroomXml> classlist=new ArrayList<ClassroomXml>();
-		List<ClassroomXml> dormlist=new ArrayList<ClassroomXml>();
-		List<Map<String, Object>> alist=new ArrayList<Map<String, Object>>();
-		List<Map<String, Object>> clist=new ArrayList<Map<String, Object>>();
-		List<Map<String, Object>> dlist=new ArrayList<Map<String, Object>>();
-		
-		List<Map<String, Object>> tableTitle=new ArrayList<Map<String, Object>>();
-		List<Map<String, Object>> tableBody=new ArrayList<Map<String, Object>>();
-		Map<String, Object> mapTitle=new HashMap<String,Object>();
-		
-		List<GroupXml> group=new ArrayList<GroupXml>();
-		Map<String, Object> map=new HashMap<String,Object>();
-		for(GroupXml groupXml:BaseUtil.getFloor()) {
-			mapTitle=new HashMap<String,Object>();
-			mapTitle.put("prop","lou"+groupXml.getGroupno());
-			mapTitle.put("label", groupXml.getGroupname());
-			mapTitle.put("minWidth", 10);
-			tableTitle.add(mapTitle);
-			
-			classlist=BaseUtil.getService(groupXml.getGroupno(), "classroom", null, null);
-			dormlist=BaseUtil.getService(groupXml.getGroupno(), "officeroom", null, null);
-			for(Map<String, Object> map2 : list) {
-				for (ClassroomXml classroomXml : classlist) {
-					if(classroomXml.getAmmeterdev().getDevid().equals(map2.get("MGROBJID"))) {
-						String tvalue=UtilTool.cutFloat2(UtilTool.parseFloat(map2.get("VALUE")+"")+"");
-						map2.put("lou"+groupXml.getGroupno(), tvalue);
-						map2.put("allpower", tvalue);
-						tableBody.add(map2);
-					}
-				}
-				for (ClassroomXml classroomXml : dormlist) {
-					if(classroomXml.getAmmeterdev().getDevid().equals(map2.get("MGROBJID"))) {
-						String tvalue=UtilTool.cutFloat2(UtilTool.parseFloat(map2.get("VALUE")+"")+"");
-						map2.put("lou"+groupXml.getGroupno(), tvalue);
-						map2.put("allpower", tvalue);
-						tableBody.add(map2);
-					}
-				}
-			}
-		}
-		map.put("tableTitle", tableTitle);
-		map.put("tableBody", tableBody);
-		return map;
-	}
-	
+
 	/**
 	 * 获取所有 
 	 * @return
@@ -275,205 +187,256 @@ public class ServiceAction extends BaseServlet {
 		String type=getRequest().getParameter("type");
 		String startTime=getRequest().getParameter("startTime");
 		String endTime=getRequest().getParameter("endTime");
-		String sql = null;
+		String sql = "",sql1 = "",tsql="",asql="";
 		String devtable=null;
 		List dateList=new ArrayList<>();
 		List<Map<String, Object>> alllist = new ArrayList<Map<String, Object>>();
-		List<Map<String, Object>> backlist=new ArrayList<Map<String, Object>>();
-		List<Map<String, Object>> returnlist=new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> list=new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> rlist=new ArrayList<Map<String, Object>>();
 		Map<String,Object> map=new HashMap<String,Object>();
-		Map<String,Object> topMap=new HashMap<String,Object>();
+		Map<String,Object> rmap=new HashMap<String,Object>();
 		
-		dateList=UtilTime.getDatesBetweenTwoDate(startTime, endTime);
-		System.out.println(dateList);
-		String[] first=((String) dateList.get(0)).split("\\s");
-		String[] last=((String) dateList.get(dateList.size()-1)).split("\\s");
-		if(first[0].equals(last[0])) {
-			devtable=String.format(CMD.HIS_DEVTABLE, UtilTime.getYMD(UtilTime.stringToDate(dateList.get(0)+"")));
-			int count=baseservice.getCount(String.format(CMD.IS_HIS_BASE, devtable), DB.HIS);
-			if(count>0) {
-				sql="select * from %s";
-				sql=String.format(sql,devtable);
-				try {
-					List<Map<String, Object>> list = baseservice.getSqlListS(sql,DB.HIS);
-					if (list != null && list.size() > 0) {
-						alllist.addAll(list);
-					}
-				} catch (Exception e) {
-					// TODO: handle exception
-				}
-			}
-		}else {
-			for(int i=0;i<dateList.size();i++) {
-				devtable=String.format(CMD.HIS_DEVTABLE, UtilTime.getYMD(UtilTime.stringToDate(dateList.get(i)+"")));
-				int count=baseservice.getCount(String.format(CMD.IS_HIS_BASE, devtable), DB.HIS);
-				if(count>0) {
-					if(i==0) {
-						sql="select * from %s where time > '%s'";
-						sql=String.format(sql,devtable,dateList.get(i));
-					}else if(i==dateList.size()-1) {
-						sql="select * from %s where time < '%s'";
-						sql=String.format(sql,devtable,dateList.get(i));
-					}else {
-						sql="select * from %s";
-						sql=String.format(sql,devtable);
-					}
-					try {
-						List<Map<String, Object>> list = baseservice.getSqlListS(sql,DB.HIS);
-						if (list != null && list.size() > 0) {
-							alllist.addAll(list);
-						}
-					} catch (Exception e) {
-						// TODO: handle exception
-					}
-				}
-			}
+		List<ClassroomXml> classlist=BaseUtil.getService(null, "classroom", null, null);
+		List<ClassroomXml> dormlist=BaseUtil.getService(null, "officeroom", null, null);
+		String classmgrobjid="", classpointid="", officemgrobjid="",officepointid="";
+		for (ClassroomXml classroomXml : classlist) {
+			classmgrobjid+="'"+classroomXml.getAmmeterdev().getDevid()+"',";
+			classpointid+="'"+classroomXml.getAmmeterdev().getStateid()+"',";
 		}
-		
-		System.out.println(alllist);
-		backlist=BaseUtil.downSort(alllist, "VALUE");
-		Map<String, Object> backmap=typeSort(backlist);
-		System.out.println(backmap);
-		map.put("allPower",backmap.get("allpower"));
-		List<Map<String, Object>> classList=new ArrayList<Map<String, Object>>();
+		for (ClassroomXml classroomXml : dormlist) {
+			officemgrobjid+="'"+classroomXml.getAmmeterdev().getDevid()+"',";
+			officepointid+="'"+classroomXml.getAmmeterdev().getStateid()+"',";
+		}	
+		String mgrobjid="",pointid="";
 		if(BaseUtil.isNotNull(type)) {
 			//根据类型获取top10
 			if(type.equals("classroom")) {
-				classList=(List) backmap.get("classList");
+				mgrobjid=classmgrobjid;
+				pointid=classpointid;
 			}
 			if(type.equals("officeroom")) {
-				classList=(List) backmap.get("dormlist");
+				mgrobjid=officemgrobjid;
+				pointid=officepointid;
 			}
 		}else {
-			//所有所有的top10
-			classList=(List) backmap.get("alllist");
+			mgrobjid=classmgrobjid+officemgrobjid;
+			pointid=classpointid+officepointid;
 		}
-		for (Map<String, Object> map1 : classList) {
-			topMap=new HashMap<String,Object>();
-			topMap.put("classname", map1.get("classname"));
-			topMap.put("value", map1.get("VALUE"));
-			float rate=(Float.parseFloat(map1.get("VALUE")+"")/Float.parseFloat(backmap.get("allpower")+""))*100;
-			topMap.put("rate",UtilTool.cutFloat2(rate+"")) ;
-			returnlist.add(topMap);
-		}
-		map.put("top", returnlist);
-		return JSONObject.fromObject(map).toString();
-	}
-	
-	/**
-	 * 获取用电数据，按时间查询返回总用电量，教学楼，实验楼
-	 */
-	@SuppressWarnings("deprecation")
-	@MethodInfo(METHOD="/service/allInfo")
-	public String queryInfo() throws Exception{
-		String type=getRequest().getParameter("type");
-		String startTime=getRequest().getParameter("startTime");
-		String endTime=getRequest().getParameter("endTime");
-		String sql = null;
-		String devtable=null;
-		List dateList=new ArrayList<>();
-		List<Map<String, Object>> alllist = new ArrayList<Map<String, Object>>();
-		List<Map<String, Object>> backlist=new ArrayList<Map<String, Object>>();
-		List<Map<String, Object>> returnlist=new ArrayList<Map<String, Object>>();
-		Map<String,Object> map=new HashMap<String,Object>();
-		Map<String,Object> topMap=new HashMap<String,Object>();
+		mgrobjid=mgrobjid.substring(0, mgrobjid.length()-1);
+		pointid=pointid.substring(0, pointid.length()-1);
 		
 		dateList=UtilTime.getDatesBetweenTwoDate(startTime, endTime);
 		System.out.println(dateList);
 		String[] first=((String) dateList.get(0)).split("\\s");
 		String[] last=((String) dateList.get(dateList.size()-1)).split("\\s");
 		if(first[0].equals(last[0])) {
-			devtable=String.format(CMD.HIS_DEVTABLE, UtilTime.getYMD(UtilTime.stringToDate(dateList.get(0)+"")));
+			devtable=String.format(CMD.HIS_DEVTABLE, UtilTime.getStyingYMD(dateList.get(0)+""));
 			int count=baseservice.getCount(String.format(CMD.IS_HIS_BASE, devtable), DB.HIS);
 			if(count>0) {
-				sql="select * from %s";
-				sql=String.format(sql,devtable);
-				try {
-					List<Map<String, Object>> list = baseservice.getSqlListS(sql,DB.HIS);
-					if (list != null && list.size() > 0) {
-						alllist.addAll(list);
-					}
-				} catch (Exception e) {
-					// TODO: handle exception
-				}
+				tsql="select * from %s where time > '%s' and time < '%s' and mgrobjid in(%s) and pointid in(%s)";
+				tsql=String.format(tsql,devtable,dateList.get(0),dateList.get(1),mgrobjid,pointid);
 			}
-			
 		}else {
+			String table=String.format(CMD.HIS_DEVTABLE, UtilTime.getStyingYMD(dateList.get(0)+""));
+			int firstcount=baseservice.getCount(String.format(CMD.IS_HIS_BASE, table), DB.HIS);
 			for(int i=0;i<dateList.size();i++) {
-				devtable=String.format(CMD.HIS_DEVTABLE, UtilTime.getYMD(UtilTime.stringToDate(dateList.get(i)+"")));
+				devtable=String.format(CMD.HIS_DEVTABLE, UtilTime.getStyingYMD(dateList.get(i)+""));
 				int count=baseservice.getCount(String.format(CMD.IS_HIS_BASE, devtable), DB.HIS);
 				if(count>0) {
-					if(i==0) {
-						sql="select * from %s where time > '%s'";
-						sql=String.format(sql,devtable,dateList.get(i));
+					if(i==0&&firstcount>0) {
+						sql="select * from %s where time > '%s' and mgrobjid in(%s) and pointid in(%s) ";
+						sql=String.format(sql,devtable,dateList.get(i),mgrobjid,pointid);
+						tsql+=sql;
 					}else if(i==dateList.size()-1) {
-						sql="select * from %s where time < '%s'";
-						sql=String.format(sql,devtable,dateList.get(i));
+						sql="union select * from %s where time < '%s' and mgrobjid in(%s) and pointid in(%s)";
+						sql=String.format(sql,devtable,dateList.get(i),mgrobjid,pointid);
+						tsql+=sql;
 					}else {
-						sql="select * from %s";
-						sql=String.format(sql,devtable);
-					}
-					try {
-						List<Map<String, Object>> list = baseservice.getSqlListS(sql,DB.HIS);
-						if (list != null && list.size() > 0) {
-							alllist.addAll(list);
+						if(sql.length()>0) {
+							sql="union select * from %s where mgrobjid in(%s) and pointid in(%s) ";
+						}else {//选择的时间段开始时间是没有表的情况下
+							sql="select * from %s where mgrobjid in(%s) and pointid in(%s) ";
 						}
-					} catch (Exception e) {
-						// TODO: handle exception
+						sql=String.format(sql,devtable,mgrobjid,pointid);
+						tsql+=sql;
 					}
 				}
 			}
 		}
-		
-		Map<String, Object> backmap=allSort(alllist);
-		List<Map<String, Object>> tableBody=new ArrayList<Map<String, Object>>();
-		tableBody=(List) backmap.get("tableBody");
-		List<Map<String, Object>> tableTitle=new ArrayList<Map<String, Object>>();
-		tableTitle=(List) backmap.get("tableTitle");
-		map.put("tableBody", tableBody);
-		map.put("tableTitle", tableTitle);
+		try {
+			asql="select mgrobjid,pointid,cast(sum(a.value) as decimal(10,2)) as value from("+tsql+") a group by mgrobjid,pointid order by value desc limit 10";
+			sql1="select cast(sum(a.value) as decimal(10,2)) as value from("+tsql+") a";
+			alllist = baseservice.getSqlListS(asql,DB.HIS);
+			list = baseservice.getSqlListS(sql1,DB.HIS);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		if(alllist.size()>0) {
+			for(int i=0;i<alllist.size();i++) {
+				for (ClassroomXml classroomXml : classlist) {
+					if(classroomXml.getAmmeterdev().getDevid().equals(alllist.get(i).get("MGROBJID"))
+							&&classroomXml.getAmmeterdev().getStateid().equals(alllist.get(i).get("POINTID"))) {
+						rmap=new HashMap<String,Object>();
+						rmap.put("classname",classroomXml.getClassname());
+						rmap.put("value",alllist.get(i).get("VALUE"));
+						float rate=(Float.parseFloat(alllist.get(i).get("VALUE")+"")/Float.parseFloat(list.get(0).get("VALUE")+""))*100;
+						rmap.put("rate",UtilTool.cutFloat2(rate+"")) ;
+						rlist.add(rmap);
+					}
+				}
+				for (ClassroomXml classroomXml : dormlist) {
+					if(classroomXml.getAmmeterdev().getDevid().equals(alllist.get(i).get("MGROBJID"))
+							&&classroomXml.getAmmeterdev().getStateid().equals(alllist.get(i).get("POINTID"))) {
+						rmap=new HashMap<String,Object>();
+						rmap.put("classname",classroomXml.getClassname());
+						rmap.put("value",alllist.get(i).get("VALUE"));
+						float rate=(Float.parseFloat(alllist.get(i).get("VALUE")+"")/Float.parseFloat(list.get(0).get("VALUE")+""))*100;
+						rmap.put("rate",UtilTool.cutFloat2(rate+"")) ;
+						rlist.add(rmap);
+					}
+				}	
+			}
+		}
+		map.put("data", rlist);
+		map.put("all",list.size()>0?list.get(0).get("VALUE"):0);
 		return JSONObject.fromObject(map).toString();
 	}
+
+	/**
+	 * 获取table的title展示
+	 */
+	@MethodInfo(METHOD="/service/tableTitle")
+	public String queryTitle() throws Exception{
+		List<Map<String, Object>> tableTitle=new ArrayList<Map<String, Object>>();
+		Map<String, Object> mapTitle=new HashMap<String,Object>();
+		int num=0;
+		for(Service service : AppContext.getService()) {
+			for (GroupXml groupXml : service.getGroupcontrol().getGroup()) {
+				mapTitle=new HashMap<String,Object>();
+				num+=1;
+				if(num==1) {
+					mapTitle.put("prop","ONEVALUE");
+				}else {
+					mapTitle.put("prop","TWOVALUE");
+				}
+				mapTitle.put("label", groupXml.getGroupname());
+				mapTitle.put("minWidth", 10);
+				tableTitle.add(mapTitle);
+			}
+		}
+		return JSONArray.fromObject(tableTitle).toString();
+	}
+	
+	/**
+	 * 获取用电数据，按时间查询table信息,line线型图
+	 */
+	@MethodInfo(METHOD="/service/tableInfo")
+	public String queryTable() throws Exception{
+		String startTime=getRequest().getParameter("startTime");
+		String endTime=getRequest().getParameter("endTime");
+		List<ClassroomXml> classlist=new ArrayList<ClassroomXml>();
+		List<ClassroomXml> dormlist=new ArrayList<ClassroomXml>();
+		String sql="",rpttable="",allsql = "",tsql="";
+		for(Service service : AppContext.getService()) {
+			for (GroupXml groupXml : service.getGroupcontrol().getGroup()) {
+				classlist=BaseUtil.getService(groupXml.getGroupno(), "classroom", null, null);
+				dormlist=BaseUtil.getService(groupXml.getGroupno(), "officeroom", null, null);
+				for(ClassroomXml classroomXml : classlist) {
+					rpttable=String.format(CMD.RPT_DEVTABLE, classroomXml.getCode());
+					sql=" select * from %s where time >= '%s' and time < '%s' UNION";
+					sql=String.format(sql,rpttable,startTime,endTime);
+					allsql+=sql;
+				}
+				for (ClassroomXml classroomXml : dormlist) {
+					rpttable=String.format(CMD.RPT_DEVTABLE, classroomXml.getCode());
+					sql=" select * from %s where time >= '%s' and time < '%s' UNION";
+					sql=String.format(sql,rpttable,startTime,endTime);
+					allsql+=sql;
+				}
+			}
+		}
+		allsql=allsql.substring(0, allsql.length()-5);
+		tsql="select cast(sum(a.onevalue) as decimal(10,2)) as onevalue,cast(sum(a.twovalue) as decimal(10,2)) as twovalue,cast(sum(a.allvalue) as decimal(10,2)) as allvalue, time "
+				+ "from ("+allsql+") a group by a.time";
+		
+		List<Map<String, Object>> list = baseservice.getSqlListS(tsql,DB.HIS);
+		System.out.println(list);
+		return JSONArray.fromObject(list).toString();
+	}
+	
 	/**
 	 * 获取人均面积教室办公楼占比用电量，
 	 */
 	@MethodInfo(METHOD="/service/rate")
 	public String queryRate() throws Exception{
+		List<Map<String, Object>> clist=new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> olist=new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> alist=new ArrayList<Map<String, Object>>();
 		Map<String,Object> mapItem=new HashMap<String,Object>();
+		Map<String,Object> map=new HashMap<String,Object>();
 		mapItem=schoolItem();
+		
+		List<ClassroomXml> classlist=BaseUtil.getService(null, "classroom", null, null);
+		List<ClassroomXml> dormlist=BaseUtil.getService(null, "officeroom", null, null);
+		String classmgrobjid="", classpointid="", officemgrobjid="",officepointid="",mgrobjid="",pointid="";
+		for (ClassroomXml classroomXml : classlist) {
+			classmgrobjid+="'"+classroomXml.getAmmeterdev().getDevid()+"',";
+			classpointid+="'"+classroomXml.getAmmeterdev().getStateid()+"',";
+		}
+		for (ClassroomXml classroomXml : dormlist) {
+			officemgrobjid+="'"+classroomXml.getAmmeterdev().getDevid()+"',";
+			officepointid+="'"+classroomXml.getAmmeterdev().getStateid()+"',";
+		}	
+		classmgrobjid=classmgrobjid.substring(0, classmgrobjid.length()-1);
+		classpointid=classpointid.substring(0, classpointid.length()-1);
+		officemgrobjid=officemgrobjid.substring(0, officemgrobjid.length()-1);
+		officepointid=officepointid.substring(0, officepointid.length()-1);
+		mgrobjid=classmgrobjid+","+officemgrobjid;
+		pointid=classpointid+","+officepointid;
+		
+		String sql="",csql="",osql="",asql="";
 		String devtable=String.format(CMD.HIS_DEVTABLE, UtilTime.getYMD());
-		System.out.println(devtable);
-		String sql="select * from %s";
-		List<Map<String, Object>> map= baseservice.getSqlListS(String.format(sql,devtable),DB.HIS);
-		Map<String, Object> backmap=typeSort(map);
-		System.out.println(backmap);
-
+		int count=baseservice.getCount(String.format(CMD.IS_HIS_BASE, devtable), DB.HIS);
+		if(count>0) {
+			sql="select * from %s where mgrobjid in(%s) and pointid in(%s)";
+			csql=String.format(sql,devtable,classmgrobjid,classpointid);
+			osql=String.format(sql,devtable,officemgrobjid,officepointid);
+			asql=String.format(sql,devtable,mgrobjid,pointid);
+			csql="select cast(sum(a.value) as decimal(10,2)) as value from("+csql+") a";
+			osql="select cast(sum(a.value) as decimal(10,2)) as value from("+osql+") a";
+			asql="select cast(sum(a.value) as decimal(10,2)) as value from("+asql+") a";
+			
+		}
+		try {
+			clist = baseservice.getSqlListS(csql,DB.HIS);
+			olist = baseservice.getSqlListS(osql,DB.HIS);
+			alist = baseservice.getSqlListS(asql,DB.HIS);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		List nlist=new ArrayList<>();
 		List vlist=new ArrayList<>();
-		Map<String,Object> map1=new HashMap<String,Object>();
-		
-		
 		nlist.add("教室");
 		nlist.add("办公室");
 		Map<String,Object> cmap=new HashMap<String,Object>();
 		cmap.put("name", "教室");
-		cmap.put("value", backmap.get("classroom"));
+		cmap.put("value",clist.size()>0?clist.get(0).get("VALUE"):0);
 		Map<String,Object> dmap=new HashMap<String,Object>();
 		dmap.put("name", "办公室");
-		dmap.put("value", backmap.get("officeroom"));
+		dmap.put("value", olist.size()>0?olist.get(0).get("VALUE"):0);
 		vlist.add(cmap);
 		vlist.add(dmap);
+		System.out.println(alist.get(0).get("VALUE"));
+		String a=UtilTool.cutFloat4(UtilTool.parseFloat(alist.get(0).get("VALUE")+"")/UtilTool.parseFloat(mapItem.get("acreage")+"")+"");
+		String p=UtilTool.cutFloat4(UtilTool.parseFloat(alist.get(0).get("VALUE")+"")/UtilTool.parseFloat(mapItem.get("countnumber")+"")+"");
 		
-		String a=UtilTool.cutFloat4(UtilTool.parseFloat(backmap.get("allpower")+"")/UtilTool.parseFloat(mapItem.get("acreage")+"")+"");
-		String p=UtilTool.cutFloat4(UtilTool.parseFloat(backmap.get("allpower")+"")/UtilTool.parseFloat(mapItem.get("countnumber")+"")+"");
+		map.put("allPower", alist.size()>0?alist.get(0).get("VALUE"):0);
+		map.put("areaPower", a);
+		map.put("peoplePower", p);
+		map.put("name", nlist);
+		map.put("value", vlist);
 		
-		map1.put("allPower", backmap.get("allpower"));
-		map1.put("areaPower", a);
-		map1.put("peoplePower", p);
-		map1.put("name", nlist);
-		map1.put("value", vlist);
-		
-		return JSONObject.fromObject(map1).toString();
+		return JSONObject.fromObject(map).toString();
 	}
 	
 	/**
@@ -619,6 +582,26 @@ public class ServiceAction extends BaseServlet {
 		return JSONArray.fromObject(list).toString();
 	}
 
+	/**
+	 * 导出数据
+	 * @return
+	 */
+	@MethodInfo(METHOD="/service/export")
+	public SXSSFWorkbook exportPower() throws Exception{
+		List<Class> l=new ArrayList<Class>();
+   		l.add(SXSSFWorkbook.class);
+		l.add(ZipPackagePropertiesMarshaller.class);
+		l.add(OPCPackage.class);
+		l.add(javax.xml.stream.FactoryConfigurationError.class);
+		l.add(javax.xml.parsers.FactoryConfigurationError.class);
+   	  
+   		SXSSFWorkbook wb = new SXSSFWorkbook(100);
+		String begintime = getRequest().getParameter("startTime");
+		String endtime = getRequest().getParameter("endTime");
+		ExcelExportUtil.excelPower(wb, begintime, endtime);
+		return wb;
+	}
+	
 	public ClassroomXml getObj() {
 		return obj;
 	}

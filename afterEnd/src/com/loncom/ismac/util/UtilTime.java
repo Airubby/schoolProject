@@ -7,7 +7,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * Project: lonweb Version:1.0 Package: com.lon.util File: UtilTime.java
  * 
@@ -38,12 +37,16 @@ public class UtilTime {
 	public static SimpleDateFormat ymd = new SimpleDateFormat("yyyyMMdd");
 	public static SimpleDateFormat hh = new SimpleDateFormat("HH");
 	public static SimpleDateFormat hwd = new SimpleDateFormat("yyyy/MM/dd HH:mm");// 华为时间戳格式
-	
-	public static Date stringToDate(String s) throws ParseException {
-		Date date=ymdhms_f.parse(s);
-		return date;
+
+	public static String getStyingYMD(String s) {
+		String str = "";
+		String[] arr = s.split("\\s")[0].split("-");
+		for (int i = 0; i < arr.length; i++) {
+			str += arr[i];
+		}
+		return str;
 	}
-	
+
 	public static String getNowymdhm_f() {
 		return ymdhm_f.format(new Date());
 	}
@@ -56,8 +59,7 @@ public class UtilTime {
 	public static String getNow() {
 		return ymdhms_f.format(new Date());
 	}
-	
-	
+
 	// yyyyMMddHHmmss
 	public static String getNows() {
 		return ymdhms.format(new Date());
@@ -237,7 +239,7 @@ public class UtilTime {
 		calendar.add(Calendar.DAY_OF_MONTH, -1);
 		return calendar.getTime();
 	}
-  
+
 	public static Date getLastSecondOfMonth(Date date) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
@@ -249,19 +251,20 @@ public class UtilTime {
 		calendar.set(Calendar.SECOND, 59);
 		return calendar.getTime();
 	}
-	
+
 	/**
 	 * 时间format
+	 * 
 	 * @param date
 	 * @param format
 	 * @return
 	 */
 	public static String fromDateToString(Date date, String format) {
-		SimpleDateFormat sdf = new SimpleDateFormat(format);  
-		try{
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		try {
 			String temp = sdf.format(date);
 			return temp;
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "";
@@ -282,10 +285,10 @@ public class UtilTime {
 		return ymd_f.format(new Date()) + " " + hors + ":59:59";
 	}
 
-//	public static Date getTimes(String data) {
-//		DateUtils a = new DateUtils(data, "yyyyMMddHHmmss");
-//		return a.getCalendar().getTime();
-//	}
+	// public static Date getTimes(String data) {
+	// DateUtils a = new DateUtils(data, "yyyyMMddHHmmss");
+	// return a.getCalendar().getTime();
+	// }
 
 	public static Date getTimes(String data) {
 		DateUtils a = new DateUtils(data, "yyyy-MM-dd HH:mm");
@@ -501,7 +504,7 @@ public class UtilTime {
 	 */
 	public static String getBetweenDate(String begintime, int month) throws ParseException {
 		Date date = new Date();
-		if ( BaseUtil.isNotNull(begintime)) {
+		if (BaseUtil.isNotNull(begintime)) {
 			date = ymdhms_f.parse(begintime);
 		}
 		Calendar calendar = Calendar.getInstance();
@@ -545,6 +548,14 @@ public class UtilTime {
 		}
 		lDate.add(endTime);
 		return lDate;
+	}
+
+	public static String getNowBeforeMin(Date date, int min) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		c.add(Calendar.MINUTE, min);
+		return sdf.format(c.getTime());
 	}
 
 	public static String getYMDHM(String data) throws ParseException {
@@ -614,6 +625,52 @@ public class UtilTime {
 		lDate.add(endTime);
 		return lDate;
 	}
+
+	/**
+	 * 将字符串格式yyyyMMdd的字符串转为日期格式"yyyy-MM-dd"的字符串
+	 *
+	 * @param date
+	 *            日期字符串
+	 * @return 返回格式化的日期
+	 * @throws ParseException
+	 *             分析时意外地出现了错误异常
+	 */
+	public static String strToDateFormat(String date) throws ParseException {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+		// setLenient(Boolean):是否严格解析日期
+		formatter.setLenient(false);
+		Date newDate = formatter.parse(date);
+		formatter = new SimpleDateFormat("yyyy-MM-dd");
+		return formatter.format(newDate);
+	}
+
+	/**
+	 * 日期字符串格式为yyyy-MM-dd
+	 * 
+	 * @param sourDay
+	 * @param currentDay
+	 * @return
+	 * @throws Exception
+	 */
+	public static int intervalDays(String sourDay, String currentDay) throws Exception {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date date1 = format.parse(currentDay);
+		Date date2 = format.parse(sourDay);
+		return (int) ((date1.getTime() - date2.getTime()) / (1000 * 3600 * 24));
+	}
+	  /**
+	    * 当前时间-保存天数=最早天数
+	    * @param currentDate
+	    * @param day
+	    * @return
+	    */
+	   public static String expiredDate(Date currentDate,int day) {
+		   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		   long expiredTime = currentDate.getTime()-day*24*3600*1000;
+		   Date date = new Date();
+		   date.setTime(expiredTime);
+		   return sdf.format(date);
+	   }
 }
 
 class FPS {
