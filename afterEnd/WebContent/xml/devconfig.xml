@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root> 
+  <syspara> 
+    <item mpara="ComType" mchar="tty"/>  
+    <item mpara="CommFailedMgrObj" mchar=""/>  
+    <item mpara="DBMC" mchar="DWMC"/>  
+    <item mpara="DWBM" mchar="3"/>  
+    <item mpara="MasterSlave" mchar=""/>  
+    <item mpara="SockPort" mchar="1061"/> 
+  </syspara>     
+  <deviceheadlist> 
+    <!--采集器01配置-->
+    <dev devid="0001" devname="空调控制器" com="tcp_1" comsetting="192.168.0.35:1502" datatype="HEX" init="01" txend="JBUS" state="1" devtype=""> 
+       <point id="000000" ch="通讯状态" state="1" wrkstate="1" debug="1" datachar="CommStatus" Unit="" tx="0300000002" masterid="" debugdata="" calib="if(length=18,0,1)" valuepara="" bgpos="0" len="0" notimes="60" rang="" timeno="" times="" rxtime="500" crctype="18"/> 
+       <point id="000001" ch="温度" state="1" wrkstate="1" debug="1" datachar="Analogy" Unit="℃" tx="" masterid="000000" debugdata="" calib="A$(7,4)*0.1" valuepara="" bgpos="0" len="0" notimes="60" rang="" timeno="" times="" rxtime="10" crctype="18"/>
+       <point id="000002" ch="湿度" state="1" wrkstate="1" debug="1" datachar="Analogy" Unit="%" tx="" masterid="000000" debugdata="" calib="A$(11,4)*0.1" valuepara="" bgpos="0" len="0" notimes="60" rang="" timeno="" times="" rxtime="10" crctype="18"/>
+	   <point id="000003" ch="空调状态" state="1" wrkstate="1" debug="1" datachar="Analogy" Unit="" tx="0300D70002" masterid="" debugdata="" calib="A$(7,4)" valuepara="" bgpos="0" len="0" notimes="60" rang="" timeno="" times="" rxtime="10" crctype="18"/>
+       <point id="000004" ch="空调关机" state="1" wrkstate="1" debug="1" datachar="Control" Unit="" tx="0600BB0000" masterid="" debugdata="" calib="" valuepara="" bgpos="0" len="0" notimes="60" rang="" timeno="" times="" rxtime="500" crctype=""/>   
+	</dev>
+    <dev devid="1001" devname="红外" com="tcp_1" comsetting="192.168.0.35:1502" datatype="HEX" init="01" txend="JBUS" state="1" devtype=""> 
+       <point id="000000" ch="红外信号" state="1" wrkstate="1" debug="1" datachar="Digital" Unit="" tx="0300000002" masterid="" debugdata="" calib="if(length=18,0,1)" valuepara="" bgpos="0" len="0" notimes="60" rang="" timeno="" times="" rxtime="500" crctype="18"/> 
+	   <point id="000001" ch="无人状态" state="1" wrkstate="1" debug="1" datachar="Digital" Unit="" tx="" masterid="" debugdata="" calib="D,times" valuepara="" bgpos="0" len="0" notimes="60" rang="" timeno="" times="" rxtime="500" crctype="18"/> 
+	</dev>
+	<dev devid="2001" devname="电表" com="tcp_1" comsetting="192.168.0.35:1502" datatype="HEX" init="01" txend="JBUS" state="1" devtype=""> 
+       <point id="000000" ch="通讯状态" state="1" wrkstate="1" debug="1" datachar="CommStatus" Unit="" tx="0300500002" masterid="" debugdata="" calib="if(length=18,0,1)" valuepara="" bgpos="0" len="0" notimes="60" rang="" timeno="" times="" rxtime="500" crctype="18"/> 
+	</dev>
+</deviceheadlist>
+</root>

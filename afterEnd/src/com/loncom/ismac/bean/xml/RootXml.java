@@ -12,33 +12,6 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 public class RootXml {
 
 	private GroupControlXml groupcontrol = new GroupControlXml();
-	private DeviceHeadListXml deviceheadlist;
-	private DeviceVouListXml devicevoulist;
-	private SysParaXml syspara = new SysParaXml();
-
-	public SysParaXml getSyspara() {
-		return syspara;
-	}
-
-	public void setSyspara(SysParaXml syspara) {
-		this.syspara = syspara;
-	}
-
-	public DeviceHeadListXml getDeviceheadlist() {
-		return deviceheadlist;
-	}
-
-	public void setDeviceheadlist(DeviceHeadListXml deviceheadlist) {
-		this.deviceheadlist = deviceheadlist;
-	}
-
-	public DeviceVouListXml getDevicevoulist() {
-		return devicevoulist;
-	}
-
-	public void setDevicevoulist(DeviceVouListXml devicevoulist) {
-		this.devicevoulist = devicevoulist;
-	}
 
 	public GroupControlXml getGroupcontrol() {
 		return groupcontrol;

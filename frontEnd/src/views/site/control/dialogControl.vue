@@ -9,6 +9,7 @@
                             <el-radio label="0">手动</el-radio>
                         </el-radio-group>
                     </el-form-item>
+                    <div v-if="ruleForm.model=='1'">
                     <el-form-item label="规则描述" prop="times" size="small">
                         <el-input v-model="ruleForm.times" class="elinput" placeholder="多少分钟监测一下，单位分钟"></el-input>
                     </el-form-item>
@@ -23,6 +24,7 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
+                    </div>
                 </el-form>
             </div>
         </el-scrollbar>

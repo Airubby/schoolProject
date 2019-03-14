@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
-@XStreamAlias("devvou")
+@XStreamAlias("point")
 public class DevvouXml {
 	@XStreamAsAttribute
 	private String orderno;

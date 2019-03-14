@@ -15,11 +15,16 @@ export const syncRouter=[
     redirect:'/site/control',
     children:[
       { path:'/site/control',component:(resolve) => require(['@/views/site/control/index'], resolve),name:'运行监控'},
-      { path:'/site/analyze',component:(resolve) => require(['@/views/site/analyze/index'], resolve),name:'运行分析'},    
+      { path:'/site/analyze',component:(resolve) => require(['@/views/site/analyze/index'], resolve),name:'运行分析'}, 
+      { path:'/site/analyze/more',component:(resolve) => require(['@/views/site/analyze/more'], resolve),name:'更多分析'},    
       { path:'/site/config',component:(resolve) => require(['@/views/site/config/index'], resolve),name:'时区配置'},    
       { path:'/site/account',component:(resolve) => require(['@/views/site/account/index'], resolve),name:'账号管理'},    
       { path:'/site/log',component:(resolve) => require(['@/views/site/log/index'], resolve),name:'系统日志'},    
     ]
+  },
+  {
+    path: '/test8',
+    component: (resolve) => require(['@/views/test'], resolve)
   },
   { path: '/404',meta: { title: '404'}, component: () => import('@/views/errorPage/404') },
   { path: '/401',meta: { title: '401'}, component: () => import('@/views/errorPage/401') },

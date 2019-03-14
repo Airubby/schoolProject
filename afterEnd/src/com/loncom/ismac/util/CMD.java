@@ -10,7 +10,7 @@ package com.loncom.ismac.util;
  * lon, Inc. Copyright (C): 2013
  */
 public class CMD {
-	public static String syncGetSysStatus = "getSysStatus";
+	public final static String syncGetSysStatus = "getSysStatus";
 	public static String syncGetAllData = "getAllData";
 	public static String syncGetAllAlarm = "getAllAlarm";
 	public static String asynSubAllData = "subAllData";

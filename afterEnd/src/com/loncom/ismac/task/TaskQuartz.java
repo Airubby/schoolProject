@@ -1,6 +1,7 @@
 package com.loncom.ismac.task;
 
 import org.quartz.CronTrigger;
+import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerFactory;
@@ -18,6 +19,9 @@ public class TaskQuartz {
     	addJob("rpt1",RptDevQuartz.class,"0 */10 * * * ?","");//定时执行执行生成报表
     	
     	addJob("delTables",DelTablesQuartz.class,"57 59 23 * * ? *","1"); //定时检测报表状态  当大于配置保存天数值，进行删除数据操作 
+    	
+    	addJob("BackupMySql",BackupMySqlQuartz.class,"57 59 23 * * ? MON","");  //定时备份mysql
+     
     }
     
     /** 
@@ -44,6 +48,47 @@ public class TaskQuartz {
             if (!sched.isShutdown()) {  
                 sched.start();  
             }  
+        } catch (Exception e) {  
+            throw new RuntimeException(e);  
+        }  
+    }  
+    
+    /** 
+     * 修改一个任务的触发时间(使用默认的任务组名，触发器名，触发器组名) 
+     * @param jobName 组名称
+     * @param time  触发规则
+     */  
+    public static void modifyJobTime(String jobName, String time) {  
+        try {  
+            Scheduler sched = gSchedulerFactory.getScheduler();  
+            CronTrigger trigger = (CronTrigger) sched.getTrigger(jobName,TRIGGER_GROUP_NAME);  
+            if (trigger == null) {  
+                return;  
+            }  
+            String oldTime = trigger.getCronExpression();  
+            if (!oldTime.equalsIgnoreCase(time)) {  
+                JobDetail jobDetail = sched.getJobDetail(jobName,JOB_GROUP_NAME);  
+                Class objJobClass = jobDetail.getJobClass();  
+                JobDataMap data =jobDetail.getJobDataMap();
+                removeJob(jobName);  
+                addJob(jobName, objJobClass, time,data.get("param")+"");  
+            }  
+        } catch (Exception e) {  
+            throw new RuntimeException(e);  
+        }  
+    }  
+  
+    
+    /** 
+     * 移除一个任务(使用默认的任务组名，触发器名，触发器组名) 
+     * @param jobName 
+     */  
+    public static void removeJob(String jobName) {  
+        try {  
+            Scheduler sched = gSchedulerFactory.getScheduler();  
+            sched.pauseTrigger(jobName, TRIGGER_GROUP_NAME);// 停止触发器  
+            sched.unscheduleJob(jobName, TRIGGER_GROUP_NAME);// 移除触发器  
+            sched.deleteJob(jobName, JOB_GROUP_NAME);// 删除任务  
         } catch (Exception e) {  
             throw new RuntimeException(e);  
         }  

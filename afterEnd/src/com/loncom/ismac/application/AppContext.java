@@ -18,6 +18,7 @@ import com.loncom.ismac.bean.xml.ClassroomXml;
 import com.loncom.ismac.bean.xml.DevheadXml;
 import com.loncom.ismac.bean.xml.DevvouXml;
 import com.loncom.ismac.bean.xml.GroupXml;
+import com.loncom.ismac.bean.xml.RootDevXml;
 import com.loncom.ismac.bean.xml.RootXml;
 import com.loncom.ismac.bean.xml.XmlEdiParser;
 import com.loncom.ismac.jdbc.DB;
@@ -168,6 +169,7 @@ public class AppContext {
 	 * @throws Exception 
 	 */
 	public static void InitUser() throws Exception {
+		userMap=new HashMap<String,UserBean>();
 		UserBean userBean=new UserBean();
 		List userList=new ArrayList<>();
 		userList=baseservice.query(userBean);
@@ -175,6 +177,7 @@ public class AppContext {
 			userBean=(UserBean) object;
 			userMap.put(userBean.getUserid(), userBean);
 		}
+		System.out.println(userMap);
 	}
 
 	/**
@@ -190,7 +193,7 @@ public class AppContext {
 		try {
 			service = baseservice.query(obj);
 			for (Service object : service) {
-				if (BaseUtil.isNotNull(object.getXmlurl())) {
+				if (BaseUtil.isNotNull(object.getSysxml())&&BaseUtil.isNotNull(object.getDevxml())) {
 					/*
 					 * String classpath = this..getResource("/").getPath().replaceFirst("/", "");
 					 * String docRoot = classpath.replaceAll("WEB-INF/classes/", "upload");
@@ -206,11 +209,15 @@ public class AppContext {
 					 * object.getXmlurl()) != null) {
 					 */
 					String url = FileUtil
-							.readToString(xmlurl.replaceAll("WEB-INF/classes/", "xml/") + object.getXmlurl());
+							.readToString(xmlurl.replaceAll("WEB-INF/classes/", "xml/"+object.getSysxml()));
 					RootXml root = XmlEdiParser.parseRootData(url);
+					 url = FileUtil
+								.readToString(xmlurl.replaceAll("WEB-INF/classes/", "xml/"+object.getDevxml()));
+					 
+					 RootDevXml  rootdev = XmlEdiParser.parseRootDevData(url);
 					if (root != null) {
 						object.setGroupcontrol(root.getGroupcontrol());
-						InitDev(root);
+						InitDev(rootdev);
 						String context = JaxbUtil.toXml(root);
 						System.out.println(context);
 
@@ -263,19 +270,25 @@ public class AppContext {
 
 	}
 
-	public static void InitDev(RootXml root) {
+	public static void InitDev(RootDevXml root) {
 		if (root.getDeviceheadlist() != null) {
 			DevheadBean devhead = null;
-			for (DevheadXml devheadx : root.getDeviceheadlist().getDevhead()) {
+			for (DevheadXml devheadx : root.getDeviceheadlist().getDev()) {
 				devhead = new DevheadBean();
 				// devhead.setAgentbm(object.getGroupcontrol().getSyspara().get);
 				devhead.setDevname(devheadx.getDevname());
 				devhead.setMgrobjid(devheadx.getMgrobjid());
 				devhead.setAgentbm(root.getSyspara().getMap().get("DWBM"));
+				
+				
+				
+				for (DevvouXml devvouxml : devheadx.getPoint()) {
+					devhead.getItem().put(devhead.getMgrobjid() + "_" + devvouxml.getId(), devvouxml);
+				}
 				getDevhead().put(root.getSyspara().getMap().get("DWBM") + "_" + devhead.getMgrobjid(), devhead);
 			}
 		}
-		if (root.getDevicevoulist() != null) {
+		/*if (root.getDevicevoulist() != null) {
 			for (DevvouXml devvoux : root.getDevicevoulist().getDevvoulist()) {
 				DevheadBean devheadBean = getDevhead()
 						.get(root.getSyspara().getMap().get("DWBM") + "_" + devvoux.getMgrobjid());
@@ -283,7 +296,7 @@ public class AppContext {
 					devheadBean.getItem().put(devheadBean.getMgrobjid() + "_" + devvoux.getId(), devvoux);
 				}
 			}
-		}
+		}*/
 	}
 
 	/**

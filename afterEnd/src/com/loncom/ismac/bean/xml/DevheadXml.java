@@ -1,10 +1,14 @@
 package com.loncom.ismac.bean.xml;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAttribute;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-@XStreamAlias("devhead")
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
+@XStreamAlias("dev")
 public class DevheadXml {
 	@XStreamAsAttribute
 	private String devname;
@@ -28,6 +32,18 @@ public class DevheadXml {
 	private String maintenancestate;
 	@XStreamAsAttribute
 	private String teststate;
+	
+	@XStreamImplicit(itemFieldName = "point")
+	private List<DevvouXml> point=new ArrayList<DevvouXml>();
+	
+
+	public List<DevvouXml> getPoint() {
+		return point;
+	}
+
+	public void setPoint(List<DevvouXml> point) {
+		this.point = point;
+	}
 
 	@XmlAttribute(name = "devname")
 	public String getDevname() {

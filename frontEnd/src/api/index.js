@@ -67,6 +67,7 @@ function apiAxios (method, url, params, success, failure) {
     
   })
   .catch(function (err) {
+    console.log(err)
     let res = err.response
     if (err) {
       console.log('api error, HTTP CODE: ' + res)

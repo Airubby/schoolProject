@@ -1,9 +1,14 @@
 package com.loncom.ismac.bean.xml;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 @XStreamAlias("classroom")
 public class ClassroomXml {
@@ -17,8 +22,11 @@ public class ClassroomXml {
 	private String times;// 在自动的情况下times秒监测一下
 	@XStreamAsAttribute
 	private String timegroup;// 时间组
-
-	private AirdevXml airdev = new AirdevXml();//空调
+	
+	@XStreamImplicit(itemFieldName = "item")
+	private List<BaseItemDevXml> baseItem = new ArrayList<BaseItemDevXml>();
+	
+	/*private AirdevXml airdev = new AirdevXml();//空调
 
 	private AmmeterDevXml ammeterdev = new AmmeterDevXml();//电表
 
@@ -27,7 +35,7 @@ public class ClassroomXml {
 	private InfraredDevXml infrareddev = new InfraredDevXml();//红外
 
 	private LampDevXml lampdev = new LampDevXml();//电灯
-
+*/
 	@XmlAttribute(name = "code")
 	public String getCode() {
 		return code;
@@ -72,8 +80,21 @@ public class ClassroomXml {
 	public void setTimegroup(String timegroup) {
 		this.timegroup = timegroup;
 	}
+	
+	@XmlElement(name = "item")
+	public List<BaseItemDevXml> getBaseItem() {
+		return baseItem;
+	}
 
-	public AirdevXml getAirdev() {
+	public void setBaseItem(List<BaseItemDevXml> baseItem) {
+		this.baseItem = baseItem;
+	}
+
+	
+	
+	
+	
+	/*public AirdevXml getAirdev() {
 		return airdev;
 	}
 
@@ -112,5 +133,5 @@ public class ClassroomXml {
 	public void setLampdev(LampDevXml lampdev) {
 		this.lampdev = lampdev;
 	}
-
+*/
 }

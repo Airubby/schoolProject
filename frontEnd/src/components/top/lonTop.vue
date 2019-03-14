@@ -58,6 +58,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import store from '@/store'
+import Cookies from 'js-cookie'
 export default {
     name:'lonTop',
     created () {
@@ -111,10 +112,26 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
                 }).then(() => {
-                    this.$api.get('/user/out', {}, r => {
+                    this.$api.post('/user/out', {}, r => {
                         if(r.err_code=="0"){
                             sessionStorage.clear();
+                            Cookies.remove("userid");
+                            // let exp = new Date(); 
+                            // console.log(exp.setTime(exp.getTime()-1))
+                            // exp.setTime(exp.getTime() - 1); 
+
+                            // let cval,arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+                            // if(arr=document.cookie.match(reg)){
+                            //     cval= unescape(arr[2]);
+                            // }else{
+                            //     cval= null;
+                            // }
+                            // if(cval!=null) 
+                            //     document.cookie =" userid="+cval+";expires=" + exp.toGMTString() + ";path=/lottery";
+                                
                             this.$router.push({path:'/login'});
+                        }else{
+                            this.$message.warning(r.err_msg);
                         }
                     });
 

@@ -29,6 +29,7 @@ public class UtilTime {
 	public static SimpleDateFormat ymdhms_f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	public static SimpleDateFormat hms_f = new SimpleDateFormat("HH:mm:ss");
 	public static SimpleDateFormat mdhm_f = new SimpleDateFormat("MM-dd HH:mm");
+	public static SimpleDateFormat md_f = new SimpleDateFormat("MM-dd");
 	public static SimpleDateFormat yyyy = new SimpleDateFormat("yyyy");
 	public static SimpleDateFormat ym_f = new SimpleDateFormat("yyyy-MM");
 	public static SimpleDateFormat ym = new SimpleDateFormat("yyyyMM");
@@ -46,7 +47,25 @@ public class UtilTime {
 		}
 		return str;
 	}
-
+	/**
+	 * 格式化M-D
+	 * */
+	public static String getStringMD(String s) {
+		String str="";
+		String[] arr=s.split("\\s")[0].split("-");
+		str=arr[1]+"-"+arr[2];
+		return str;
+	}
+	/**
+	 * 格式化Y-M
+	 * */
+	public static String getStringYM(String s) {
+		String str="";
+		String[] arr=s.split("\\s")[0].split("-");
+		str=arr[0]+"-"+arr[1];
+		return str;
+	}
+	
 	public static String getNowymdhm_f() {
 		return ymdhm_f.format(new Date());
 	}
@@ -549,7 +568,76 @@ public class UtilTime {
 		lDate.add(endTime);
 		return lDate;
 	}
+	
+	 /** 
+	 * 根据开始时间和结束时间返回时间段内的天数集合
+	 * @param beginDate
+	 * @param endDate
+	 * @return List
+	 * @throws ParseException
+	 */
+	public static List getDayBetweenTwoDate(String beginTime, String endTime) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date beginDate = sdf.parse(beginTime);
+		Date endDate = sdf.parse(endTime);
+		List lDate = new ArrayList();
+		lDate.add(beginTime.split("\\s")[0]);// 把开始时间加入集合
+		Calendar cal = Calendar.getInstance();
+		// 使用给定的 Date 设置此 Calendar 的时间
+		cal.setTime(beginDate);
+		boolean bContinue = true;
+		while (bContinue) {
+			// 根据日历的规则，为给定的日历字段添加或减去指定的时间量
+			cal.add(Calendar.DAY_OF_MONTH, 1);
+			// 测试此日期是否在指定日期之后
+			if (endDate.after(cal.getTime())) {
+				// lDate.add(cal.getTime());
+				lDate.add(sdf.format(cal.getTime()));
+			} else {
+				break;
+			}
+		}
+		if(!beginTime.split("\\s")[0].equals(endTime.split("\\s")[0])) {
+			lDate.add(endTime.split("\\s")[0]);
+		}
+		return lDate;
+	}
+	
+	/** 
+	 * 根据开始时间和结束时间返回时间段内的月数集合
+	 * @param beginDate
+	 * @param endDate
+	 * @return List
+	 * @throws ParseException
+	 */
+	public static List getMonthBetweenTwoDate(String beginTime, String endTime) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+		Date beginDate = sdf.parse(beginTime);
+		Date endDate = sdf.parse(endTime);
+		List lDate = new ArrayList();
+		lDate.add(getStringYM(beginTime));// 把开始时间加入集合
+		Calendar cal = Calendar.getInstance();
+		// 使用给定的 Date 设置此 Calendar 的时间
+		cal.setTime(beginDate);
+		boolean bContinue = true;
+		while (bContinue) {
+			// 根据日历的规则，为给定的日历字段添加或减去指定的时间量
+			cal.add(Calendar.MONTH, 1);
+			// 测试此日期是否在指定日期之后
+			if (endDate.after(cal.getTime())) {
+				// lDate.add(cal.getTime());
+				lDate.add(sdf.format(cal.getTime()));
+			} else {
+				break;
+			}
+		}
+		if(!getStringYM(beginTime).equals(getStringYM(endTime))) {
+			lDate.add(getStringYM(endTime));
+		}
+		return lDate;
+	}
 
+	
 	public static String getNowBeforeMin(Date date, int min) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Calendar c = Calendar.getInstance();

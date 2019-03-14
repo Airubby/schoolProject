@@ -243,6 +243,9 @@ export default {
                 if (valid) {
                     let url=this.ruleForm.id?'/user/update':'/user/add';
                     this.ruleForm.addrorrole=this.ruleForm.addrorrole.toString();
+                    
+                    console.log(this.ruleForm.addrorrole)
+                    debugger;
                     this.$api.post(url, {"obj":this.ruleForm}, r => {
                         console.log(r)
                         if(r.err_code=="0"){

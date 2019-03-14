@@ -26,7 +26,8 @@ public class Service {
 	private String socketconnecttimeout; // 连接超时，毫秒
 	private String reconnecttime; // 重连时间，毫秒
 	private String sotimeout;//发送超时时间
-	private String xmlurl;//XML配置文件XML
+	private String sysxml;//XML配置文件XML
+	private String devxml;//XML配置文件XML
 	@Attachment(ISENABLE = false)
 	private GroupControlXml groupcontrol=new GroupControlXml();//XML配置文件
 	@Attachment(ISENABLE = false)
@@ -166,12 +167,22 @@ public class Service {
 		this.groupcontrol = groupcontrol;
 	}
 
-	public String getXmlurl() {
-		return xmlurl;
+	
+
+	public String getSysxml() {
+		return sysxml;
 	}
 
-	public void setXmlurl(String xmlurl) {
-		this.xmlurl = xmlurl;
+	public void setSysxml(String sysxml) {
+		this.sysxml = sysxml;
+	}
+
+	public String getDevxml() {
+		return devxml;
+	}
+
+	public void setDevxml(String devxml) {
+		this.devxml = devxml;
 	}
 
 	public String getName() {
@@ -225,10 +236,16 @@ public class Service {
 
 	@Override
 	public String toString() {
-		return "服务名称=" + name + ", 编码=" + agentbm + ", ip=" + ip + ", 接收端口=" + port
-				+ ", 发送端口=" + port1 + ", 协议=" + protocol + ", 创建时间=" + time + ", 连接超时时间=" + socketconnecttimeout + ", 重连时间=" + reconnecttime + ", 发送超时时间="
-				+ sotimeout + ", 配置文件=" + xmlurl + "";
+		return "Service [id=" + id + ", name=" + name + ", agentbm=" + agentbm + ", ip=" + ip + ", port=" + port
+				+ ", port1=" + port1 + ", protocol=" + protocol + ", time=" + time + ", state=" + state
+				+ ", socketconnecttimeout=" + socketconnecttimeout + ", reconnecttime=" + reconnecttime + ", sotimeout="
+				+ sotimeout + ", sysxml=" + sysxml + ", devxml=" + devxml + ", groupcontrol=" + groupcontrol
+				+ ", comstate=" + comstate + ", addrid=" + addrid + ", addname=" + addname + ", aircount=" + aircount
+				+ ", aironcount=" + aironcount + ", key_aironcount=" + key_aironcount + ", aircolsecount="
+				+ aircolsecount + ", key_aircolsecount=" + key_aircolsecount + "]";
 	}
+
+	
 
 
 

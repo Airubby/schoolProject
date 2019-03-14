@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 一个机房对应有多台空调，通过设置DO通道控制各空调开关机； 将一个机房划分成多个群控区域，每个区域对应有1..N台空调，任何时候要保证至少有1台空调为开机状态； 
+	每台空调对应多个温湿度传感器，基于温湿度值判断其是否需要开机/关机； 空调轮值：每隔轮值时间周期，切换区域内空调开机（即当周期到达时选择“待机中”“运行时间”小于“运行中”“运行时间”超过1个轮值周期时间的空调进行切换） -->
+<root> 
+  <groupcontrol  name="能效监控"> 
+    <!--groupno (ID 编码 实验楼 1开始  教学楼 2开始,)groupname:楼宇名称  acreage:建筑面积 countnumber：总人数 
+	classroomcount:教室总数  dormcount:宿舍总数  -->  
+    <group groupno="1" groupname="实训楼" details="实训楼"  acreage="152464" countnumber="3100" classroomcount="1000" dormcount="1000" > 
+      <!-- 教室 -->  
+      <classroomgroup name="教室" roomno="11"> 
+        <!--code:唯一编号(ID 编码 实验楼 1开始  教学楼 2开始) classname:名称  model:0手动 1自动  times:在自动的情况下times秒监测一下 timegroup:时间组 -->  
+        <classroom code="111" classname="教室1" model="0"  times="15" timegroup="01100" > 
+          <!--rid:只读量，airstate:空调状态，lampstate:照明状态，linestate:有人状态，temp:温度，hum:湿度，roompower:实时功率-->
+		  <!--cid:控制量，aircontrol:空调控制，powercontrol:电源控制-->
+		  <!--tid:统计量，根据powerdegree进行报表记录和用电量统计-->
+          <item dev="airstate" pointid="10001,000001"  />
+          <item dev="lampstate" pointid="10001,000001"  />
+          <item dev="linestate" pointid="10001,000001" />
+          <item dev="temp" pointid="10001,000001" />
+          <item dev="hum" pointid="10001,000001" />
+          <item dev="roompower" pointid="10001,000001" />
+          <item dev="aircontrol" pointid="10001,000001" />
+          <item dev="powercontrol" pointid="10001,000001" />
+          <item dev="powerdegree" pointid="10001,000001" />
+          
+		 
+		<!--空调设备 devid:设备ID  stateid:状态ID   control:控制ID  colsecmd:发送
+		  <airdev devid="10001" stateid="000001" control="000002" colsecmd="0001"  />
+		灯设备 devid:设备ID  stateid:状态ID   control:控制ID  
+		  <lampdev  devid="10002" stateid="000001" control="000002" colsecmd="0001" />
+		  温湿度 devid:设备ID  stateid:状态ID    
+		  <humituredev  devid="10003" stateid="000001" />
+		  电表 devid:设备ID  stateid:状态ID 
+		  <ammeterdev  devid="10004" stateid="000001" />
+		 -红外 devid:设备ID  stateid:状态ID  
+		  <infrareddev  devid="10005" stateid="000001" />  --> 
+		</classroom>
+		<classroom code="112" classname="教室2" model="0"  times="15" timegroup="01100" > 
+		  <item dev="airstate" pointid="10001,000001"  />
+          <item dev="lampstate" pointid="10001,000001"  />
+          <item dev="linestate" pointid="10001,000001" />
+          <item dev="temp" pointid="10001,000001" />
+          <item dev="hum" pointid="10001,000001" />
+          <item dev="roompower" pointid="10001,000001" />
+          <item dev="aircontrol" pointid="10001,000001" />
+          <item dev="powercontrol" pointid="10001,000001" />
+          <item dev="powerdegree" pointid="10011,000001" />
+		</classroom>
+      </classroomgroup>  
+	   <!-- 办公室 -->  
+      <officegroup name="办公室" roomno="12"> 
+	    <!--code:唯一编号 classname:名称  model:0手动 1自动  times:在自动的情况下times秒监测一下 timegroup:时间组 -->  
+        <officegroup code="121" classname="办公室1" model="0"  times="15" timegroup="01100">
+		   <item dev="airstate" pointid="10001,000001"  />
+          <item dev="lampstate" pointid="10001,000001"  />
+          <item dev="linestate" pointid="10001,000001" />
+          <item dev="temp" pointid="10001,000001" />
+          <item dev="hum" pointid="10001,000001" />
+          <item dev="roompower" pointid="10001,000001" />
+          <item dev="aircontrol" pointid="10001,000001" />
+          <item dev="powercontrol" pointid="10001,000001" />
+          <item dev="powerdegree" pointid="10021,000001" />
+		</officegroup>
+		<officegroup code="122" classname="办公室2" model="0"  times="15" timegroup="01100">
+		   <item dev="airstate" pointid="10001,000001"  />
+          <item dev="lampstate" pointid="10001,000001"  />
+          <item dev="linestate" pointid="10001,000001" />
+          <item dev="temp" pointid="10001,000001" />
+          <item dev="hum" pointid="10001,000001" />
+          <item dev="roompower" pointid="10001,000001" />
+          <item dev="aircontrol" pointid="10001,000001" />
+          <item dev="powercontrol" pointid="10001,000001" />
+          <item dev="powerdegree" pointid="10031,000001" />
+		</officegroup> 		
+      </officegroup> 
+    </group> 
+	
+	<group groupno="2" groupname="教学楼" details="教学楼" acreage="152464" countnumber="3100" classroomcount="1000" dormcount="1000"> 
+      <!-- 教室 -->  
+      <classroomgroup name="教室" roomno="21"> 
+        <!--code:唯一编号 classname:名称  model:0手动 1自动  times:在自动的情况下times秒监测一下 timegroup:时间组 -->  
+        <classroom code="211" classname="教室3" model="0"  times="15" timegroup="01100" > 
+			<item dev="airstate" pointid="10001,000001"  />
+          <item dev="lampstate" pointid="10001,000001"  />
+          <item dev="linestate" pointid="10001,000001" />
+          <item dev="temp" pointid="10001,000001" />
+          <item dev="hum" pointid="10001,000001" />
+          <item dev="roompower" pointid="10001,000001" />
+          <item dev="aircontrol" pointid="10001,000001" />
+          <item dev="powercontrol" pointid="10001,000001" />
+          <item dev="powerdegree" pointid="10041,000001" />
+		</classroom>
+		<classroom code="212" classname="教室4" model="0"  times="15" timegroup="01100" > 
+			<item dev="airstate" pointid="10001,000001"  />
+          <item dev="lampstate" pointid="10001,000001"  />
+          <item dev="linestate" pointid="10001,000001" />
+          <item dev="temp" pointid="10001,000001" />
+          <item dev="hum" pointid="10001,000001" />
+          <item dev="roompower" pointid="10001,000001" />
+          <item dev="aircontrol" pointid="10001,000001" />
+          <item dev="powercontrol" pointid="10001,000001" />
+          <item dev="powerdegree" pointid="10051,000001" />
+		</classroom>
+      </classroomgroup>  
+	   <!-- 办公室 -->  
+      <officegroup name="办公室" roomno="22"> 
+	    <!--code:唯一编号 classname:名称  model:0手动 1自动  times:在自动的情况下times秒监测一下 timegroup:时间组 -->  
+        <officegroup code="221" classname="办公室3" model="0"  times="15" timegroup="01100">
+		   <item dev="airstate" pointid="10001,000001"  />
+          <item dev="lampstate" pointid="10001,000001"  />
+          <item dev="linestate" pointid="10001,000001" />
+          <item dev="temp" pointid="10001,000001" />
+          <item dev="hum" pointid="10001,000001" />
+          <item dev="roompower" pointid="10001,000001" />
+          <item dev="aircontrol" pointid="10001,000001" />
+          <item dev="powercontrol" pointid="10001,000001" />
+          <item dev="powerdegree" pointid="10061,000001" />
+		</officegroup>
+		<officegroup code="222" classname="办公室4" model="0"  times="15" timegroup="01100">
+		   <item dev="airstate" pointid="10001,000001"  />
+          <item dev="lampstate" pointid="10001,000001"  />
+          <item dev="linestate" pointid="10001,000001" />
+          <item dev="temp" pointid="10001,000001" />
+          <item dev="hum" pointid="10001,000001" />
+          <item dev="roompower" pointid="10001,000001" />
+          <item dev="aircontrol" pointid="10001,000001" />
+          <item dev="powercontrol" pointid="10001,000001" />
+          <item dev="powerdegree" pointid="10071,000001" />
+		</officegroup> 		
+      </officegroup> 
+    </group> 	
+  </groupcontrol>  
+</root>

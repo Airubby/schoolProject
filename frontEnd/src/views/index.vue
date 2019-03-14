@@ -147,12 +147,10 @@ export default {
         },
         getPowerTop:function(){
             return new Promise ((resolve, reject) => {
-                let startTime=this.$tool.Format("yyyy-MM-dd 00:00:00",new Date());
-                let endTime=this.$tool.Format("yyyy-MM-dd hh:mm:ss",new Date());
-                this.$api.post('/service/top', {startTime:startTime,endTime:endTime,type:"classroom"}, r => {
+                this.$api.post('/service/indextop', {}, r => {
                     console.log(r)
                     if(r.err_code=="0"){
-                        this.top_data=r.data.data;
+                        this.top_data=r.data;
                     }else{
                         this.$message.warning(r.err_msg);
                     }
@@ -164,9 +162,8 @@ export default {
             return new Promise ((resolve, reject) => {
                 this.$api.get('/service/queryOverview', {}, r => {
                     console.log(r)
-                    this.loading=false;
                     if(r.err_code=="0"){
-                    this.overview=r.data
+                        // this.overview=r.data
                     }else{
                         this.$message.warning(r.err_msg);
                     }

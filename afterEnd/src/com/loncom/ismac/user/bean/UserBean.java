@@ -5,7 +5,7 @@ import com.loncom.ismac.annotation.Table;
 import com.loncom.ismac.bean.PageBean;
 
 @Table(NAME="user")
-public class UserBean extends PageBean {
+public class UserBean {
 	@Attachment(DELETE=true,UPDATE=true)
 	private String id;// 编码
 	private String name;// 用户名称

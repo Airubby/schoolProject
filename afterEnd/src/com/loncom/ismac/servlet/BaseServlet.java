@@ -101,8 +101,8 @@ public class BaseServlet extends HttpServlet {
 		//System.out.println("SID:" + BaseUtil.isNotNull(AppContext.getSID().get(sid) + "") + "**********SID" + sid + "session"
 		//		+ request.getSession().getId()+"SESSIONTIME:  "+request.getSession().getMaxInactiveInterval());
 		
-  /* if (BaseUtil.isNotNull(AppContext.getSID().get(sid)+"") ||
-		 "/user/login".equals(url) ||"user/out".equals(url) ) {*/
+   if (BaseUtil.isNotNull(AppContext.getSID().get(sid)+"") ||
+		 "/user/login".equals(url) ||"user/out".equals(url) ) {
 		this.username =getCookie("userid");
 		
 		/*if ( "/User/login".equals(url)){*/
@@ -238,8 +238,8 @@ public class BaseServlet extends HttpServlet {
 			}
 		}
 	
-		/*}else{ data.setErr_msg("请重新登录!"); data.setErr_code("-1"); }
-*/
+		}else{ data.setErr_msg("请重新登录!"); data.setErr_code("-1"); }
+
 		if (bs) {
 			  //CookiesUtil.setCookie(response, "JSESSIONID", getRequest().getSession().getId(), 100000);
 			PrintWriter out = response.getWriter();
@@ -385,7 +385,8 @@ public class BaseServlet extends HttpServlet {
 		if("admin".equals(roleid)){
 			return "0";
 		}
-		System.out.println();
+		System.out.println(roleid);
+		System.out.println(AppContext.getUserMap().get(roleid));
 		if(AppContext.getUserMap().get(roleid)!=null) {
 			return  AppContext.getUserMap().get(roleid).getAddrorrole().equals("")?"-1":AppContext.getUserMap().get(roleid).getAddrorrole();
 		}

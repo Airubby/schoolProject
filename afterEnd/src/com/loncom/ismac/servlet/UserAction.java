@@ -78,6 +78,7 @@ public class UserAction extends BaseServlet {
 		obj.setState("1");
 		obj.setPsword(md5.getMD5ofStr(obj.getPsword()));
 		baseservice.Add(obj);
+		AppContext.InitUser(); //更新内存
 		return null;
 	}
 	
@@ -109,6 +110,7 @@ public class UserAction extends BaseServlet {
 		String id=getRequest().getParameter("id");
 		obj.setId(id);
 		baseservice.delete(obj);
+		AppContext.InitUser(); //更新内存
 		return null;
 	}
 	@MethodInfo(METHOD = "/user/details", LOGSNAME = "详情", ISLOG = false)
@@ -128,6 +130,7 @@ public class UserAction extends BaseServlet {
 			obj.setPsword(md5.getMD5ofStr(obj.getPsword()));
 		}
 		baseservice.update(obj);
+		AppContext.InitUser(); //更新内存
 		return null;
 	}
 	

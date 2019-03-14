@@ -7,7 +7,7 @@ import axios from 'axios'
 import ElementUI from 'element-ui'
 import './assets/element-#4A78FF/index.css'
 import ElSearchTablePagination from 'el-table-pagination'
-import './utils/elDialogdrag'  //element弹窗拖拽
+import './utils/directive'  //element弹窗拖拽
 import lonTop from './components/top'
 import './utils/filters' // 自定义过滤器
 import tool from './utils/tool'  //工具函数

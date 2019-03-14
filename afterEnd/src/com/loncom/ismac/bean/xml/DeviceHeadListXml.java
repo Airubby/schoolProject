@@ -10,16 +10,18 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 @XStreamAlias("deviceheadlist")
 public class DeviceHeadListXml {
-	@XStreamImplicit(itemFieldName = "devhead")
-	private List<DevheadXml> devhead=new ArrayList<DevheadXml>();
+	@XStreamImplicit(itemFieldName = "dev")
+	private List<DevheadXml> dev=new ArrayList<DevheadXml>();
+
+	public List<DevheadXml> getDev() {
+		return dev;
+	}
+
+	public void setDev(List<DevheadXml> dev) {
+		this.dev = dev;
+	}
 
 	
-	public List<DevheadXml> getDevhead() {
-		return devhead;
-	}
 
-	public void setDevhead(List<DevheadXml> devhead) {
-		this.devhead = devhead;
-	}
 	 
 }

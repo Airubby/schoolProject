@@ -3,10 +3,8 @@ package com.loncom.ismac.bean.xml;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
+
 
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -41,13 +39,6 @@ public class GroupControlXml {
 
 	public void setGroup(List<GroupXml> group) {
 		this.group = group;
-	}
-
-	
-
-	
-	//@XmlElement(name = "SysPara")
-	
-	
+	}	
 
 }

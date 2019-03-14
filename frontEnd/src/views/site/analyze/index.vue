@@ -30,7 +30,10 @@
                                 </div>
                             </div>
                             <div class="loncom_analyze_top10 bg1C2443">
-                                <h2 class="loncom_analyze_title">用电排行榜</h2>
+                                <h2 class="loncom_analyze_title">
+                                    用电排行榜
+                                    <a class="loncom_fr" @click="more">更多</a>
+                                </h2>
                                 <div class="loncom_analyze_top10_con">
                                     <el-search-table-pagination type="local" 
                                         :show-pagination="false"
@@ -134,62 +137,59 @@ export default {
         async getInfo(){
             this.loading=true;
             await this.getTitle();
-            await this.getPowerTop();
-            // await this.getLine();
-            // await this.getTable();
-            this.getPower();
+            await this.getPower();
             this.loading=false;
         },
         //top10及累计用电量
-        getPowerTop:function(){
-            return new Promise ((resolve, reject) => {
-                this.$api.post('/service/top', {startTime:this.search[0],endTime:this.search[1]}, r => {
-                    console.log(r)
-                    if(r.err_code=="0"){
-                        this.allpower=r.data.all;
-                        this.top_data=r.data.data;
-                    }else{
-                        this.$message.warning(r.err_msg);
-                    }
-                    resolve();
-                })
+        // getPowerTop:function(){
+        //     return new Promise ((resolve, reject) => {
+        //         this.$api.post('/service/top', {startTime:this.search[0],endTime:this.search[1]}, r => {
+        //             console.log(r)
+        //             if(r.err_code=="0"){
+        //                 this.allpower=r.data.all;
+        //                 this.top_data=r.data.data;
+        //             }else{
+        //                 this.$message.warning(r.err_msg);
+        //             }
+        //             resolve();
+        //         })
 
-            })
+        //     })
             
-        },
-        getLine:function(){
-            return new Promise ((resolve, reject) => {
-                this.$api.post('/service/lineInfo', {startTime:'2019-02-28 17:30:00',endTime:'2019-02-28 17:36:00'}, r => {
-                    console.log(r)
-                    if(r.err_code=="0"){
-                        let xData=[],yData=[];
-                        let min=this.table_data[0].allpower,max=this.table_data[0].allpower,allpower=0;
-                        for(let i=0;i<this.table_data.length;i++){
-                            allpower+=parseFloat(this.table_data[i].allpower);
-                            if (this.table_data[i].allpower < min){ 
-                                min = this.table_data[i].allpower; 
-                            }
-                            if (this.table_data[i].allpower > max){ 
-                                max = this.table_data[i].allpower; 
-                            }
-                            xData.push(this.$tool.Format("yyyy-MM-dd hh:mm:ss",this.table_data[i].TIME));
-                            yData.push(this.table_data[i].allpower);
-                        }
-                        this.echart.min=min;
-                        this.echart.max=max;
-                        this.echart.average=(allpower/(this.table_data.length)).toFixed(2);
-                        let myChart=this.$tool.lineChar('lineChar',xData,yData,this.time);
-                        window.onresize=function(){
-                            myChart.resize();
-                        }
-                    }else{
-                        this.$message.warning(r.err_msg);
-                    }
-                    resolve();
-                })
-            })
+        // },
+        // getLine:function(){
+        //     return new Promise ((resolve, reject) => {
+        //         this.$api.post('/service/lineInfo', {startTime:'2019-02-28 17:30:00',endTime:'2019-02-28 17:36:00'}, r => {
+        //             console.log(r)
+        //             if(r.err_code=="0"){
+        //                 let xData=[],yData=[];
+        //                 let min=this.table_data[0].allpower,max=this.table_data[0].allpower,allpower=0;
+        //                 for(let i=0;i<this.table_data.length;i++){
+        //                     allpower+=parseFloat(this.table_data[i].allpower);
+        //                     if (this.table_data[i].allpower < min){ 
+        //                         min = this.table_data[i].allpower; 
+        //                     }
+        //                     if (this.table_data[i].allpower > max){ 
+        //                         max = this.table_data[i].allpower; 
+        //                     }
+        //                     xData.push(this.$tool.Format("yyyy-MM-dd hh:mm:ss",this.table_data[i].TIME));
+        //                     yData.push(this.table_data[i].allpower);
+        //                 }
+        //                 this.echart.min=min;
+        //                 this.echart.max=max;
+        //                 this.echart.average=(allpower/(this.table_data.length)).toFixed(2);
+        //                 let myChart=this.$tool.lineChar('lineChar',xData,yData,this.time);
+        //                 window.onresize=function(){
+        //                     myChart.resize();
+        //                 }
+        //             }else{
+        //                 this.$message.warning(r.err_msg);
+        //             }
+        //             resolve();
+        //         })
+        //     })
             
-        },
+        // },
         getTitle:function(){
             return new Promise ((resolve, reject) => {
                 this.$api.post('/service/tableTitle', {}, r => {
@@ -207,27 +207,20 @@ export default {
                 })
             })
         },
-        getTable:function(){
-            return new Promise ((resolve, reject) => {
-                this.$api.post('/service/tableInfo', {startTime:'2019-02-28 17:30:00',endTime:'2019-02-28 17:36:00'}, r => {
-                    console.log(r)
-                    if(r.err_code=="0"){
-                        this.table_data=r.data;
-                    }else{
-                        this.$message.warning(r.err_msg);
-                    }
-                    resolve();
-                })
-            })
-        },
         //用电数据
         getPower:function(){
+            if(!this.search||this.search.length==0){
+                this.$message.warning("请选择查询时间段");
+                return;
+            }
             return new Promise ((resolve, reject) => {
                 this.$api.post('/service/tableInfo', {startTime:this.search[0],endTime:this.search[1]}, r => {
                     console.log(r)
                     if(r.err_code=="0"){
                         let xData=[],yData=[];
-                        this.table_data=r.data;
+                        this.table_data=r.data.table;
+                        this.allpower=r.data.count;
+                        this.top_data=r.data.top;
                         if(this.table_data.length>0){
                             let min=this.table_data[0].ALLVALUE,max=this.table_data[0].ALLVALUE,allpower=0;
                             for(let i=0;i<this.table_data.length;i++){
@@ -270,6 +263,9 @@ export default {
             link.click();
             window.URL.revokeObjectURL(link.href); // 释放URL 对象
             document.body.removeChild(link);
+        },
+        more:function(){
+            this.$router.push({path:'/site/analyze/more'});
         },
     },
     watch:{

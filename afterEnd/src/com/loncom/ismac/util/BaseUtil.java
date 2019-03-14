@@ -1343,7 +1343,6 @@ public class BaseUtil {
 			}
 		}
 		
-		
 		return devvou != null ? UtilTool.cutFloat2(devvou.getValue()) :"0";
 	}
 	
