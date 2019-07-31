@@ -11,9 +11,11 @@ import './utils/directive'  //element弹窗拖拽
 import lonTop from './components/top'
 import './utils/filters' // 自定义过滤器
 import tool from './utils/tool'  //工具函数
-// import 'promise-polyfill'  //兼容低版本浏览器   import 'babel-polyfill'
+import 'promise-polyfill'  //兼容低版本浏览器   import 'babel-polyfill'
 import 'vue-transition.css'
 // import './utils/mock.js'
+import Swiper from 'swiper'
+import 'swiper/dist/css/swiper.min.css'
 import api from './api/index.js'
 import './assets/css/index.less'
 
@@ -21,6 +23,7 @@ import './assets/css/index.less'
 Vue.prototype.$api = api
 //绑定工具函数到全局
 Vue.prototype.$tool = tool
+Vue.prototype.$Swiper = Swiper
 
 Vue.use(ElementUI)
 Vue.use(ElSearchTablePagination)

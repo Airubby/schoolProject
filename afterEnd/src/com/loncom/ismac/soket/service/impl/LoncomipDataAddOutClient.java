@@ -125,7 +125,7 @@ public class LoncomipDataAddOutClient extends BaseSocketClient {
 		getSocket().connect(sa, Integer.parseInt(object.getSocketconnecttimeout()));
 		getSocket().setKeepAlive(true);
 		getSocket().setTcpNoDelay(true);
-		getSocket().setSoTimeout(0);
+		getSocket().setSoTimeout(10000);
 		out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8"));
 		in = new BufferedReader(new InputStreamReader(this.socket.getInputStream(), "UTF-8"));
 		setStatusCode(2);
@@ -137,6 +137,8 @@ public class LoncomipDataAddOutClient extends BaseSocketClient {
 			try {
 				out.write(xml);
 				out.flush();
+//				System.out.println(object.getIp());
+//				System.out.println(object.getSocketconnecttimeout());
 
 				StringBuffer sb = new StringBuffer();
 				try {
@@ -149,7 +151,9 @@ public class LoncomipDataAddOutClient extends BaseSocketClient {
 					} while (sb.indexOf("</root>") == -1);
 				} catch (InterruptedIOException ioex) {
 					Logs.log("接收消息超时：" + ioex.getLocalizedMessage());
+					throw new RuntimeException("接收消息超时：" + ioex.getLocalizedMessage());
 				}
+				
 
 				if ((sb.length() > 0) && (sb.indexOf("<?xml") > -1))
 					response = sb.substring(sb.indexOf("<?xml"));
@@ -167,6 +171,7 @@ public class LoncomipDataAddOutClient extends BaseSocketClient {
 		if (getStatusCode() != 2) {
 			throw new Exception("socket连接失败，正在尝试重新建立连接");
 		}
+		closeSocket();
 		return response;
 	}
 

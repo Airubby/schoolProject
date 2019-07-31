@@ -16,9 +16,7 @@ public class DevheadBean implements Cloneable {
     private String addrid;//地点ID
     private String mgrobjtypeid;//设备类型
     private Map<String, DevvouXml> item=new HashMap<String, DevvouXml>();//属性集合
-	public String getMgrobjid() {
-		return mgrobjid;
-	}
+
 	public void setMgrobjid(String mgrobjid) {
 		this.mgrobjid = mgrobjid;
 	}

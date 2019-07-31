@@ -70,38 +70,64 @@ public class ExcelExportUtil {
 		String sql="",rpttable="",allsql = "",tsql="";
 		for(Service service : AppContext.getService()) {
 			for (GroupXml groupXml : service.getGroupcontrol().getGroup()) {
-				title.add(groupXml.getGroupname());
-				classlist=BaseUtil.getService(groupXml.getGroupno(), "classroom", null, null);
-				dormlist=BaseUtil.getService(groupXml.getGroupno(), "officeroom", null, null);
-				for(ClassroomXml classroomXml : classlist) {
-					rpttable=String.format(CMD.RPT_DEVTABLE, classroomXml.getCode());
-					sql=" select * from %s where time >= '%s' and time < '%s' UNION";
-					sql=String.format(sql,rpttable,startTime,endTime);
-					allsql+=sql;
+				if(groupXml.getClassroomgroup().getItem()!=null) {
+					for (ClassroomXml classroomXml: groupXml.getClassroomgroup().getItem()) {
+						if(!BaseUtil.isNotNull(classroomXml.getElement())) {
+							rpttable=String.format(CMD.RPT_DEVTABLE, classroomXml.getCode());
+							sql=" select * from %s where time >= '%s' and time < '%s' UNION";
+							sql=String.format(sql,rpttable,startTime,endTime);
+							allsql+=sql;
+						}
+					}
 				}
-				for (ClassroomXml classroomXml : dormlist) {
-					rpttable=String.format(CMD.RPT_DEVTABLE, classroomXml.getCode());
-					sql=" select * from %s where time >= '%s' and time < '%s' UNION";
-					sql=String.format(sql,rpttable,startTime,endTime);
-					allsql+=sql;
+				if(groupXml.getOfficegroup().getItem()!=null) {
+					for (ClassroomXml classroomXml : groupXml.getOfficegroup().getItem()) {
+						if(!BaseUtil.isNotNull(classroomXml.getElement())) {
+							rpttable=String.format(CMD.RPT_DEVTABLE, classroomXml.getCode());
+							sql=" select * from %s where time >= '%s' and time < '%s' UNION";
+							sql=String.format(sql,rpttable,startTime,endTime);
+							allsql+=sql;
+						}
+					}
 				}
+				
 			}
 		}
-		allsql=allsql.substring(0, allsql.length()-5);
-		tsql="select cast(sum(a.onevalue) as decimal(10,2)) as onevalue,cast(sum(a.twovalue) as decimal(10,2)) as twovalue,cast(sum(a.allvalue) as decimal(10,2)) as allvalue, time "
-				+ "from ("+allsql+") a group by a.time";
-		List<Map<String, Object>> list = baseservice.getSqlListS(tsql,DB.HIS);
-		System.out.println(list);
+		for(GroupXml groupXml : AppContext.getService().get(0).getGroupcontrol().getGroup()) {
+			title.add(groupXml.getGroupname());
+		}
+		List<Map<String, Object>> list =new ArrayList<Map<String, Object>>();
+		if(allsql!="") {
+			int num=BaseUtil.floorNum();
+			String numsql="";
+			for(int i=0;i<num;i++) {
+				numsql+="cast(sum(a.value"+i+") as decimal(10,2)) as value"+i+",";
+			}
+			allsql=allsql.substring(0, allsql.length()-5);
+			tsql="select "+numsql+"cast(sum(a.allvalue) as decimal(10,2)) as allvalue, time "
+					+ "from ("+allsql+") a group by a.time";
+			list = baseservice.getSqlListS(tsql,DB.HIS);
+		}
+		
 		
 		// -----------定义表头-----------
 		Map<Integer, String> titleMap = new HashMap<Integer, String>();
 		titleMap.put(0, "时间");
 		titleMap.put(1, "总用电量");
+		Map<String,Float> listss=new HashMap<String,Float>();
 		for(int i=0;i<title.size();i++) {
 			titleMap.put(Integer.parseInt(i+2+""), (String) title.get(i));
+			listss.put(title.get(i)+"", (float) 0);
 		}
 		setExcelTitle(row, style, titleMap);
+		
+		String all = "0";
 		for (int i = 0; i < list.size(); i++) {
+			all=Float.parseFloat(list.get(i).get("ALLVALUE")+"")+Float.parseFloat(all)+"";
+			for(int j=0;j<title.size();j++) {
+				Float value=listss.get(title.get(j))+Float.parseFloat(list.get(i).get("VALUE"+j)+"");
+				listss.put(title.get(j)+"", value);
+			}
 			Map<String,Object> dataMap =  list.get(i);
 			row = sh.createRow(i + 1);
 			Map<Integer, String> excelMap = dataMapToExcelMapNew(dataMap,title);
@@ -109,6 +135,17 @@ public class ExcelExportUtil {
 			dataMap.clear();
 			excelMap.clear();
 		}
+		
+		Map<String,Object> alldataMap =  new HashMap<String,Object>();
+		alldataMap.put("TIME", "总计");
+		alldataMap.put("ALLVALUE", all+"");
+		for(int j=0;j<title.size();j++) {
+			alldataMap.put("VALUE"+j, listss.get(title.get(j))+"");
+		}
+		Map<Integer, String> excelMap = dataMapToExcelMapNew(alldataMap,title);
+		createCellSetValue(row, excelMap);
+		alldataMap.clear();
+		excelMap.clear();
 		
 	}
 	
@@ -118,15 +155,7 @@ public class ExcelExportUtil {
 		excelMap.put(0, (String) dataMap.get("TIME"));
 		excelMap.put(1, (String) dataMap.get("ALLVALUE"));
 		for(int i=0;i<titleMap.size();i++) {
-//			Map<String,Object> tmap=new HashMap<String,Object>();
-//			tmap=(Map<String, Object>) titleMap.get(i);
-//			String value=(String) dataMap.get((String) tmap.get("prop"));
-			String value="";
-			if(i==0) {
-				value=(String) dataMap.get("ONEVALUE");
-			}else {
-				value=(String) dataMap.get("TWOVALUE");
-			}
+			String value=(String) dataMap.get("VALUE"+i);
 			if(!BaseUtil.isNotNull(value)) {
 				value="-";
 			}

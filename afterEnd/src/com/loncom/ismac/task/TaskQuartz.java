@@ -18,9 +18,11 @@ public class TaskQuartz {
     public void executes() {
     	addJob("rpt1",RptDevQuartz.class,"0 */10 * * * ?","");//定时执行执行生成报表
     	
+    	//addJob("test",Histest.class," */2 * * * * ?","");//测试写历史数据
+    	
     	addJob("delTables",DelTablesQuartz.class,"57 59 23 * * ? *","1"); //定时检测报表状态  当大于配置保存天数值，进行删除数据操作 
     	
-    	addJob("BackupMySql",BackupMySqlQuartz.class,"57 59 23 * * ? MON","");  //定时备份mysql
+//    	addJob("BackupMySql",BackupMySqlQuartz.class,"57 59 23 ? * 1","");  //定时备份mysql每周星期天晚上23:59:57备份
      
     }
     

@@ -1,5 +1,5 @@
 {
   "production":"/ISmac/ismacsite",
   "develop":"/ISmac/ismacsite",
-  "webSocket":"/ismacsite/websocket"
+  "webSocket":"/ISmac/websocket"
 }

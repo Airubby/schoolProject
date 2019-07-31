@@ -18,9 +18,9 @@ public class OfficegroupXml {
 	@XStreamAsAttribute
 	private String roomno;
 	
-	@XStreamImplicit(itemFieldName = "officegroup")
+	@XStreamImplicit(itemFieldName = "classroom")
 	private List<ClassroomXml> item = new ArrayList<ClassroomXml>();
-	@XmlElement(name = "officegroup")
+	@XmlElement(name = "classroom")
 	public List<ClassroomXml> getItem() {
 		return item;
 	}

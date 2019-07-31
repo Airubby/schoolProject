@@ -12,6 +12,8 @@ public class GroupXml {
 	@XStreamAsAttribute
 	private String groupname;
 	@XStreamAsAttribute
+	private String groupfloor;  //有几层楼
+	@XStreamAsAttribute
 	private String details;
 	@XStreamAsAttribute
 	private String acreage;//建筑面积
@@ -44,6 +46,15 @@ public class GroupXml {
 	public void setGroupname(String groupname) {
 		this.groupname = groupname;
 	}
+	@XmlAttribute(name = "groupfloor")
+	public String getGroupfloor() {
+		return groupfloor;
+	}
+
+	public void setGroupfloor(String groupfloor) {
+		this.groupfloor = groupfloor;
+	}
+
 	@XmlAttribute(name = "details")
 	public String getDetails() {
 		return details;

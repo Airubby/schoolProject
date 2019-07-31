@@ -3,7 +3,7 @@
         <div class="loncom_index_top">
             <em class="loncom_index_top_line"></em>
             <em class="loncom_index_top_line1"></em>
-            <div class="loncom_index_top_text"><span>元岗校区能效管理系统</span></div>
+            <div class="loncom_index_top_text"><span @click="enterSlide()">元岗校区能效管理系统</span></div>
         </div>
         <div class="loncom_index_con" v-loading="loading">
             <div class="loncom_index_con_top">
@@ -17,7 +17,7 @@
                                 </div>
                                 <div class="loncom_fr loncom_index_progress">
                                     <h2>空调开机率<em class="loncom_fr">{{overview.classair}}%</em></h2>
-                                    <el-progress :text-inside="true" :stroke-width="15" :percentage="overview.classair" style="padding-top: 5px;"></el-progress>
+                                    <el-progress :text-inside="true" :stroke-width="15" :percentage="Number(Number(overview.classair).toFixed(2))" style="padding-top: 5px;"></el-progress>
                                 </div>
                             </div>
                         </el-col>
@@ -97,58 +97,67 @@
 <script>
 
 export default {
-  created () {
-      this.getInfo();
-  },
-  mounted() {
-        // let yData=[
-        //             {value:335, name:'教室'},
-        //             {value:310, name:'宿舍'},
-        //             {value:234, name:'办公室'},
-        //             {value:135, name:'其它'}
-        //         ];
-        // let xData=["教室","宿舍","办公室","其它"];
-        // let myChart=this.$tool.annulus('myChart',xData,yData);
-        // window.onresize=function(){
-        //     myChart.resize();
-        // }
-    
-  },
-  data() {
-    return {
-        loading:false,
-        overview:{
-            acreage:0,
-            classair:0,
-            classroomcount:0,
-            countnumber:0,
-            dormair:0,
-            dormcount:0,
-        },
-        top_data:[],
-        echart:{
-            allPower:'',
-            areaPower:'',
-            peoplePower:'',
-            name:[],
-            value:[],
+    created () {
+        if(!sessionStorage.loginInfo){
+            this.$router.push({path:'/login'});
         }
-    }
-  },
+        let _this=this;
+        this.getInfo();
+        this.timer=setInterval(function(){
+            _this.getInfo();
+        },15000)
+    },
+    mounted() {
+            // let yData=[
+            //             {value:335, name:'教室'},
+            //             {value:310, name:'宿舍'},
+            //             {value:234, name:'办公室'},
+            //             {value:135, name:'其它'}
+            //         ];
+            // let xData=["教室","宿舍","办公室","其它"];
+            // let myChart=this.$tool.annulus('myChart',xData,yData);
+            // window.onresize=function(){
+            //     myChart.resize();
+            // }
+        
+    },
+    destroyed() {
+        clearInterval(this.timer);
+        this.timer='';
+    },
+    data() {
+        return {
+            loading:false,
+            timer:'',
+            overview:{
+                acreage:0,
+                classair:0,
+                classroomcount:0,
+                countnumber:0,
+                dormair:0,
+                dormcount:0,
+            },
+            top_data:[],
+            echart:{
+                allPower:'',
+                areaPower:'',
+                peoplePower:'',
+                name:[],
+                value:[],
+            }
+        }
+    },
     methods:{
         async getInfo(){
             this.loading=true;
-            console.log(1)
             await this.getOverview();
             await this.getPowerTop();
             await this.getRate();
-            console.log(2)
             this.loading=false;
         },
         getPowerTop:function(){
             return new Promise ((resolve, reject) => {
                 this.$api.post('/service/indextop', {}, r => {
-                    console.log(r)
                     if(r.err_code=="0"){
                         this.top_data=r.data;
                     }else{
@@ -161,9 +170,8 @@ export default {
         getOverview:function(){
             return new Promise ((resolve, reject) => {
                 this.$api.get('/service/queryOverview', {}, r => {
-                    console.log(r)
                     if(r.err_code=="0"){
-                        // this.overview=r.data
+                        this.overview=r.data
                     }else{
                         this.$message.warning(r.err_msg);
                     }
@@ -174,7 +182,6 @@ export default {
         getRate:function(){
             return new Promise ((resolve, reject) => {
                 this.$api.get('/service/rate', {}, r => {
-                    console.log(r)
                     if(r.err_code=="0"){
                         this.echart.allPower=r.data.allPower;
                         this.echart.areaPower=r.data.areaPower;
@@ -192,6 +199,9 @@ export default {
                 });
             })
         },
+        enterSlide:function(){
+            this.$router.push({path:'/slide'});
+        }
     },
     watch: {
         

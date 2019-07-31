@@ -637,12 +637,43 @@ public class UtilTime {
 		return lDate;
 	}
 
-	
+	/**
+	 * 获取date时间的前min分钟；min负数表示前几分钟，整数表示后几分钟
+	 * @param date
+	 * @param min
+	 * @return
+	 */
 	public static String getNowBeforeMin(Date date, int min) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
 		c.add(Calendar.MINUTE, min);
+		return sdf.format(c.getTime());
+	}
+	/**
+	 * 获取date时间的前后day天 day为负数表示前day，为整数表示后day天
+	 * @param date
+	 * @param day
+	 * @return
+	 */
+	public static String getNowBeforeDay(Date date, int day) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		c.add(Calendar.DAY_OF_MONTH, day);
+		return sdf.format(c.getTime());
+	}
+	/**
+	 * 获取+-天的时间
+	 * @param date 计算起始时间
+	 * @param month +-天数据
+	 * @return
+	 */
+	public static String getNowBeforeMonth(Date date, int month) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		c.add(Calendar.DAY_OF_MONTH, month);
 		return sdf.format(c.getTime());
 	}
 

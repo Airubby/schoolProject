@@ -3,7 +3,7 @@
         <div class="loncom_right_content custom scrollbar">
             <el-scrollbar style="height:100%">
                 <div class="loncom_analyze_top bg1C2443">
-                    <el-radio-group v-model="type" class="loncom_mr20" size="small">
+                    <el-radio-group v-model="type" class="loncom_mr20" @change="change()" size="small">
                     <el-radio-button label="day">日显示</el-radio-button>
                     <el-radio-button label="month">月显示</el-radio-button>
                     </el-radio-group>
@@ -23,8 +23,17 @@
                     <el-search-table-pagination type="local" 
                         v-scrollBar="'table'"
                         :showPagination="false"
+                        :page-sizes="[5000]"
                         border :data="table_data" :columns="table_columns" stripe>   
-                        
+                        <el-table-column slot="prepend" type="index" label="排名" width="150"></el-table-column>
+                        <template slot-scope="scope" slot="preview-rate">
+                            <el-progress :text-inside="true" :stroke-width="14" :percentage="Number(scope.row.rate)"></el-progress>
+                        </template>
+                        <template slot-scope="scope" slot="preview-value">
+                            <div>
+                                {{scope.row.value}}
+                            </div>
+                        </template>
                     </el-search-table-pagination>
                 </div>
             </el-scrollbar>
@@ -49,7 +58,9 @@ export default {
             type:'day',
             search:[],
             table_columns:[
-              { prop: 'name', label: '名称',minWidth:"80px"},
+              { prop: 'classname', label: '区域',minWidth:30},
+              { prop: 'rate', label: '占比',slotName:'preview-rate',minWidth:10},
+              { prop: 'value', label: '用电量',slotName:'preview-value',minWidth:10},
             ],
             table_data:[
                 // {time:'2018-10-22',allpower:'24.6',louone:'25.2',loutwo:'25.3'},{time:'2018-10-22',allpower:'24.6',louone:'25.2',loutwo:'25.3'},
@@ -58,6 +69,19 @@ export default {
        }
     },
     methods:{
+        change:function(){
+            if(this.type=="day"){
+                this.search=[this.$tool.Format("yyyy-MM-dd 00:00:00",new Date()),this.$tool.Format("yyyy-MM-dd hh:mm:ss",new Date())]
+            }else{
+                const theDate = new Date();
+                let theMonth=theDate.getMonth();
+                const start =this.$tool.Format("yyyy-MM-dd 00:00:00",new Date(theDate.getFullYear(),theMonth,1));
+                let nextMonth=theMonth+1;
+                const end=this.$tool.Format("yyyy-MM-dd 00:00:00",new Date(new Date(theDate.getFullYear(),nextMonth,1)-1000*60*60*24));
+                this.search=[start,end]
+            }
+            this.getPower();
+        },
         //用电数据
         getPower:function(){
             if(!this.search||this.search.length==0){
@@ -65,15 +89,11 @@ export default {
                 return;
             }
             this.loading=true;
-            this.$api.post('/service/moreInfo', {startTime:this.search[0],endTime:this.search[1],type:this.type}, r => {
+            this.$api.post('/service/moreInfo', {startTime:this.search[0],endTime:this.search[1]}, r => {
                 console.log(r)
                 this.loading=false;
                 if(r.err_code=="0"){
-                    let table_columns=[
-                        { prop: 'name', label: '名称',minWidth:"80px"},
-                    ];
-                    this.table_columns=table_columns.concat(r.data.title);
-                    this.table_data=r.data.body;
+                    this.table_data=r.data.top;
                 }else{
                     this.$message.warning(r.err_msg);
                 }

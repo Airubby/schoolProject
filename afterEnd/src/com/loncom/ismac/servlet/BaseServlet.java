@@ -215,7 +215,8 @@ public class BaseServlet extends HttpServlet {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			Logs.log(e);
 			data.setErr_msg("操作失败!");
 			// 日志
 			Logs.SysLog("00103", BaseUtil.isNotNull(username)==true?username:"admin",

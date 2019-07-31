@@ -46,7 +46,7 @@ public class CMD {
 
 	public static int UUIDNUMBER = 5;
 
-	public final static String IS_HIS_BASE="select count(1) from information_schema.tables where table_schema='ismacnx' and table_name='%s'";
+	public final static String IS_HIS_BASE="select count(1) from information_schema.tables where table_schema='ismac' and table_name='%s'";
 	public final static String HIS_DEVTABLE = "HISDEV%s";
 	public final static String HIS_DEVINSERT = "INSERT INTO %s (MGROBJID, POINTID, VALUE,TIME) VALUES ";// 历史表新增格式模板
 
@@ -57,7 +57,7 @@ public class CMD {
     		"  `mgrobjid` varchar(50) DEFAULT NULL,"+
     		"  `pointid` varchar(50) DEFAULT NULL,"+
     		"  `value` varchar(20) DEFAULT NULL,"+
-    		"  `time` datetime DEFAULT NULL,"+
+    		"  `time` varchar(50) DEFAULT NULL,"+
     	"	  PRIMARY KEY (`id`)"+
     	"	)";
 	// 历史能效

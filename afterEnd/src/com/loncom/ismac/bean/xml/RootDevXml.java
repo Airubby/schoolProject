@@ -11,7 +11,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 @XStreamAlias("root")
 public class RootDevXml {
 
-	private DeviceHeadListXml deviceheadlist;
+	private DeviceHeadListXml devicelist;
 
 	private SysParaXml syspara = new SysParaXml();
 
@@ -23,11 +23,12 @@ public class RootDevXml {
 		this.syspara = syspara;
 	}
 
-	public DeviceHeadListXml getDeviceheadlist() {
-		return deviceheadlist;
+	public DeviceHeadListXml getDevicelist() {
+		return devicelist;
 	}
 
-	public void setDeviceheadlist(DeviceHeadListXml deviceheadlist) {
-		this.deviceheadlist = deviceheadlist;
+	public void setDevicelist(DeviceHeadListXml devicelist) {
+		this.devicelist = devicelist;
 	}
+
 }

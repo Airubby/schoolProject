@@ -1,5 +1,6 @@
 import echarts from 'echarts'
 import Vue from 'vue'
+import store from '../store/index'
 
 function Format(fmt,value){
   let date=value?new Date(value):new Date();
@@ -113,11 +114,107 @@ function annulus(ID,xData,yData){
     return myChart;
 }
 
+function allannulus(ID,title,data,xData,yData,all){
+    // var all=345;
+    // var data=[
+    //     {value:335, name:'教室'},
+    //     {value:310, name:'办公室'}
+    // ];
+    // var xData=['教室','办公室'];
+    // var yData=['30%','46%'];
+    var myChart = echarts.init(document.getElementById(ID));
+    var option = {
+        color:["#6D4AFF","#2AA857","#DDAF34","#4A78FF"],
+        title:{
+            text:title,  
+            left:10,
+            top:5,
+            textStyle:{
+                fontSize:16,
+                fontWeight:"normal",
+                color:"#F5F6FA",
+            },
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: "{b}: {c} ({d}%)"
+        },
+        legend: {
+            orient: 'vertical',
+            x: 'left',
+            y:'center',
+            data:xData,
+            formatter: function(name) {
+                var index = 0;
+                var clientlabels = xData;
+                var clientcounts = yData;
+                clientlabels.forEach(function(value,i){
+                    if(value == name){
+                        index = i;
+                    }
+                });
+                return name + "  " + clientcounts[index];
+            },
+            textStyle:{
+                color:'#fff'
+            }
+        },
+        series: [
+            {
+                name:"",
+                type:'pie',
+                radius: ['50%', '70%'],
+                center: ['70%', '60%'],
+                avoidLabelOverlap: false,
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'center',
+                        formatter:'{num|'+all+'}\r\n{text|总能耗}',
+                        rich: {
+                            num: {
+                                fontSize: 26,
+                                color:'#B9C6F2'
+                            },
+                            text: {
+                                color: '#B9C6F2',
+                                fontSize: 14,
+                                padding: [10, 0],
+                                borderRadius: 2
+                            }
+                        },
+                    },
+                    emphasis: {
+                        show: true,
+                        textStyle: {
+                            fontSize: '30',
+                            fontWeight: 'bold'
+                        }
+                    }
+                },
+                labelLine: {
+                    normal: {
+                        show: false
+                    }
+                },
+                data:data
+            }
+        ]
+    };
+
+    myChart.setOption(option, true);
+    myChart.on('click', function (param) {
+        console.log(param)
+            var index = param.dataIndex;
+    }); 
+    return myChart; 
+}
+
 function lineChar(ID,xData,yData,type){
     // let xData=["2018-10-11 09:00:11", "2018-10-11 09:03", "2018-10-11 09:13", "2018-10-11 09:14",
     //  "2018-10-11 09:24","2018-10-11 09:34","2018-10-11 09:44","2018-10-11 09:54","2018-10-11 10:04","2018-10-11 10:14","2018-10-11 10:24"];
     // let yData=[320, 232, 301, 234, 390, 230, 310,18, 391, 234, 290, 343, 310];
-    // type=day,week,month
+    // type=day,week,month,year
     let myChart = echarts.init(document.getElementById(ID));
     let option = {
         color:["#4A78FF"],
@@ -168,6 +265,8 @@ function lineChar(ID,xData,yData,type){
                         // 格式化成月/日，只在第一个刻度显示年份
                         if(type=="day"){
                             return Format('hh:mm',value);
+                        }else if(type=="year"){
+                            return Format('MM-dd',value);
                         }else{
                             return Format('MM-dd hh:mm',value);
                         }
@@ -240,13 +339,112 @@ function showWeek(week){
     })
     return show;
 }
+function barChar(ID,title,xData,yData,color,rotate1){
+    // let xData=['温湿度13','温湿度12','温湿度11','温湿度10','温湿度09','温湿度08','温湿度07','温湿度06','温湿度05','温湿度04'];
+    // let yData=[10, 8, 14, 34, 29, 33, 45,30,25,20];
+    // let color="#f00"
+    let rotate=rotate1?rotate1:0;
+    let myChart = echarts.init(document.getElementById(ID));
+    let option = {
+        color: ['#3398DB'],
+        title:{
+            text:title,  
+            left:10,
+            top:5,
+            textStyle:{
+                fontSize:16,
+                fontWeight:"normal",
+                color:"#F5F6FA",
+            },
+        },
+        tooltip : {
+            trigger: 'axis',
+            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+            },
+            formatter:'{b}：{c}'
+        },
+        grid: {
+            top:'50px',
+            bottom: '0px',
+            left:'15px',
+            right:'15px',
+            containLabel: true
+        },
+        xAxis : [
+            {
+                type : 'category',
+                data : xData,
+                axisTick:{
+                    show:false
+                },
+                axisLabel:{
+                    color:"#8691BA"
+                },
+                splitLine:{
+                    show:false,
+                },
+                axisLine:{
+                    lineStyle:{
+                        color:"#2B3151",
+                        width:1,
+                    }
+                },
+                axisLabel:{
+                    interval:0,
+                    rotate:rotate,
+                    color: "#8691BA"
+                },
+            }
+        ],
+        yAxis : [
+            {
+                type : 'value',
+                axisLabel:{
+                    color:"#8691BA"
+                },
+                axisTick:{
+                    show:false
+                },
+                splitLine:{
+                    show:true,
+                    lineStyle:{
+                        color:"#2B3151",
+                        width:1,
+                    }
+                },
+                axisLine:{
+                    lineStyle:{
+                        color:"#2B3151",
+                        width:1,
+                    }
+                },
+            }
+        ],
+        series : [
+            {
+                type:'bar',
+                barWidth: '35%',
+                itemStyle:{
+                    normal:{
+                        color: color
+                    }
+                },
+                data:yData
+            }
+        ]
+    };
+    myChart.setOption(option, true);
+    return myChart; 
+}
+
 
 function wsConnection(sendMsg, callback) {
   try {
       //var SOCKECT_ADDR = "ws://" + url +":"+ port;
-      //let host=window.document.location.host;
-      //let SOCKECT_ADDR="ws://"+host+"/ws"
-      let SOCKECT_ADDR="ws://192.168.16.6:8088/ws"
+      let host=window.document.location.host;
+      let SOCKECT_ADDR="ws://"+host+store.getters.webSocket;
+    //   let SOCKECT_ADDR="ws://192.168.16.6:8090"+store.getters.webSocket;
       let ws = new WebSocket(SOCKECT_ADDR);
       Vue.prototype.$ws=ws;
       ws.onopen = function (event) {
@@ -361,7 +559,9 @@ export default {
     arrayContains,
     Format,
     annulus,
+    allannulus,
     lineChar,
+    barChar,
     showWeek,
     wsConnection,
     checkPORT,

@@ -49,7 +49,7 @@ public class DataPack {
 	
 
 	public String getKey() {
-		return this.getAgentbm()+"_"+this.getMgrobjid()+"_"+this.getPropertyId();
+		return this.getMgrobjid()+"_"+this.getPropertyId();
 	}
 
 	public void setKey(String key) {

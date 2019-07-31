@@ -10,6 +10,11 @@
                         </router-link>
                     </li>
                     <li>
+                        <router-link to="/site/waterEle">
+                            <p><span class="icon-loncom_equipment"></span>水电监控</p>
+                        </router-link>
+                    </li>
+                    <li>
                         <router-link to="/site/analyze">
                             <p><span class="icon-loncom_statement"></span>运行分析</p>
                         </router-link>

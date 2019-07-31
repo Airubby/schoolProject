@@ -31,7 +31,8 @@ public class LoncomipDataSocketClient extends BaseSocketClient {
 						setReConnectTime(object.getReconnecttime());
 							if(getStatusCode()!=5){
 								try {
-									System.out.println("连接数据服务编号:"+object.getAgentbm());
+//									System.out.println("连接数据服务编号:"+object.getAgentbm());
+									
 									setStatusCode(1);
 									setSocket(new Socket());
 									SocketAddress sa = new InetSocketAddress(object.getIp(), Integer.parseInt(object.getPort()));
@@ -68,7 +69,7 @@ public class LoncomipDataSocketClient extends BaseSocketClient {
 								}
 						}else{
 							try {
-								System.out.println(1111);
+//								System.out.println(1111);
 								object.setComstate(getStatusCode()+"");
 								Thread.sleep(1000);
 							} catch (InterruptedException e) {
@@ -173,7 +174,7 @@ public class LoncomipDataSocketClient extends BaseSocketClient {
 				if(getStatusCode()!=5){
 					setStatusCode(3);
 					closeSocket();
-					//BaseUtil.removeDevValue();//清除所有设备测点数据
+					BaseUtil.removeDevValue(object.getRootdev().getDevicelist());//清除所有设备测点数据
 				}
 				
 				object.setComstate("0");

@@ -116,7 +116,6 @@ public class AppContext {
 			isHisDevTable();
 			isClassTable();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} //判断是否有历史表
 		TaskQuartz task = new TaskQuartz();// 任务调度
@@ -140,27 +139,30 @@ public class AppContext {
 		String rpttable="";
 		for(Service service : AppContext.getService()) {
 			for (GroupXml groupXml : service.getGroupcontrol().getGroup()) {
-				classlist=BaseUtil.getService(groupXml.getGroupno(), "classroom", null, null);
-				dormlist=BaseUtil.getService(groupXml.getGroupno(), "officeroom", null, null);
-				for (ClassroomXml classroomXml : classlist) {
-					rpttable=String.format(CMD.RPT_DEVTABLE, classroomXml.getCode());
-					int count=baseservice.getCount(String.format(CMD.IS_HIS_BASE, rpttable), DB.HIS);
-					if(count<=0) {
-						baseservice.exeSql(String.format(CMD.CREATE_RPT_DEV, rpttable), DB.HIS);
+				if(groupXml.getClassroomgroup().getItem()!=null) {
+					for (ClassroomXml classroomXml: groupXml.getClassroomgroup().getItem()) {
+						if(!BaseUtil.isNotNull(classroomXml.getElement())) {
+							rpttable=String.format(CMD.RPT_DEVTABLE, classroomXml.getCode());
+							int count=baseservice.getCount(String.format(CMD.IS_HIS_BASE, rpttable), DB.HIS);
+							if(count<=0) {
+								BaseUtil.createRPT(rpttable);
+							}
+						}
 					}
 				}
-				for (ClassroomXml classroomXml : dormlist) {
-					rpttable=String.format(CMD.RPT_DEVTABLE, classroomXml.getCode());
-					int count=baseservice.getCount(String.format(CMD.IS_HIS_BASE, rpttable), DB.HIS);
-					if(count<=0) {
-						baseservice.exeSql(String.format(CMD.CREATE_RPT_DEV, rpttable), DB.HIS);
+				if(groupXml.getOfficegroup().getItem()!=null) {
+					for (ClassroomXml classroomXml : groupXml.getOfficegroup().getItem()) {
+						if(!BaseUtil.isNotNull(classroomXml.getElement())) {
+							rpttable=String.format(CMD.RPT_DEVTABLE, classroomXml.getCode());
+							int count=baseservice.getCount(String.format(CMD.IS_HIS_BASE, rpttable), DB.HIS);
+							if(count<=0) {
+								BaseUtil.createRPT(rpttable);
+							}
+						}
 					}
 				}
 			}
 		}
-		// 教室表
-		
-		
 	}
 
 	
@@ -215,11 +217,12 @@ public class AppContext {
 								.readToString(xmlurl.replaceAll("WEB-INF/classes/", "xml/"+object.getDevxml()));
 					 
 					 RootDevXml  rootdev = XmlEdiParser.parseRootDevData(url);
+					 object.setRootdev(rootdev);
 					if (root != null) {
 						object.setGroupcontrol(root.getGroupcontrol());
 						InitDev(rootdev);
 						String context = JaxbUtil.toXml(root);
-						System.out.println(context);
+//						System.out.println(context);
 
 						/* } */
 					}
@@ -271,21 +274,22 @@ public class AppContext {
 	}
 
 	public static void InitDev(RootDevXml root) {
-		if (root.getDeviceheadlist() != null) {
+		if (root.getDevicelist() != null) {
 			DevheadBean devhead = null;
-			for (DevheadXml devheadx : root.getDeviceheadlist().getDev()) {
+			for (DevheadXml devheadx : root.getDevicelist().getDev()) {
 				devhead = new DevheadBean();
 				// devhead.setAgentbm(object.getGroupcontrol().getSyspara().get);
 				devhead.setDevname(devheadx.getDevname());
-				devhead.setMgrobjid(devheadx.getMgrobjid());
+				devhead.setMgrobjid(devheadx.getDevid());
 				devhead.setAgentbm(root.getSyspara().getMap().get("DWBM"));
 				
 				
 				
 				for (DevvouXml devvouxml : devheadx.getPoint()) {
-					devhead.getItem().put(devhead.getMgrobjid() + "_" + devvouxml.getId(), devvouxml);
+					devvouxml.setMgrobjid(devheadx.getDevid());
+					devhead.getItem().put(devheadx.getDevid() + "_" + devvouxml.getId(), devvouxml);
 				}
-				getDevhead().put(root.getSyspara().getMap().get("DWBM") + "_" + devhead.getMgrobjid(), devhead);
+				getDevhead().put(devheadx.getDevid(), devhead);
 			}
 		}
 		/*if (root.getDevicevoulist() != null) {
@@ -307,7 +311,7 @@ public class AppContext {
 	 */
 	public static void UpdateDevvouValue(List<DataPack> datalist) {
 		for (DataPack statePack : datalist) {
-			DevheadBean devhead = getDevhead().get(statePack.getAgentbm() + "_" + statePack.getMgrobjid());
+			DevheadBean devhead = getDevhead().get( statePack.getMgrobjid());
 			if (devhead != null) {
 				DevvouXml devvou = devhead.getItem().get(statePack.getMgrobjid() + "_" + statePack.getPropertyId());
 				// System.out.println("设备ID数据更新:"+statePack.getMgrobjid());

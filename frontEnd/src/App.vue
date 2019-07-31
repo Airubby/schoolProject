@@ -25,10 +25,10 @@ import { mapGetters } from 'vuex'
     computed:{
     },
     mounted() {
-        // this.$tool.wsConnection("",function(result){
-        //   console.log(result)
-        //   store.dispatch('setwsData',eval(result.data));
-        // })
+        this.$tool.wsConnection("",function(result){
+          // console.log(result)
+          store.dispatch('setwsData',JSON.parse(result.data));
+        })
 
     },
     data(){

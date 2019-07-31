@@ -26,7 +26,7 @@
                             <div class="loncom_analyze_allpower bg1C2443">
                                 <h2 class="loncom_analyze_title">累计用电量</h2>
                                 <div class="loncom_analyze_allpower_con">
-                                    <span>{{allpower}}</span>kwh
+                                    <span class="color2CA858">{{allpower}}</span>kwh
                                 </div>
                             </div>
                             <div class="loncom_analyze_top10 bg1C2443">
@@ -38,7 +38,7 @@
                                     <el-search-table-pagination type="local" 
                                         :show-pagination="false"
                                         border :data="top_data" :columns="top_columns" stripe>   
-                                        <el-table-column slot="prepend" type="index" label="排名" width="100"></el-table-column>
+                                        <el-table-column slot="prepend" type="index" label="排名" width="50"></el-table-column>
                                         <template slot-scope="scope" slot="preview-rate">
                                             <el-progress :text-inside="true" :stroke-width="14" :percentage="Number(scope.row.rate)"></el-progress>
                                         </template>
@@ -54,9 +54,9 @@
                         <el-col :span="16">
                             <div class="loncom_analyze_line bg1C2443">
                                 <div class="loncom_analyze_line_top">
-                                    <span>最大值<em>{{echart.max}}</em></span>
-                                    <span>最小值<em>{{echart.min}}</em></span>
-                                    <span>平均值<em>{{echart.average}}</em></span>
+                                    <span>最大值<em class="color2CA858">{{echart.max}}</em></span>
+                                    <span>最小值<em class="color2CA858">{{echart.min}}</em></span>
+                                    <span>平均值<em class="color2CA858">{{echart.average}}</em></span>
                                 </div>
                                 <div class="loncom_analyze_line_con" id="lineChar" style="height:calc(100% - 50px)"></div>
                             </div>
@@ -110,7 +110,7 @@ export default {
             search:[],
             allpower:0,
             top_columns:[
-              { prop: 'classname', label: '区域',minWidth:10},
+              { prop: 'classname', label: '区域',minWidth:20},
               { prop: 'rate', label: '占比',slotName:'preview-rate',minWidth:15},
               { prop: 'value', label: '用电量',slotName:'preview-value',minWidth:10},
             ],
@@ -140,56 +140,6 @@ export default {
             await this.getPower();
             this.loading=false;
         },
-        //top10及累计用电量
-        // getPowerTop:function(){
-        //     return new Promise ((resolve, reject) => {
-        //         this.$api.post('/service/top', {startTime:this.search[0],endTime:this.search[1]}, r => {
-        //             console.log(r)
-        //             if(r.err_code=="0"){
-        //                 this.allpower=r.data.all;
-        //                 this.top_data=r.data.data;
-        //             }else{
-        //                 this.$message.warning(r.err_msg);
-        //             }
-        //             resolve();
-        //         })
-
-        //     })
-            
-        // },
-        // getLine:function(){
-        //     return new Promise ((resolve, reject) => {
-        //         this.$api.post('/service/lineInfo', {startTime:'2019-02-28 17:30:00',endTime:'2019-02-28 17:36:00'}, r => {
-        //             console.log(r)
-        //             if(r.err_code=="0"){
-        //                 let xData=[],yData=[];
-        //                 let min=this.table_data[0].allpower,max=this.table_data[0].allpower,allpower=0;
-        //                 for(let i=0;i<this.table_data.length;i++){
-        //                     allpower+=parseFloat(this.table_data[i].allpower);
-        //                     if (this.table_data[i].allpower < min){ 
-        //                         min = this.table_data[i].allpower; 
-        //                     }
-        //                     if (this.table_data[i].allpower > max){ 
-        //                         max = this.table_data[i].allpower; 
-        //                     }
-        //                     xData.push(this.$tool.Format("yyyy-MM-dd hh:mm:ss",this.table_data[i].TIME));
-        //                     yData.push(this.table_data[i].allpower);
-        //                 }
-        //                 this.echart.min=min;
-        //                 this.echart.max=max;
-        //                 this.echart.average=(allpower/(this.table_data.length)).toFixed(2);
-        //                 let myChart=this.$tool.lineChar('lineChar',xData,yData,this.time);
-        //                 window.onresize=function(){
-        //                     myChart.resize();
-        //                 }
-        //             }else{
-        //                 this.$message.warning(r.err_msg);
-        //             }
-        //             resolve();
-        //         })
-        //     })
-            
-        // },
         getTitle:function(){
             return new Promise ((resolve, reject) => {
                 this.$api.post('/service/tableTitle', {}, r => {
@@ -222,14 +172,15 @@ export default {
                         this.allpower=r.data.count;
                         this.top_data=r.data.top;
                         if(this.table_data.length>0){
-                            let min=this.table_data[0].ALLVALUE,max=this.table_data[0].ALLVALUE,allpower=0;
+                            let min=parseFloat(this.table_data[0].ALLVALUE),max=parseFloat(this.table_data[0].ALLVALUE),allpower=0;
+                            debugger;
                             for(let i=0;i<this.table_data.length;i++){
                                 allpower+=parseFloat(this.table_data[i].ALLVALUE);
-                                if (this.table_data[i].ALLVALUE < min){ 
-                                    min = this.table_data[i].ALLVALUE; 
+                                if (parseFloat(this.table_data[i].ALLVALUE) < min){ 
+                                    min = parseFloat(this.table_data[i].ALLVALUE); 
                                 }
-                                if (this.table_data[i].ALLVALUE > max){ 
-                                    max = this.table_data[i].ALLVALUE; 
+                                if (parseFloat(this.table_data[i].ALLVALUE) > max){ 
+                                    max = parseFloat(this.table_data[i].ALLVALUE); 
                                 }
                                 xData.push(this.$tool.Format("yyyy-MM-dd hh:mm:ss",this.table_data[i].TIME));
                                 yData.push(this.table_data[i].ALLVALUE);

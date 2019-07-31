@@ -3,6 +3,7 @@ package com.loncom.ismac.lservice.bean;
 import com.loncom.ismac.annotation.Attachment;
 import com.loncom.ismac.annotation.Table;
 import com.loncom.ismac.bean.xml.GroupControlXml;
+import com.loncom.ismac.bean.xml.RootDevXml;
 import com.loncom.ismac.util.BaseUtil;
 
 /**
@@ -45,6 +46,16 @@ public class Service {
 	private int aircolsecount;// 空调关机数量
 	@Attachment(ISENABLE = false)
 	private String key_aircolsecount = "";//空调关机key
+	@Attachment(ISENABLE = false)
+	private RootDevXml  rootdev;  //设备
+
+	public RootDevXml getRootdev() {
+		return rootdev;
+	}
+
+	public void setRootdev(RootDevXml rootdev) {
+		this.rootdev = rootdev;
+	}
 
 	public String getId() {
 		return id;

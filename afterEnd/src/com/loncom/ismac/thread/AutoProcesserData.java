@@ -34,7 +34,6 @@ public class AutoProcesserData extends Thread {
 			try { 
 			
 				Object xml =AppContext.dataQueueVouData.take();
-			//	System.out.println("dataQueueVouData:"+AppContext.dataQueueVouData.size());
 				if(xml instanceof byte[]) {
 					BaseUtil.dataAnalysis((byte[]) xml);
 				}

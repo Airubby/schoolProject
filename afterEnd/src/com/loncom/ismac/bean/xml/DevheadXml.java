@@ -13,7 +13,7 @@ public class DevheadXml {
 	@XStreamAsAttribute
 	private String devname;
 	@XStreamAsAttribute
-	private String mgrobjid;
+	private String devid;
 	@XStreamAsAttribute
 	private String com;
 	@XStreamAsAttribute
@@ -134,14 +134,15 @@ public class DevheadXml {
 	public void setTeststate(String teststate) {
 		this.teststate = teststate;
 	}
-	@XmlAttribute(name = "mgrobjid")
-	public String getMgrobjid() {
-		return mgrobjid;
+	@XmlAttribute(name = "teststate")
+	public String getDevid() {
+		return devid;
 	}
 
-	public void setMgrobjid(String mgrobjid) {
-		this.mgrobjid = mgrobjid;
+	public void setDevid(String devid) {
+		this.devid = devid;
 	}
+	
 	
 
 }

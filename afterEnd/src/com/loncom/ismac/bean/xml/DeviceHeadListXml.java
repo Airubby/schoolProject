@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
-@XStreamAlias("deviceheadlist")
+@XStreamAlias("devicelist")
 public class DeviceHeadListXml {
 	@XStreamImplicit(itemFieldName = "dev")
 	private List<DevheadXml> dev=new ArrayList<DevheadXml>();
