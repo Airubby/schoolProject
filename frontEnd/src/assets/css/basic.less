@@ -138,6 +138,11 @@ em{
 .color2CA858{
   color: #2CA858
 }
+.scrollbar{
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
 
 // 
 .loncom_index_body_top {
@@ -169,14 +174,9 @@ em{
 .loncom_index_top_right {
   float: right;
   height: 60px;
-  padding-right: 15px;
+  padding-right: 25px;
 }
 
-.loncom_index_top_right {
-  float: right;
-  height: 60px;
-  padding-right: 15px;
-}
 .loncom_index_top_right .el-badge__content{
   background-color: #1c2340;
   border: 1px solid #B9C6F2;
@@ -195,7 +195,7 @@ em{
 }
 .loncom_index_top_right>ul>li a i {
   color: #B9C6F2;
-  font-size: 20px;
+  font-size: 28px;
 }
 
 .loncom_index_user_info h2{
@@ -316,7 +316,97 @@ em{
   width: 100%;
 }
 
+.loncom_sidebar_list li p span.icon-loncom_energy:before{
+  font-size: 24px;
+}
 
 
+/**手机端***/
+.prelative{
+  position: relative;
+}
+.pabsolute{
+  position: absolute;
+}
+.public_top{
+  width: 100%;
+  height: 60px;
+  display: flex;
+  line-height: 60px;
+  font-size: 20px;
+  text-align: center;
+  .title{
+    width: calc(100% - 120px);
+  }
+  .btn{
+    width:60px;
+    font-size: 14px;
+    position: relative;
+    cursor: pointer;
+    i{
+      color: #4A78FF;
+      font-size: 24px;
+      vertical-align: middle;
+    }
+  }
+  .btntxt{
+    width: 90px;
+  }
+  
+}
 
+.public_content{
+  width:100%;
+  height: calc(100% - 60px);
+  color: #919CC6;
+}
+.public_search{
+  background:#171F46;
+  padding: 10px 20px;
+}
 
+.loncom-box{
+  width: 100%;
+  height: 100%;
+  box-shadow: inset 0px 0px 2px #103c86;
+  background: rgba(2, 17, 71, 0.25);
+  position: relative;
+  overflow: hidden;
+  background: #1b234b;
+  display: table;
+  i{
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 40px;
+  }
+  em{
+      width: 10px;
+      height: 10px;
+      position: absolute;
+  }
+  .topleft{
+      border-top: 2px solid #277BDB;
+      border-left: 2px solid #277BDB;
+      left: 0;
+      top: 0;
+  }
+  .topright{
+      border-top: 2px solid #277BDB;
+      border-right: 2px solid #277BDB;
+      right: 0;
+      top: 0;
+  }
+  .bottomleft{
+      border-bottom: 2px solid #277BDB;
+      border-left: 2px solid #277BDB;
+      left: 0;
+      bottom: 0;
+  }
+  .bottomright{
+      border-bottom: 2px solid #277BDB;
+      border-right: 2px solid #277BDB;
+      right: 0;
+      bottom: 0;
+  }
+}

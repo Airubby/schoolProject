@@ -129,6 +129,14 @@
     color: #B9C6F2 !important;
     padding: 9px 30px !important;
   }
+  .el-radio-button__orig-radio:checked+.el-radio-button__inner,
+  .el-radio__input.is-checked .el-radio__inner{
+    background-color: #4A78FF !important;
+    border-color: #4A78FF !important;
+  }
+  .el-progress-bar__inner{
+    background-color: #4A78FF !important;
+  }
   .el-button--default{
     background: transparent !important;
     border: 1px solid #4A78FF !important;
@@ -161,7 +169,8 @@
   .el-radio__input.is-disabled.is-checked .el-radio__inner::after{
     background-color: #B9C6F2 !important;
   }
-  .el-checkbox__input.is-checked+.el-checkbox__label{
+  .el-checkbox__input.is-checked+.el-checkbox__label,
+  .el-radio__input.is-checked+.el-radio__label{
     color: #4A78FF !important;
   }
   .loncom_list_box .el-transfer__buttons{

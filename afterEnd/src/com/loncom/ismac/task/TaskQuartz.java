@@ -18,6 +18,8 @@ public class TaskQuartz {
     public void executes() {
     	addJob("rpt1",RptDevQuartz.class,"0 */10 * * * ?","");//定时执行执行生成报表
     	
+    	addJob("alarm",AlarmDevQuartz.class,"0 */10 * * * ?","");//定时执行执行生成报表
+    	
     	//addJob("test",Histest.class," */2 * * * * ?","");//测试写历史数据
     	
     	addJob("delTables",DelTablesQuartz.class,"57 59 23 * * ? *","1"); //定时检测报表状态  当大于配置保存天数值，进行删除数据操作 

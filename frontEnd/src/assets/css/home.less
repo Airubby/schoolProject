@@ -213,3 +213,88 @@
 .loncom_index_top10 li:nth-of-type(3) em{
     background: #DDD437;
 }
+
+
+/**手机*/
+.mobile_index{
+    .index_top{
+        width: calc(100% - 40px);
+        height: 160px;
+        background: #181f43;
+        margin: 20px auto 0 auto;
+        box-shadow: inset 0px 0px 10px #2f396b;
+        .index_top_title{
+            height: 60px;
+            width: calc(100% - 40px);
+            background: linear-gradient(to top, #4a77fd, #1f274f);
+            margin: 0 auto;
+            position: relative;
+            text-align: center;
+            line-height: 60px;
+            font-size: 22px;
+            color: #fff;
+            margin-bottom: 15px;
+            &:before{
+                content: "";
+                width: 0;
+                height: 0;
+                border-right: 35px solid transparent;
+                border-bottom: 60px solid #181f43;
+                position: absolute;
+                top: 1px;
+                left: -1px;
+            }
+            &:after{
+                content: "";
+                width: 0;
+                height: 0;
+                border-left: 35px solid transparent;
+                border-bottom: 60px solid #181f43;
+                position: absolute;
+                top: 1px;
+                right: -1px;
+            }
+        }
+        .index_top_con{
+            display: flex;
+            .index_top_box{
+                width: 50%;
+                text-align: center;
+                font-size: 16px;
+                p{
+                    font-size: 26px;
+                    color: #fff;
+                }
+            }
+        }
+    }
+    .loncom_index_center{
+        width: 100%;
+        margin: 20px 0;
+        height: calc(100% - 320px);
+        text-align: center;
+        position: relative;
+    }
+    .loncom_index_center img{
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        max-width: 100%;
+        max-height: 100%;
+    }
+    .loncom_index_bottom{
+        display: flex;
+        width: calc(100% - 40px);
+        height: 100px;
+        margin: 0 auto;
+        justify-content: space-around;
+        .loncom_index_bottombox{
+            width: 80px;
+            height: 80px;
+        }
+    }
+    
+}

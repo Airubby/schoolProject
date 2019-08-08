@@ -2,6 +2,7 @@ package com.loncom.ismac.servlet;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,11 +21,14 @@ import com.loncom.ismac.bean.xml.RootXml;
 import com.loncom.ismac.bean.xml.XmlEdiParser;
 import com.loncom.ismac.jdbc.DB;
 import com.loncom.ismac.lservice.bean.Service;
+import com.loncom.ismac.service.IBaseService;
+import com.loncom.ismac.service.impl.BaseServiceImpl;
 import com.loncom.ismac.util.BaseUtil;
 import com.loncom.ismac.util.CMD;
 import com.loncom.ismac.util.ExcelExportUtil;
 import com.loncom.ismac.util.FileUtil;
 import com.loncom.ismac.util.UtilTime;
+import com.loncom.ismac.util.UtilTimeThread;
 import com.loncom.ismac.util.UtilTool;
 
 import net.sf.json.JSONArray;
@@ -194,7 +198,7 @@ public class ServiceAction extends BaseServlet {
 	 * @return
 	 * @throws Exception
 	 */
-	@MethodInfo(METHOD="/service/query")
+	@MethodInfo(METHOD="/service/query",ISLOG=false)
 	public String query()throws Exception{
 		String classname=getRequest().getParameter("name");
 		String groupno=getRequest().getParameter("groupno");
@@ -224,7 +228,7 @@ public class ServiceAction extends BaseServlet {
 	 * @return
 	 * @throws Exception
 	 */
-	@MethodInfo(METHOD="/service/detail")
+	@MethodInfo(METHOD="/service/detail",ISLOG=false)
 	public String detail() throws Exception{
 		String code=getRequest().getParameter("code");
 		List list=new ArrayList<>();
@@ -242,7 +246,7 @@ public class ServiceAction extends BaseServlet {
 	 * @return
 	 * @throws Exception
 	 */
-	@MethodInfo(METHOD="/service/update")
+	@MethodInfo(METHOD="/service/update",LOGSNAME="更新")
 	public String update() throws Exception{
 		String code=getRequest().getParameter("code");
 		String model=getRequest().getParameter("model");
@@ -251,7 +255,7 @@ public class ServiceAction extends BaseServlet {
 		String openair=getRequest().getParameter("openair");
 		String closeair=getRequest().getParameter("closeair");
 		String serviceid=getRequest().getParameter("serviceid");
-		
+		//setOtioncontent("");
 		List<ClassroomXml> list=new ArrayList<ClassroomXml>();
 		list=BaseUtil.getService(null,null, null, null, code);
 		list.get(0).setModel(model);
@@ -292,7 +296,7 @@ public class ServiceAction extends BaseServlet {
 	/**
 	 * 首页获取实时top
 	 */
-	@MethodInfo(METHOD="/service/indextop")
+	@MethodInfo(METHOD="/service/indextop",ISLOG=false)
 	public String queryIndexTop() throws Exception{
 		List<Map<String, Object>> dataList=new ArrayList<Map<String, Object>>();
 		List<Map<String, Object>> rList=new ArrayList<Map<String, Object>>();
@@ -334,7 +338,7 @@ public class ServiceAction extends BaseServlet {
 	/**
 	 * 获取table的title展示
 	 */
-	@MethodInfo(METHOD="/service/tableTitle")
+	@MethodInfo(METHOD="/service/tableTitle",ISLOG=false)
 	public String queryTitle() throws Exception{
 		List<Map<String, Object>> tableTitle=new ArrayList<Map<String, Object>>();
 		Map<String, Object> mapTitle=new HashMap<String,Object>();
@@ -352,7 +356,7 @@ public class ServiceAction extends BaseServlet {
 	/**
 	 * 获取用电数据，按时间查询table信息,line线型图,top信息
 	 */
-	@MethodInfo(METHOD="/service/tableInfo")
+	@MethodInfo(METHOD="/service/tableInfo",ISLOG=false)
 	public String queryTable() throws Exception{
 		String startTime=getRequest().getParameter("startTime");
 		String endTime=getRequest().getParameter("endTime");
@@ -496,7 +500,7 @@ public class ServiceAction extends BaseServlet {
 	/**
 	 * 获取用电数据，top信息
 	 */
-	@MethodInfo(METHOD="/service/topInfo")
+	@MethodInfo(METHOD="/service/topInfo",ISLOG=false)
 	public String queryTop() throws Exception{
 		String startTime=getRequest().getParameter("startTime");
 		String endTime=getRequest().getParameter("endTime");
@@ -572,7 +576,7 @@ public class ServiceAction extends BaseServlet {
 		if(allsql!="") {
 			allsql=allsql.substring(0, allsql.length()-5);
 			alltopsql="select mgrobjid,pointid,cast(sum(a.allvalue) as decimal(10,2)) as allvalue, time "
-					+ "from ("+allsql+") a group by a.mgrobjid,a.pointid ORDER BY allvalue DESC";
+					+ "from ("+allsql+") a group by a.mgrobjid,a.pointid ORDER BY allvalue DESC LIMIT 10";
 			alltoplist=baseservice.getSqlListS(alltopsql,DB.HIS);
 		}
 		
@@ -648,7 +652,7 @@ public class ServiceAction extends BaseServlet {
 	/**
 	 * 获取用电数据，获取多天的教室总能耗，办公室总能耗按天求和展示
 	 */
-	@MethodInfo(METHOD="/service/moreDayInfo")
+	@MethodInfo(METHOD="/service/moreDayInfo",ISLOG=false)
 	public String queryMoreDay() throws Exception{
 		String startTime=getRequest().getParameter("startTime");
 		String endTime=getRequest().getParameter("endTime");
@@ -719,7 +723,7 @@ public class ServiceAction extends BaseServlet {
 	/**
 	 * 获取用电数据，获取教室区域能耗，教室类型能耗,折线用电量展示
 	 */
-	@MethodInfo(METHOD="/service/typeInfo")
+	@MethodInfo(METHOD="/service/typeInfo",ISLOG=false)
 	public String queryTypeInfo() throws Exception{
 		String startTime=getRequest().getParameter("startTime");
 		String endTime=getRequest().getParameter("endTime");
@@ -802,7 +806,7 @@ public class ServiceAction extends BaseServlet {
 	/**
 	 * 根据时间选择显示时间段的用电信息
 	 */
-	@MethodInfo(METHOD="/service/moreInfo")
+	@MethodInfo(METHOD="/service/moreInfo",ISLOG=false)
 	public String queryMore() throws Exception{
 		String startTime=getRequest().getParameter("startTime");
 		String endTime=getRequest().getParameter("endTime");
@@ -942,14 +946,13 @@ public class ServiceAction extends BaseServlet {
 	/**
 	 * 获取人均面积教室办公楼占比用电量，
 	 */
-	@MethodInfo(METHOD="/service/rate")
+	@MethodInfo(METHOD="/service/rate",ISLOG=false)
 	public String queryRate() throws Exception{
 		List<Map<String, Object>> clist=new ArrayList<Map<String, Object>>();
 		List<Map<String, Object>> olist=new ArrayList<Map<String, Object>>();
 		List<Map<String, Object>> alist=new ArrayList<Map<String, Object>>();
-		Map<String,Object> mapItem=new HashMap<String,Object>();
+		Map<String,Object> mapItem=schoolItem();
 		Map<String,Object> map=new HashMap<String,Object>();
-		mapItem=schoolItem();
 		
 		List<ClassroomXml> classlist=new ArrayList<ClassroomXml>();
 		List<ClassroomXml> dormlist=new ArrayList<ClassroomXml>();
@@ -1034,9 +1037,141 @@ public class ServiceAction extends BaseServlet {
 	}
 	
 	/**
+	 * 
+	 * 今天的总能耗和实时能耗
+	 * */
+	
+	@MethodInfo(METHOD="/service/energy",ISLOG=false)
+	public String queryenergy() throws Exception{
+		Map<String,Object> map=new HashMap<String,Object>();
+		String value="",allvalue="0",allsql="",sql="",ballsql="";
+		String now = UtilTimeThread.format(new Date(), "yyyy-MM-dd HH:mm:ss");
+		String nowBefore = UtilTimeThread.format(new Date(), "yyyy-MM-dd 00:00:00");
+		
+		IBaseService baseservice = new BaseServiceImpl();
+		String devtable = String.format(CMD.HIS_DEVTABLE,UtilTimeThread.format(new Date(), "yyyyMMdd"));
+		
+		for(Service service : AppContext.getService()) {
+			for (GroupXml groupXml : service.getGroupcontrol().getGroup()) {
+				if(groupXml.getClassroomgroup().getItem()!=null) {
+					for (ClassroomXml classroomXml: groupXml.getClassroomgroup().getItem()) {
+						if(classroomXml.getBaseItem() != null&&!BaseUtil.isNotNull(classroomXml.getElement())) {
+							for(int i=0;i<classroomXml.getBaseItem().size();i++) {
+								if(classroomXml.getBaseItem().get(i).getDev().equals("roompower")&&BaseUtil.isNotNull(classroomXml.getBaseItem().get(i).getPointid())) {
+									String dev=classroomXml.getBaseItem().get(i).getPointid();
+									if(BaseUtil.isNotNull(dev)) {
+										String val="";
+										if(dev.indexOf("_")!=-1) {
+											String[] arr=dev.split("_");
+											for(int k=0;k<arr.length;k++) {
+												val=UtilTool.parseFloat(val)+UtilTool.parseFloat(BaseUtil.getDevvouValue(arr[k].split(",")[0],arr[k].split(",")[1])+"")+"";
+											}
+										}else {
+											val=BaseUtil.getDevvouValue(dev.split(",")[0],dev.split(",")[1]);
+										}
+										value=UtilTool.cutFloat2(UtilTool.parseFloat(value)+UtilTool.parseFloat(val)+"");
+									}
+								}
+								
+								if (classroomXml.getBaseItem().get(i).getDev().equals("powerdegree")&&
+										BaseUtil.isNotNull(classroomXml.getBaseItem().get(i).getPointid())) {
+									String dev = classroomXml.getBaseItem().get(i).getPointid();
+									String mid = "", pid = "",val="";
+									if (dev.indexOf("_") != -1) {
+										String[] pointidarr = dev.split("_");
+										for (int k = 0; k < pointidarr.length; k++) {
+											String devid = pointidarr[k].split(",")[0];
+											String pointid = pointidarr[k].split(",")[1];
+											sql=" (mgrobjid = '%s' and pointid='%s') or";
+											sql=String.format(sql,devid,pointid);
+											allsql+=sql;
+										}
+									} else {
+										mid = dev.split(",")[0];
+										pid = dev.split(",")[1];
+										sql=" (mgrobjid = '%s' and pointid='%s') or";
+										sql=String.format(sql,mid,pid);
+										allsql+=sql;
+									}
+								}
+								
+							}
+						}
+					}
+				}
+				if(groupXml.getOfficegroup().getItem()!=null) {
+					for (ClassroomXml classroomXml : groupXml.getOfficegroup().getItem()) {
+						if(classroomXml.getBaseItem() != null&&!BaseUtil.isNotNull(classroomXml.getElement())) {
+							for(int i=0;i<classroomXml.getBaseItem().size();i++) {
+								if(classroomXml.getBaseItem().get(i).getDev().equals("roompower")&&BaseUtil.isNotNull(classroomXml.getBaseItem().get(i).getPointid())) {
+									String dev=classroomXml.getBaseItem().get(i).getPointid();
+									if(BaseUtil.isNotNull(dev)) {
+										String val="";
+										if(dev.indexOf("_")!=-1) {
+											String[] arr=dev.split("_");
+											for(int k=0;k<arr.length;k++) {
+												val=UtilTool.parseFloat(val)+UtilTool.parseFloat(BaseUtil.getDevvouValue(arr[k].split(",")[0],arr[k].split(",")[1])+"")+"";
+											}
+										}else {
+											val=BaseUtil.getDevvouValue(dev.split(",")[0],dev.split(",")[1]);
+										}
+										value=UtilTool.cutFloat2(UtilTool.parseFloat(value)+UtilTool.parseFloat(val)+"");
+									}
+								}
+								
+								if (classroomXml.getBaseItem().get(i).getDev().equals("powerdegree")&&
+										BaseUtil.isNotNull(classroomXml.getBaseItem().get(i).getPointid())) {
+									String dev = classroomXml.getBaseItem().get(i).getPointid();
+									String mid = "", pid = "",val="";
+									if (dev.indexOf("_") != -1) {
+										String[] pointidarr = dev.split("_");
+										for (int k = 0; k < pointidarr.length; k++) {
+											String devid = pointidarr[k].split(",")[0];
+											String pointid = pointidarr[k].split(",")[1];
+											sql=" (mgrobjid = '%s' and pointid='%s') or";
+											sql=String.format(sql,devid,pointid);
+											allsql+=sql;
+										}
+									} else {
+										mid = dev.split(",")[0];
+										pid = dev.split(",")[1];
+										sql=" (mgrobjid = '%s' and pointid='%s') or";
+										sql=String.format(sql,mid,pid);
+										allsql+=sql;
+									}
+								}
+								
+							}
+						}
+					}
+				}
+			}
+		}
+		List<Map<String, Object>> list=new ArrayList<Map<String, Object>>();
+		if(allsql!="") {
+			allsql=allsql.substring(0, allsql.length()-2);
+			ballsql="select cast(sum(a.value) as decimal(10,2)) as allvalue from(select * from "+devtable+
+					" where time >= '"+nowBefore+"' and time <='"+now+"' and "+allsql+") a";
+			
+			list = baseservice.getSqlListS(ballsql, DB.HIS);
+		}
+		if(list.size()>0&&list.get(0).get("ALLVALUE")!=null) {
+			allvalue=list.get(0).get("ALLVALUE")+"";
+		}
+		if(value.equals("0.00")) {
+			value="0";
+		}
+		map.put("nowPower", value);
+		map.put("allPower", allvalue);
+		System.out.println(ballsql);
+		return JSONObject.fromObject(map).toString();
+	}
+
+	
+	/**
 	 * 关空调，电灯
 	 */
-	@MethodInfo(METHOD="/service/switchOrder")
+	@MethodInfo(METHOD="/service/switchOrder",ISLOG=false)
 	public String switchOrder() throws Exception{
 		String devid=getRequest().getParameter("devid");
 		String stateid=getRequest().getParameter("stateid");
@@ -1057,7 +1192,7 @@ public class ServiceAction extends BaseServlet {
 	 * @return
 	 * @throws Exception
 	 */
-	@MethodInfo(METHOD="/service/queryOverview")
+	@MethodInfo(METHOD="/service/queryOverview",ISLOG=false)
 	public String queryOverview() throws Exception{
 		List list=new ArrayList<>();
 		List<ClassroomXml> classlist=new ArrayList<ClassroomXml>();
@@ -1109,28 +1244,40 @@ public class ServiceAction extends BaseServlet {
 	/**
 	 * 获取楼宇的树形接口
 	 */
-	@MethodInfo(METHOD="/service/tree")
+	@MethodInfo(METHOD="/service/tree",ISLOG=false)
 	public String queryTree() throws Exception{
 		zTreeByOther tree=new zTreeByOther();
-		zTreeByOther ctree=new zTreeByOther();
-		zTreeByOther dtree=new zTreeByOther();
-		zTreeByOther ptree=new zTreeByOther();
+		zTreeByOther ctree=new zTreeByOther(); //教室
+		zTreeByOther dtree=new zTreeByOther();  //办公室
+		zTreeByOther ptree=new zTreeByOther();  // 
+//		List<zTreeByOther> list=new ArrayList<zTreeByOther>();
 		List<zTreeByOther> backlist = new ArrayList<zTreeByOther>();
-		for(Service service : AppContext.getService()) {
-			for (GroupXml groupXml : service.getGroupcontrol().getGroup()) {
+		
+		Map<String, String> map=new HashMap<String,String>();
+		Map<String, String> groupmap=new HashMap<String,String>();
+		
+		
+		for(int i=0;i<AppContext.getService().size();i++) {
+			Service service=AppContext.getService().get(i);
+			for(int j=0;j<service.getGroupcontrol().getGroup().size();j++) {
+				GroupXml groupXml=service.getGroupcontrol().getGroup().get(j);
 				List<zTreeByOther> list=new ArrayList<zTreeByOther>();
 				List<zTreeByOther> classlist=new ArrayList<zTreeByOther>();
 				List<zTreeByOther> dormlist=new ArrayList<zTreeByOther>();
-				tree=new zTreeByOther();
-				ctree=new zTreeByOther();
-				dtree=new zTreeByOther();
-				tree.setId(groupXml.getGroupno());
-				tree.setName(groupXml.getGroupname());//楼宇
-				Map<String, String> map=new HashMap<String,String>();
-				map.put("topname", groupXml.getGroupname());
-				
-				ctree.setId(groupXml.getClassroomgroup().getRoomno());
-				ctree.setName(groupXml.getClassroomgroup().getName());//教室
+				if(i==0) {  //第一个xml中获取所有的楼宇，和教室办公室
+					tree=new zTreeByOther();
+					ctree=new zTreeByOther();
+					dtree=new zTreeByOther();
+					tree.setId(groupXml.getGroupno());
+					tree.setName(groupXml.getGroupname());//楼宇
+					map.put("topname", groupXml.getGroupname());
+					ctree.setId(groupXml.getClassroomgroup().getRoomno());
+					ctree.setName(groupXml.getClassroomgroup().getName());//教室
+					ctree.setType("classroom");
+					dtree.setId(groupXml.getOfficegroup().getRoomno());
+					dtree.setName(groupXml.getOfficegroup().getName()); //办公室
+					dtree.setType("officeroom");
+				}
 				if(groupXml.getClassroomgroup().getItem()!=null && groupXml.getClassroomgroup().getItem().size()>0) {
 					for (ClassroomXml classroomXml : groupXml.getClassroomgroup().getItem()) {
 						ptree=new zTreeByOther();
@@ -1140,10 +1287,6 @@ public class ServiceAction extends BaseServlet {
 						classlist.add(ptree);
 					}
 				}
-				
-				
-				dtree.setId(groupXml.getOfficegroup().getRoomno());
-				dtree.setName(groupXml.getOfficegroup().getName()); //办公室
 				if(groupXml.getOfficegroup().getItem()!=null && groupXml.getOfficegroup().getItem().size()>0) {
 					for (ClassroomXml classroomXml : groupXml.getOfficegroup().getItem()) {
 						ptree=new zTreeByOther();
@@ -1153,15 +1296,33 @@ public class ServiceAction extends BaseServlet {
 						dormlist.add(ptree);
 					}
 				}
-
-				ctree.setChildren(classlist);
-				dtree.setChildren(dormlist);
-				list.add(ctree);
-				list.add(dtree);
-				tree.setChildren(list);
-				backlist.add(tree);
+				
+				if(i==0) {
+					ctree.setChildren(classlist);
+					dtree.setChildren(dormlist);
+					list.add(ctree);
+					list.add(dtree);
+					tree.setChildren(list);
+					backlist.add(tree);
+				}else {
+					for(int m=0;m<backlist.size();m++) {
+						if(backlist.get(m).getId().equals(groupXml.getGroupno())) {
+							for(int n=0;n<backlist.get(m).getChildren().size();n++) {
+								if(backlist.get(m).getChildren().get(n).getType().equals("classroom")) {
+									backlist.get(m).getChildren().get(n).getChildren().addAll(classlist);
+								}
+								if(backlist.get(m).getChildren().get(n).getType().equals("officeroom")) {
+									backlist.get(m).getChildren().get(n).getChildren().addAll(dormlist);
+								}
+							}
+						}
+					}
+				}
+				
+				
 			}
 		}
+		
 		return JSONArray.fromObject(backlist).toString();
 	}
 	
@@ -1171,7 +1332,7 @@ public class ServiceAction extends BaseServlet {
 	 * @return
 	 * @throws Exception
 	 */
-	@MethodInfo(METHOD="/service/queryFloor")
+	@MethodInfo(METHOD="/service/queryFloor",ISLOG=false)
 	public String queryFloor() throws Exception{
 		List list=new ArrayList<>();
 		for(GroupXml groupXml:BaseUtil.getFloor()) {
@@ -1181,14 +1342,6 @@ public class ServiceAction extends BaseServlet {
 			map.put("groupfloor", groupXml.getGroupfloor());
 			list.add(map);
 		}
-//		for(Service service : AppContext.getService()) {
-//			for (GroupXml groupXml : service.getGroupcontrol().getGroup()) {
-//				Map<String,Object> map=new HashMap<String,Object>();
-//				map.put("groupno",groupXml.getGroupno());
-//				map.put("groupname",groupXml.getGroupname());
-//				list.add(map);
-//			}
-//		}
 		return JSONArray.fromObject(list).toString();
 	}
 
@@ -1196,7 +1349,7 @@ public class ServiceAction extends BaseServlet {
 	 * 导出数据
 	 * @return
 	 */
-	@MethodInfo(METHOD="/service/export")
+	@MethodInfo(METHOD="/service/export",ISLOG=false)
 	public SXSSFWorkbook exportPower() throws Exception{
 		List<Class> l=new ArrayList<Class>();
    		l.add(SXSSFWorkbook.class);

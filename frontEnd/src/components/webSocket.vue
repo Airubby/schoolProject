@@ -91,7 +91,7 @@ export default {
                                         let pval=this.wsInfo[j]["roompower"+m]?this.wsInfo[j]["roompower"+m]:0;
                                         roompower+=parseFloat(pval);
                                     }
-                                    this.wsInfo[j].roompower=roompower==0||roompower=="0"?"":parseFloat(roompower).toFixed(3);
+                                    this.wsInfo[j].roompower=roompower==0||roompower=="0"?"0":parseFloat(roompower).toFixed(3);
                                 }
                             }
                         }else{  //一个电表的实时功率
@@ -109,7 +109,7 @@ export default {
                                         let pval=this.wsInfo[j]["powerdegree"+m]?this.wsInfo[j]["powerdegree"+m]:0;
                                         powerdegree+=parseFloat(pval);
                                     }
-                                    this.wsInfo[j].powerdegree=powerdegree==0||powerdegree=="0"?"":parseFloat(powerdegree).toFixed(2);
+                                    this.wsInfo[j].powerdegree=powerdegree==0||powerdegree=="0"?"0":parseFloat(powerdegree).toFixed(2);
                                 }
                             }
                         }else{  //一个电表控制显示
@@ -117,6 +117,11 @@ export default {
                                 this.wsInfo[j].powerdegree=val[i].value?parseFloat(val[i].value).toFixed(2):"";
                             }
                         }
+                        //告警
+                        if(val[i].key===this.wsInfo[j].alarmkey){
+                            this.wsInfo[j].value=val[i].value;
+                        }
+
                     }
                 }
             }

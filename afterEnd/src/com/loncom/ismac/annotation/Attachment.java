@@ -29,7 +29,7 @@ public @interface Attachment {
 	
 	boolean DELETE() default false;
 	
-	String  TEMPLATE() default "%s like '%s'";
+	String  TEMPLATE() default "%s like ?";
 	
 	String SQL() default "";
 	

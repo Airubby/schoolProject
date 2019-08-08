@@ -17,8 +17,14 @@ public class SyslogAction extends BaseServlet{
 	
 	@MethodInfo(METHOD="/syslog/query",LOGSNAME="系统日志查询",ISLOG=false)
 	public String query() throws Exception{
-		String value=getStringFromStream(getRequest());
-		syslog=(Syslog) JSONObject.toBean(JSONObject.fromObject(value),Syslog.class);
+		
+		String pageIndex=getRequest().getParameter("pageIndex");
+		String pageSize=getRequest().getParameter("pageSize");
+		String userid=getRequest().getParameter("userid");
+		/*syslog=(Syslog) JSONObject.toBean(JSONObject.fromObject(value),Syslog.class);*/
+		syslog.setPageIndex(Integer.parseInt(pageIndex));
+		syslog.setPageSize(Integer.parseInt(pageSize));
+		syslog.setUserid(userid);
 		if(!BaseUtil.isNotNull(syslog.getOpe_id())){
 	    	syslog.setOpe_id("00102");
 	    }

@@ -40,7 +40,7 @@ public class CookiesUtil {
      */
     private static Map<String, Cookie> ReadCookieMap(HttpServletRequest request) {
         Map<String, Cookie> cookieMap = new HashMap<String, Cookie>();
-        System.out.println("request:"+request);
+//        System.out.println("request:"+request);
         Cookie[] cookies = request.getCookies();
         if (null != cookies) {
             for (Cookie cookie : cookies) {

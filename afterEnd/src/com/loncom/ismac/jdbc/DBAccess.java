@@ -443,6 +443,10 @@ public class DBAccess {
 		return getInt(this.executeQuery(sql));
 	}
 
+	
+	public int getCount(String sql,Object[] parmt) {
+		return getInt(this.preExecuteQuery(sql, parmt));
+	}
 	private int getInt(ResultSet rs) {
 		try {
 			if (rs != null)
@@ -482,10 +486,7 @@ public class DBAccess {
 		}
 	}
 
-	public int getCount(String sql, Object[] parms) {
-		return getInt(this.preExecuteQuery(sql, parms));
-	}
-
+	
 	// 绑定变量执行区,Object[] parms
 	public ResultSet preExecuteQuery(String sql, Object[] parms) {
 		this.doLog(sql, parms);
@@ -497,6 +498,7 @@ public class DBAccess {
 			this.rsList.add(rs);
 			return rs;
 		} catch (Exception e) {
+			e.printStackTrace();
 			closeAndRemove(preStmt, rs);
 			throw new RuntimeException(e);
 		}
@@ -747,12 +749,15 @@ public class DBAccess {
 			Object[] parms) {
 		try {
 			for (int i = 1; i <= parms.length; i++) {
-				if (parms[i - 1] instanceof java.util.Date) {
-					parms[i - 1] = new Timestamp(
-							((java.util.Date) parms[i - 1]).getTime());
-					preStmt.setTimestamp(i, (Timestamp) parms[i - 1]);
-				} else {
-					preStmt.setObject(i, parms[i - 1]);
+				
+				if(parms[i - 1]!=null&& BaseUtil.isNotNull(parms[i - 1]+"")){
+					if (parms[i - 1] instanceof java.util.Date) {
+						parms[i - 1] = new Timestamp(
+								((java.util.Date) parms[i - 1]).getTime());
+						preStmt.setTimestamp(i, (Timestamp) parms[i - 1]);
+					} else {
+						preStmt.setObject(i, parms[i - 1]);
+					}
 				}
 			}
 			return preStmt;

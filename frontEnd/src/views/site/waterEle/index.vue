@@ -2,11 +2,11 @@
     <div class="loncom_content">
         <div class="loncom_right_content">
             <div class="bg1C2443 loncom_pd20 loncom_content">
-                <div class="loncom_control_top custom">
+                <div class="loncom_mb20 custom">
                     <el-input
                         style="width:300px;"
                         size="small"
-                        class="loncom_control_topc"
+                        class="loncom_mr10"
                         placeholder="请输入内容"
                         prefix-icon="el-icon-search"
                         v-model="name">
@@ -24,22 +24,17 @@
                         </el-search-table-pagination>
                     </el-scrollbar>
                 </div>
-            </div>
-                                                        
+            </div>                                    
         </div>
-        <webSocket :wsInfo="data" v-if="data"></webSocket>
     </div>
 </template>
 
 
 <script>
-import webSocket from '@/components/webSocket.vue'
 export default {
     
     created () {
-        if(sessionStorage.loginInfo){
-            this.loginInfo=JSON.parse(sessionStorage.loginInfo);
-        }
+        
     },
     mounted() {
         
@@ -47,7 +42,7 @@ export default {
    data() {
        return {
             loading:false,
-            data:[{name:"宿舍01",ele:"23",water:"123"}],
+            table_data:[{classname:"宿舍01",ele:"23",water:"123"}],
             table_columns:[
                 { prop: 'classname', label: '宿舍号',minWidth:20},
                 { prop: 'ele', label: '用电量',minWidth:15},
@@ -62,7 +57,7 @@ export default {
                 console.log(r)
                 this.loading=false;
                 if(r.err_code=="0"){
-                   this.data=r.data;
+                   this.table_data=r.data;
                 }else{
                     this.$message.warning(r.err_msg);
                 }
@@ -73,10 +68,9 @@ export default {
     watch:{
         
     },
-    components:{webSocket},
+    components:{},
 }
 </script>
 
 <style scoped>
-    @import "~@/assets/css/control.less";
 </style>

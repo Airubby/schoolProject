@@ -36,6 +36,14 @@ public interface IBaseService<T> {
 	 * @throws Exception 
 	 */
 	 List<Object> getSqlListBean(String sql,Object obj) throws Exception ;
+	 /**
+		 * 查询信息
+		 * @param sql
+		 * @param obj
+		 * @return 返回对象
+		 * @throws Exception 
+		 */
+		 List<Object> getSqlListBean(String sql,Object[] parms,Object obj) throws Exception ;
 	 
 	 /**
 		 * 查询信息
@@ -119,6 +127,7 @@ public interface IBaseService<T> {
 	  */
 	 int getCount(String sql,String db);
 	 
+	 int getCount(String sql,Object[]  parms,String db);
 	 /**
 	  * 普通查询
 	  * @param sql

@@ -16,7 +16,7 @@ public class SlideAction extends BaseServlet  {
 	 * @return
 	 * @throws Exception
 	 */
-	@MethodInfo(METHOD="/slide/query")
+	@MethodInfo(METHOD="/slide/query",ISLOG=false)
 	public String query()throws Exception{
 		return JSONArray.fromObject(baseservice.query(obj)).toString();
 	}
@@ -26,12 +26,14 @@ public class SlideAction extends BaseServlet  {
 	 * @return
 	 * @throws Exception
 	 */
-	@MethodInfo(METHOD="/slide/add")
+	@MethodInfo(METHOD="/slide/add",LOGSNAME="新增幻灯片")
 	public String add()throws Exception{
 		System.out.println(getRequest().getParameter("url"));
+		
 		obj.setId(BaseUtil.getUUID());
 		obj.setUrl(getRequest().getParameter("url"));
 		baseservice.Add(obj);
+		setOtioncontent("路径:"+obj.getUrl());
 		return null;
 	}
 	
@@ -40,7 +42,7 @@ public class SlideAction extends BaseServlet  {
 	 * @return
 	 * @throws Exception
 	 */
-	@MethodInfo(METHOD = "/slide/delete")
+	@MethodInfo(METHOD = "/slide/delete",ISLOG=false)
 	public String delete() throws Exception{
 		String id=getRequest().getParameter("id");
 		obj.setId(id);

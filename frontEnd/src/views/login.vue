@@ -1,6 +1,6 @@
 <template>
     <div class="loncom_login">
-        <div class="loncom_login_con loncom_public_shadow">
+        <div class="loncom_login_con loncom_public_shadow" :class="{'mlogin_con':devtype}">
             <div class="loncom_logo_img"></div>
             <div class="loncom_logo_text">元岗校区能效管理系统</div>
             <div class="loncom_login_input">
@@ -22,7 +22,11 @@
 <script>
 export default {
 	created () {
-	
+		if(/Android|webOS|iPhone|iPad|BlackBerry/i.test(navigator.userAgent)){
+            this.devtype=true;
+        }else{
+            this.devtype=false;
+        }
   },
   data(){
 	let checkpassword = (rule, value, callback) => {
@@ -36,6 +40,7 @@ export default {
 		}
 	};
   	return {
+		  devtype:false,
 		user:{
 			userid:"",
 			psword:""
@@ -60,6 +65,8 @@ export default {
       loginIn:function(){
 			this.$refs['form'].validate((valid) => {
 				if(valid){
+					this.user.psword=this.$tool.Encrypt(this.user.psword);
+					console.log(this.user.psword)
 					this.$api.post('/user/login', {"obj":this.user}, r => {
 						console.log(r);
 						if(r.err_code=="0"){
@@ -84,15 +91,7 @@ export default {
       
   },
   watch:{
-        'user.psword':function(val,oldval){
-			if(val.length>16){
-				this.user.psword="";
-				this.$nextTick(() => {
-					this.user.psword=val.slice(0,16)
-				})
-				console.log(this.user.psword)
-			}
-        }
+        
    },
 }
 </script>

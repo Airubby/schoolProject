@@ -5,6 +5,18 @@
         </router-link>
         <div class="loncom_index_top_right">
             <ul>
+                <li>
+                    <a href="javascript:void(0)" @click="switcFullScreen()">
+                        <i class="el-icon-full-screen"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" @click="enterAlarm()">
+                        <el-badge :value="alarmInfo[0]['value']"  class="item">
+                            <i class="el-icon-bell"></i>
+                        </el-badge>
+                    </a>
+                </li>
                 <li class="loncom_index_userhover">
                     <el-popover
                         placement="bottom"
@@ -26,32 +38,19 @@
                             </ul>
                         </div>
                         <a href="javascript:void(0)" slot="reference" @click="enterUserList">
-                            <i class="fa fa-user-circle-o loncom_mr5"></i>
+                            <i class="el-icon-user loncom_mr5"></i>
                             <span id="username" style="vertical-align: top;">{{loginInfo.name}}</span>
                         </a>
                     </el-popover>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" @click="switcFullScreen">
-                        <i class="fa fa-arrows-alt"></i>
-                    </a>
-                </li>
-                <!--
-                <li>
-                    <a href="javascript:void(0)" @click="switcFullScreen">
-                        <el-badge :value="200" :max="99" class="item">
-                            <i class="fa fa-bell-o"></i>
-                        </el-badge>
-                    </a>
-                </li>
-                -->
-                <li>
                     <a href="javascript:void(0)" @click="powerOff">
-                        <i class="fa fa-power-off"></i>
+                        <i class="el-icon-switch-button"></i>
                     </a>
                 </li>
             </ul>
         </div>
+        <webSocket :wsInfo="alarmInfo" v-if="alarmInfo"></webSocket>
     </div>
 </template>
 
@@ -59,14 +58,15 @@
 import { mapGetters } from 'vuex'
 import store from '@/store'
 import Cookies from 'js-cookie'
+import webSocket from '@/components/webSocket.vue'
 export default {
     name:'lonTop',
     created () {
         if(sessionStorage.loginInfo){
             let loginInfo=JSON.parse(sessionStorage.loginInfo);
             this.getDetail(loginInfo.id)
+            this.getAlarm();
         }
-        console.log(this.loginInfo)
     },
     mounted() {
       
@@ -79,6 +79,10 @@ export default {
     },
     data(){
         return {
+            alarmInfo:[{
+                alarmkey:"alarmAll",
+                value:'0',
+            }],
             loginInfo:{
                 userid:"",
                 name:"",
@@ -97,6 +101,14 @@ export default {
                     }
                     sessionStorage.loginInfo= JSON.stringify(r.data);
                     store.dispatch('setChangeUser',false);
+                }
+            });
+        },
+        getAlarm:function(){
+            this.$api.post('/alarm/count', {createTime:this.$tool.Format('yyyy-MM-dd 00:00:00',new Date())}, r => {
+                console.log(r)
+                if(r.err_code=="0"){
+                    this.alarmInfo[0].value=r.data.value;
                 }else{
                     this.$message.warning(r.err_msg);
                 }
@@ -104,6 +116,9 @@ export default {
         },
         switcFullScreen:function(){
             this.$tool.switcFullScreen();
+        },
+        enterAlarm:function(){
+            this.$router.push({path:'/site/alarm'});
         },
         //退出登录
         powerOff:function(){
@@ -142,6 +157,7 @@ export default {
         },
 
     }, 
+    components:{webSocket},
     watch:{
         getChangeUser: function(val) { 
             if(val){

@@ -43,7 +43,7 @@ public class TimegroupAction extends BaseServlet {
 		return "true";
 	}
 	
-	@MethodInfo(METHOD = "/time/query", LOGSNAME = "获取时间组信息")
+	@MethodInfo(METHOD = "/time/query", LOGSNAME = "获取时间组信息",ISLOG=false)
 	public String querytimegroup() throws Exception{
 		String name=getRequest().getParameter("name");
 		if(BaseUtil.isNotNull(name)) {
@@ -59,7 +59,7 @@ public class TimegroupAction extends BaseServlet {
 		return JSONArray.fromObject(timeGroup).toString();
 	}
 	
-	@MethodInfo(METHOD = "/time/detail", LOGSNAME = "查询时间组详情")
+	@MethodInfo(METHOD = "/time/detail", LOGSNAME = "查询时间组详情",ISLOG=false)
 	public String querydetail() throws Exception{
 		String id=getRequest().getParameter("id");
 		if(BaseUtil.isNotNull(id)) {

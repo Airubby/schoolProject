@@ -91,8 +91,8 @@ export default {
                     for(var item in this.ruleForm){
                         this.ruleForm[item]=r.data[item];
                     }
-                    this.ruleForm['tpassword']=r.data['psword'];
-                    this.ruleForm['_psword']=r.data['psword'];
+                    this.ruleForm['psword']=this.$tool.Decrypt(this.ruleForm['psword']);
+                    this.ruleForm['tpassword']=this.ruleForm['psword'];
                 }else{
                     this.$message.warning(r.err_msg);
                 }
@@ -112,10 +112,15 @@ export default {
         };
         let validatePass = (rule, value, callback) => {
             if (value === '') {
-                callback(new Error('请输入密码1-16位'));
+                callback(new Error('请输入密码至少8位且包含数字、字母大小写'));
             } else {
-                if (this.ruleForm.psword !== this.ruleForm._psword&&value.length>16) {
-                    callback(new Error('请输入密码1-16位'));
+                if (this.ruleForm.psword) {
+                    let reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~!@#$%^&amp;*()_+`\-={}:";'&lt;&gt;?,.\/]).{8,64}$/; 
+                    if(reg.test(value)){
+                        callback();
+                    }else{
+                        callback(new Error('请输入密码至少8位且包含数字、字母大小写'));
+                    }
                 }
                 callback();
             }
@@ -182,7 +187,6 @@ export default {
                 id:'',
                 userid:'',
                 psword:'',
-                _psword:'',
                 tpassword:'',
                 name: '',
                 addrorrole: "",
@@ -242,10 +246,10 @@ export default {
             this.$refs['ruleForm'].validate((valid) => {
                 if (valid) {
                     let url=this.ruleForm.id?'/user/update':'/user/add';
+                    this.ruleForm.psword=this.$tool.Encrypt(this.ruleForm.psword);
+                    this.ruleForm.tpassword=this.$tool.Encrypt(this.ruleForm.tpassword);
                     this.ruleForm.addrorrole=this.ruleForm.addrorrole.toString();
                     
-                    console.log(this.ruleForm.addrorrole)
-                    debugger;
                     this.$api.post(url, {"obj":this.ruleForm}, r => {
                         console.log(r)
                         if(r.err_code=="0"){

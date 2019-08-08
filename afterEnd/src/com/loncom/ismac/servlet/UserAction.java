@@ -34,16 +34,18 @@ public class UserAction extends BaseServlet {
 	 * @return
 	 * @throws Exception
 	 */
-	@MethodInfo(METHOD="/user/login",ISLOG=false,LOGSNAME="登录")
+	@MethodInfo(METHOD="/user/login",ISLOG=true,LOGSNAME="登录")
 	public RquestObject login()throws Exception{
-		String psword = md5.getMD5ofStr(obj.getPsword());
-		obj.setPsword(psword);
+//		String psword = md5.getMD5ofStr(obj.getPsword());
+//		obj.setPsword(psword);  //前端加密了
 		userList=baseservice.query(obj);
 		if(userList.size()>0) {
 			obj=userList.get(0);
 			if("3".equals(obj.getRoleid())) {
 				remsg.setErr_code("1");
 				remsg.setErr_msg("此用户无法登陆系统!");
+				setOtioncontent(remsg.getErr_msg());
+
 			}else {
 				if("1".equals(obj.getState())) {
 					long startTime=UtilTime.getTimes(obj.getTime_start()).getTime();
@@ -52,23 +54,29 @@ public class UserAction extends BaseServlet {
 					if(startTime<time && time<endTime) {
 						remsg.setErr_code("0");
 						remsg.setErr_msg("登录成功!");
+						setOtioncontent(remsg.getErr_msg()+"登录时间:"+UtilTime.getNow());
 						remsg.setData(JSONObject.fromObject(obj).toString());
 					}else {
 						remsg.setErr_code("1");
 						remsg.setErr_msg("此用户已过期!");
+						setOtioncontent(remsg.getErr_msg());
 					}
 				}
 			}
 		}else {
 			remsg.setErr_code("1");
 			remsg.setErr_msg("用户不存在或密码错误!");
+			setOtioncontent(remsg.getErr_msg());
+
 		}
+		
 		return remsg;
 	}
 	
 	@MethodInfo(METHOD="/user/out",LOGSNAME="退出系统")
 	public String out() throws Exception{
 		AppContext.getSID().remove(getRequest().getSession().getId());
+		setOtioncontent("退出时间:"+UtilTime.getNow());
 		return "true";
 	}
 	
@@ -76,13 +84,13 @@ public class UserAction extends BaseServlet {
 	public String add() throws Exception{
 		obj.setId(BaseUtil.getUUID());
 		obj.setState("1");
-		obj.setPsword(md5.getMD5ofStr(obj.getPsword()));
+//		obj.setPsword(md5.getMD5ofStr(obj.getPsword()));  //前端加密了
 		baseservice.Add(obj);
 		AppContext.InitUser(); //更新内存
 		return null;
 	}
 	
-	@MethodInfo(METHOD="/user/query",LOGSNAME="分页查询用户")
+	@MethodInfo(METHOD="/user/query",LOGSNAME="分页查询用户",ISLOG=false)
 	public String query() throws Exception{
 		//JSONObject.fromObject(object);
 		String name=getRequest().getParameter("name");
@@ -126,9 +134,9 @@ public class UserAction extends BaseServlet {
 	}
 	@MethodInfo(METHOD = "/user/update", ISLOG = true, LOGSNAME = "修改")
 	public String update() throws Exception {
-		if (obj.getPsword().length() < 30) {
-			obj.setPsword(md5.getMD5ofStr(obj.getPsword()));
-		}
+//		if (obj.getPsword().length() < 30) {
+//			obj.setPsword(md5.getMD5ofStr(obj.getPsword()));
+//		}
 		baseservice.update(obj);
 		AppContext.InitUser(); //更新内存
 		return null;

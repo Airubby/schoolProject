@@ -5,7 +5,7 @@ import {router} from './router/index'
 import store from './store/index'
 import axios from 'axios'
 import ElementUI from 'element-ui'
-import './assets/element-#4A78FF/index.css'
+import 'element-ui/lib/theme-chalk/index.css'
 import ElSearchTablePagination from 'el-table-pagination'
 import './utils/directive'  //element弹窗拖拽
 import lonTop from './components/top'

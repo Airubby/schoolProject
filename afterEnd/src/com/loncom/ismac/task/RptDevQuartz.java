@@ -71,7 +71,8 @@ public class RptDevQuartz implements Job {
 							}
 							if (classroomXml.getBaseItem() != null) {
 								for (int j = 0; j < classroomXml.getBaseItem().size(); j++) {
-									if (classroomXml.getBaseItem().get(j).getDev().equals("powerdegree")) {
+									if (classroomXml.getBaseItem().get(j).getDev().equals("powerdegree")&&
+											BaseUtil.isNotNull(classroomXml.getBaseItem().get(j).getPointid())) {
 										String dev = classroomXml.getBaseItem().get(j).getPointid();
 										String mid = "", pid = "", value = "";
 										if (dev.indexOf("_") != -1) {
@@ -173,13 +174,7 @@ public class RptDevQuartz implements Job {
 	 */
 	public String getValue( String nowBefore, String now, String devid, String pointid) throws Exception {
 		IBaseService baseservice = new BaseServiceImpl();
-//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String devtable="";
-//		String value="";
-//		Date nowDate=sdf.parse(now);
-//		Date beforeDate=sdf.parse(nowBefore);
-//		value=checkValue(beforeDate,nowBefore,devid,pointid);
-		devtable = String.format(CMD.HIS_DEVTABLE,UtilTimeThread.format(new Date(), "yyyyMMdd"));
+		String devtable = String.format(CMD.HIS_DEVTABLE,UtilTimeThread.format(new Date(), "yyyyMMdd"));
 		int devcount = baseservice.getCount(String.format(CMD.IS_HIS_BASE, devtable), DB.HIS);
 		if(devcount>0) {
 			String MAXsql="select COALESCE(MAX(convert(value,decimal(10,2))),'0') as value from "
@@ -196,16 +191,12 @@ public class RptDevQuartz implements Job {
 				String minvalue = minlist.get(0).get("VALUE") + "";
 				String val =UtilTool.cutFloat2(UtilTool.parseFloat(maxvalue) - UtilTool.parseFloat(minvalue) + "");
 				if(!val.equals("0")&&!val.equals("0.00")) {
-					System.out.println(MAXsql);
-					System.out.println(MINsql);
-					System.out.println("val："+val);
 					return val;
 				}else {
 					return null;
 				}
-				
 			}
-			Logs.logsync("MAX:SQL"+MAXsql+"MIN:SQL"+MINsql+"Max:"+maxlist.toString() + "Min:"+minlist.toString());
+//			Logs.logsync("MAX:SQL"+MAXsql+"MIN:SQL"+MINsql+"Max:"+maxlist.toString() + "Min:"+minlist.toString());
 		}
 		return null;
 	}
@@ -232,7 +223,6 @@ public class RptDevQuartz implements Job {
 	}
 	
 	public void putData(String rpttable, String now, String mid, String pid, String value, int i) throws Exception {
-		System.out.println("插入数据"+value+"devid:"+mid+"pointid:"+pid);
 		IBaseService baseservice = new BaseServiceImpl();
 		int num = BaseUtil.floorNum();
 		String arr[] = new String[num];

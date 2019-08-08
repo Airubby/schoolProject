@@ -1158,7 +1158,7 @@ public class BaseUtil {
 		switch (getDataDriver(datakey)) {
 		case 1:
 			buff.append(from);
-			buff.append(" LIMIT " + page.getStarindex() + "," + page.getPageSize() + "");
+			buff.append(" LIMIT ?,?");
 			break;
 		case 2:
 		case 3:

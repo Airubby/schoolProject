@@ -29,13 +29,13 @@ import net.sf.json.JSONArray;
 public class DataBaseLogAction extends BaseServlet {
 	private static final long serialVersionUID = 1L;
 	
-	@MethodInfo(METHOD="/database/query",LOGSNAME="分页查询备份数据库")
+	@MethodInfo(METHOD="/database/query",LOGSNAME="分页查询备份数据库",ISLOG=false)
 	public String query() throws Exception{
 		DatabaseBean obj=new DatabaseBean();
 		return JSONArray.fromObject(baseservice.query(obj)).toString();
 	}
 	
-	@MethodInfo(METHOD="/database/back",LOGSNAME="还原数据库")
+	@MethodInfo(METHOD="/database/back",LOGSNAME="还原数据库",ISLOG=false)
 	public RquestObject back() throws Exception{
 		RquestObject remsg = new RquestObject();
 		String time=getRequest().getParameter("time");

@@ -7,7 +7,7 @@ import store from '@/store/index'
 let service = axios.create({
   // baseURL: 'http://www.javasoft.top:9090/service',
   baseURL: store.getters.AjaxUrl,
-  timeout: 5000 // 请求超时时间
+  timeout: 50000 // 请求超时时间
 });
 
 // request拦截器
