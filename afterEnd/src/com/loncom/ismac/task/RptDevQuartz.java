@@ -47,17 +47,21 @@ public class RptDevQuartz implements Job {
 		// TODO Auto-generated method stub
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String now = UtilTimeThread.format(new Date(), "yyyy-MM-dd HH:mm:ss");
-//		String now ="2019-07-25 16:21:00";
-		System.out.println("执行了抽取报表"+now);
-//		 String now ="2019-04-28 11:16:00";
+		String now = UtilTimeThread.format(new Date(), "yyyy-MM-dd HH:mm:00");
+		String today = UtilTimeThread.format(new Date(), "yyyy-MM-dd 00:00:00");
+//		System.out.println("执行了抽取报表"+now);
 		Date date = sdf.parse(now);
 		String nowBefore = UtilTime.getNowBeforeMin(date, -10);
 		List<ClassroomXml> classlist = new ArrayList<ClassroomXml>();
 		List<ClassroomXml> dormlist = new ArrayList<ClassroomXml>();
 		IBaseService baseservice = new BaseServiceImpl();
 		String rpttable = "";
-
+		
+		String devtable = String.format(CMD.HIS_DEVTABLE,UtilTimeThread.format(new Date(), "yyyyMMdd"));
+		int devcount = baseservice.getCount(String.format(CMD.IS_HIS_BASE, devtable), DB.HIS);
+		if(devcount<=0) {
+			return;
+		}
 		for (Service service : AppContext.getService()) {
 			for (int i = 0; i < service.getGroupcontrol().getGroup().size(); i++) {
 				GroupXml groupXml=service.getGroupcontrol().getGroup().get(i);
@@ -87,14 +91,14 @@ public class RptDevQuartz implements Job {
 													mid += "_" + devid;
 													pid += "_" + pointid;
 												}
-												String val = getValue(nowBefore, now, devid, pointid);
+												String val = getValue(nowBefore, now, devid, pointid,today,devtable);
 												if (BaseUtil.isNotNull(val))
 													value = UtilTool.parseFloat(value) + UtilTool.parseFloat(val) + "";
 											}
 										} else {
 											mid = dev.split(",")[0];
 											pid = dev.split(",")[1];
-											value = getValue(nowBefore, now, mid, pid);
+											value = getValue(nowBefore, now, mid, pid,today,devtable);
 										}
 										if (BaseUtil.isNotNull(value))
 											putData(rpttable, now, mid, pid, UtilTool.cutFloat2(UtilTool.parseFloat(value) + ""), i);
@@ -130,14 +134,14 @@ public class RptDevQuartz implements Job {
 													mid += "_" + devid;
 													pid += "_" + pointid;
 												}
-												String val = getValue(nowBefore, now, devid, pointid);
+												String val = getValue(nowBefore, now, devid, pointid,today,devtable);
 												if (BaseUtil.isNotNull(val))
 													value = UtilTool.parseFloat(value) + UtilTool.parseFloat(val) + "";
 											}
 										} else {
 											mid = dev.split(",")[0];
 											pid = dev.split(",")[1];
-											value = getValue(nowBefore, now, mid, pid);
+											value = getValue(nowBefore, now, mid, pid,today,devtable);
 										}
 										if (BaseUtil.isNotNull(value))
 											putData(rpttable, now, mid, pid, UtilTool.cutFloat2(UtilTool.parseFloat(value) + ""), i);
@@ -167,27 +171,32 @@ public class RptDevQuartz implements Job {
 	 *            设备id
 	 * @param pointid
 	 *            属性id
-	 * @param rpttable
-	 *            报表
+	 * @param today
+	 *            今天的时间，抽取今天用电量用
 	 * @return
 	 * @throws Exception
 	 */
-	public String getValue( String nowBefore, String now, String devid, String pointid) throws Exception {
-		IBaseService baseservice = new BaseServiceImpl();
-		String devtable = String.format(CMD.HIS_DEVTABLE,UtilTimeThread.format(new Date(), "yyyyMMdd"));
-		int devcount = baseservice.getCount(String.format(CMD.IS_HIS_BASE, devtable), DB.HIS);
-		if(devcount>0) {
-			String MAXsql="select COALESCE(MAX(convert(value,decimal(10,2))),'0') as value from "
-					+ devtable + " WHERE time >= '"+ nowBefore + "' and time <= '"+ now + "' and mgrobjid='" + devid + "' and pointid='" + pointid+"'";
-			List<Map<String, Object>> maxlist = baseservice.getSqlListS(MAXsql, DB.HIS);
-			String MINsql="select COALESCE(MIN(convert(value,decimal(10,2))),'0') as value from "
-					+ devtable + " WHERE time >= '"+ nowBefore + "' and time <= '"+ now + "' and mgrobjid='" + devid + "' and pointid='" + pointid+"'";
-			List<Map<String, Object>> minlist = baseservice.getSqlListS(MINsql, DB.HIS);
-			if(maxlist.size()>0&&minlist.size()>0&&
-					BaseUtil.isNotNull(maxlist.get(0).get("VALUE")+"")&&
-					BaseUtil.isNotNull(minlist.get(0).get("VALUE")+"")&&!"0".equals(minlist.get(0).get("VALUE")+"")) {
-				
-				String maxvalue = maxlist.get(0).get("VALUE") + "";
+	public String getValue( String nowBefore, String now, String devid, String pointid,String today,String devtable) throws Exception {
+		String MAXsql="select COALESCE(MAX(convert(value,decimal(10,2))),'0') as value from "
+				+ devtable + " WHERE time >= '"+ nowBefore + "' and time <= '"+ now + "' and mgrobjid='" + devid + "' and pointid='" + pointid+"'";
+		List<Map<String, Object>> maxlist = baseservice.getSqlListS(MAXsql, DB.HIS);
+		String MINsql="select COALESCE(MIN(convert(value,decimal(10,2))),'0') as value from "
+				+ devtable + " WHERE time >= '"+ nowBefore + "' and time <= '"+ now + "' and mgrobjid='" + devid + "' and pointid='" + pointid+"'";
+		List<Map<String, Object>> minlist = baseservice.getSqlListS(MINsql, DB.HIS);
+		
+//		String todaysql="select COALESCE(MIN(convert(value,decimal(10,2))),'0') as value from "
+//				+ devtable + " WHERE time >= '"+ today + "' and time <= '"+ now + "' and mgrobjid='" + devid + "' and pointid='" + pointid+"'";
+//		List<Map<String, Object>> todaylist = baseservice.getSqlListS(todaysql, DB.HIS);
+		if(maxlist.size()>0&&maxlist.get(0).get("VALUE")!=null&&!maxlist.get(0).get("VALUE").equals("0")) {
+			String maxvalue = maxlist.get(0).get("VALUE") + "";
+//			if(todaylist.size()>0&&todaylist.get(0).get("VALUE")!=null&&!todaylist.get(0).get("VALUE").equals("0")) {
+//				String tvalue = todaylist.get(0).get("VALUE") + "";
+//				String val =UtilTool.cutFloat2(UtilTool.parseFloat(maxvalue) - UtilTool.parseFloat(tvalue) + "");
+//				if(!val.equals("0")&&!val.equals("0.00")) {
+//					setTodayValue(val,today,devid,pointid);
+//				}
+//			}
+			if(minlist.size()>0&&minlist.get(0).get("VALUE")!=null&&!minlist.get(0).get("VALUE").equals("0")) {
 				String minvalue = minlist.get(0).get("VALUE") + "";
 				String val =UtilTool.cutFloat2(UtilTool.parseFloat(maxvalue) - UtilTool.parseFloat(minvalue) + "");
 				if(!val.equals("0")&&!val.equals("0.00")) {
@@ -196,30 +205,24 @@ public class RptDevQuartz implements Job {
 					return null;
 				}
 			}
-//			Logs.logsync("MAX:SQL"+MAXsql+"MIN:SQL"+MINsql+"Max:"+maxlist.toString() + "Min:"+minlist.toString());
+			
 		}
 		return null;
 	}
 	
-	public String checkValue(Date beforeDate, String nowBefore, String devid, String pointid) throws Exception {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		int num=0;
-		for(int i=0;i<15;i++) {
-			String time=UtilTime.getNowBeforeDay(beforeDate, num);
-			Date date=sdf.parse(time);
-			String table = String.format(CMD.HIS_DEVTABLE, UtilTime.getYMD(date));
-			int count = baseservice.getCount(String.format(CMD.IS_HIS_BASE, table), DB.HIS);
-			if (count > 0) {
-				String checksql="select COALESCE(MAX(VALUE),'0') as value from "
-						+ table + " WHERE time <= '"+ nowBefore + "' and mgrobjid='" + devid + "' and pointid='" + pointid+"'";
-				List<Map<String, Object>> checklist = baseservice.getSqlListS(checksql, DB.HIS);
-				if(checklist.size()>0 && !checklist.get(0).get("VALUE").equals("0")&&BaseUtil.isNotNull(checklist.get(0).get("VALUE")+"")) {
-					return checklist.get(0).get("VALUE") + "";
-				}
-			}
-			num=num-1;
+	public void setTodayValue(String val,String today,String devid, String pointid) throws Exception {
+		String checksql="select * from todayPower WHERE time='"+today+"' and mgrobjid='"+devid+"' and pointid='"+pointid+"'";
+		List<Map<String, Object>> list = baseservice.getSqlListS(checksql, DB.HIS);
+		System.out.println("devid:"+devid+"，pointid:"+pointid);
+		if(list.size()>0&&list.get(0).get("ID")!=null) {
+			System.out.println("UPDATE:"+devid+"_"+pointid);
+			String UPDATE_TABLE="UPDATE todayPower SET `VALUE`='"+val+"' WHERE time='"+today+"' and mgrobjid='"+devid+"' and pointid='"+pointid+"'";
+			baseservice.exeSql(UPDATE_TABLE, DB.HIS);
+		}else {
+			System.out.println("insert:"+devid+"_"+pointid);
+			String INSERT_TABLE = "INSERT INTO todayPower (`MGROBJID`, `POINTID`,`TIME`, `VALUE`) VALUES ('"+devid+"','"+pointid+"','"+today+"','"+val+"')";
+			baseservice.exeSql(INSERT_TABLE, DB.HIS);
 		}
-		return "0";
 	}
 	
 	public void putData(String rpttable, String now, String mid, String pid, String value, int i) throws Exception {

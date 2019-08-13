@@ -12,6 +12,7 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 @XStreamAlias("classroom")
 public class ClassroomXml {
+	@XStreamAsAttribute
 	private String serverid;// 采集器ID
 	@XStreamAsAttribute
 	private String code;// 编码

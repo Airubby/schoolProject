@@ -7,16 +7,19 @@
                         style="width:300px;"
                         size="small"
                         class="loncom_mr10"
-                        placeholder="请输入内容"
+                        placeholder="请输入房间名称"
                         prefix-icon="el-icon-search"
-                        v-model="name">
+                        v-model="initParams.ROOMNAME">
                     </el-input>
-                    <el-button type="primary" size="small" @click="getList">搜索</el-button>
+                    <el-button type="primary" size="small" @click="searchFN">搜索</el-button>
                 </div>
                 <div class="scrollbar custom" style='height:calc(100% - 50px)' v-loading="loading">
                     <el-scrollbar style='height:100%' class="loncom_control_con">
                         <el-search-table-pagination type="local" 
-                            border :data="table_data" :columns="table_columns" stripe>   
+                            border :data="table_data" 
+                            :columns="table_columns" stripe
+                            :params="initParams"
+                            ref="thisRef">   
                             <template slot-scope="scope" slot="preview-time">
                                 <span v-if="time=='day'">{{$tool.Format("hh:mm:ss",scope.row.TIME)}}</span>
                                 <span v-else>{{$tool.Format("yyyy-MM-dd hh:mm:ss",scope.row.TIME)}}</span>
@@ -34,7 +37,7 @@
 export default {
     
     created () {
-        
+        this.getList();
     },
     mounted() {
         
@@ -42,18 +45,25 @@ export default {
    data() {
        return {
             loading:false,
-            table_data:[{classname:"宿舍01",ele:"23",water:"123"}],
+            initParams:{
+                ROOMNAME:'',
+            },
+            table_data:[],
             table_columns:[
-                { prop: 'classname', label: '宿舍号',minWidth:20},
-                { prop: 'ele', label: '用电量',minWidth:15},
-                { prop: 'water', label: '用水量',minWidth:15},
+                { prop: 'BUILDNAME', label: '楼栋名称',minWidth:20},
+                { prop: 'LEVELNAME', label: '楼层名称',minWidth:20},
+                { prop: 'ROOMNAME', label: '房间名称',minWidth:20},
+                { prop: 'USEELEC', label: '用电量',minWidth:15},
             ]
        }
     },
     methods:{
+        searchFN:function(){
+            this.$refs.thisRef.searchHandler(true);
+        },
         getList:function(){
             this.loading=true;
-            this.$api.post('', {}, r => {
+            this.$api.post('/waterele/query', {}, r => {
                 console.log(r)
                 this.loading=false;
                 if(r.err_code=="0"){

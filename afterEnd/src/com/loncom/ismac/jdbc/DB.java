@@ -14,6 +14,7 @@ package com.loncom.ismac.jdbc;
 public class DB {
 	public static String SYS = "sys";// 核心设置数据库
 	public static String HIS = "his";// 核心设置数据库
+	public static String SER="ser";//水电数据库
 	// public static String MANAGE="manage";//用户权限数据库
 //	public static String REPORT = "report";// 报表
 }

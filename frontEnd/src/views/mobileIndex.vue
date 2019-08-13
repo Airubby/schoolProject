@@ -87,6 +87,7 @@ export default {
     methods:{
         getInfo:function(){
             this.loading=true;
+            //startTime:this.$tool.Format("yyyy-MM-dd 00:00:00",new Date()),endTime:this.$tool.Format("yyyy-MM-dd hh:mm:ss",new Date())
             this.$api.get('/service/energy', {}, r => {
                 console.log(r)
                 this.loading=false;

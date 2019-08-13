@@ -53,16 +53,13 @@ public class AlarmDevQuartz implements Job {
 		String now = UtilTimeThread.format(new Date(), "yyyy-MM-dd HH:mm:ss");
 		String daybefore = UtilTimeThread.format(new Date(), "yyyy-MM-dd 00:00:00");
 		String monthbefore = UtilTimeThread.format(new Date(), "yyyy-MM-01 00:00:00");
-		System.out.println("执行了统计告警");
-		System.out.println(now);
-		String devtable = String.format(CMD.HIS_DEVTABLE,UtilTimeThread.format(new Date(), "yyyyMMdd"));
 		List qlist=baseservice.query(alarm);
 		if(qlist.size()<=0) {
 			return;
 		}
-		int devcount = baseservice.getCount(String.format(CMD.IS_HIS_BASE, devtable), DB.HIS);
 		Map<String, Object> alarmObj=JSONObject.fromObject(qlist.get(0));
-		if(alarmObj.get("model").equals("1")&&devcount>0) {
+		if(alarmObj.get("model").equals("1")) {
+			String rpttable="",code="";
 			for (Service service : AppContext.getService()) {
 				for(GroupXml groupXml:service.getGroupcontrol().getGroup()) {
 					String towername=groupXml.getGroupname();
@@ -70,13 +67,13 @@ public class AlarmDevQuartz implements Job {
 						for (ClassroomXml classroomXml: groupXml.getClassroomgroup().getItem()) {
 							String classname=classroomXml.getClassname();
 							if(!BaseUtil.isNotNull(classroomXml.getElement())&&classroomXml.getBaseItem() != null) {
-								String rpttable = String.format(CMD.RPT_DEVTABLE, classroomXml.getCode());
-								String code=classroomXml.getCode();
+								rpttable = String.format(CMD.RPT_DEVTABLE, classroomXml.getCode());
+								code=classroomXml.getCode();
 								for (int j = 0; j < classroomXml.getBaseItem().size(); j++) {
 									if (classroomXml.getBaseItem().get(j).getDev().equals("powerdegree")&&
 											BaseUtil.isNotNull(classroomXml.getBaseItem().get(j).getPointid())) {
 										String dev = classroomXml.getBaseItem().get(j).getPointid();
-										String mid = "", pid = "", dayvalue = "";
+										String mid = "", pid = "",dayvalue="",monthvalue="";
 										if (dev.indexOf("_") != -1) {
 											String[] pointidarr = dev.split("_");
 											for (int k = 0; k < pointidarr.length; k++) {
@@ -89,17 +86,12 @@ public class AlarmDevQuartz implements Job {
 													mid += "_" + devid;
 													pid += "_" + pointid;
 												}
-												String dayval = getDayValue(devtable,now, devid, pointid);
-												if (BaseUtil.isNotNull(dayval)) {
-													dayvalue = UtilTool.parseFloat(dayvalue) + UtilTool.parseFloat(dayval) + "";
-												}
-													
 											}
 										} else {
 											mid = dev.split(",")[0];
 											pid = dev.split(",")[1];
-											dayvalue = getDayValue(devtable,now, mid, pid);
 										}
+										dayvalue = getValue(rpttable,daybefore,now, mid, pid);
 										if (BaseUtil.isNotNull(dayvalue)) {
 											if(UtilTool.parseFloat(dayvalue)-UtilTool.parseFloat(alarmObj.get("dayvalue")+"")>0) {
 												String desc=towername+"/"+classname+",今日已用电:"+UtilTool.parseFloat(dayvalue)+
@@ -107,7 +99,7 @@ public class AlarmDevQuartz implements Job {
 												putData(code,classname,daybefore,monthbefore,now,"1","classroom",desc);
 											}
 										}
-										String monthvalue=getMonthValue(rpttable,monthbefore,now,mid,pid);
+										monthvalue=getValue(rpttable,monthbefore,now,mid,pid);
 										if (BaseUtil.isNotNull(monthvalue)) {
 											if(UtilTool.parseFloat(monthvalue)-UtilTool.parseFloat(alarmObj.get("monthvalue")+"")>0) {
 												String desc=towername+"/"+classname+"本月已用电:"+UtilTool.parseFloat(monthvalue)+
@@ -125,13 +117,13 @@ public class AlarmDevQuartz implements Job {
 						for (ClassroomXml classroomXml : groupXml.getOfficegroup().getItem()) {
 							String classname=classroomXml.getClassname();
 							if(!BaseUtil.isNotNull(classroomXml.getElement())&&classroomXml.getBaseItem() != null) {
-								String rpttable = String.format(CMD.RPT_DEVTABLE, classroomXml.getCode());
-								String code=classroomXml.getCode();
+								rpttable = String.format(CMD.RPT_DEVTABLE, classroomXml.getCode());
+								code=classroomXml.getCode();
 								for (int j = 0; j < classroomXml.getBaseItem().size(); j++) {
 									if (classroomXml.getBaseItem().get(j).getDev().equals("powerdegree")&&
 											BaseUtil.isNotNull(classroomXml.getBaseItem().get(j).getPointid())) {
 										String dev = classroomXml.getBaseItem().get(j).getPointid();
-										String mid = "", pid = "", dayvalue = "";
+										String mid = "", pid = "",dayvalue="",monthvalue="";
 										if (dev.indexOf("_") != -1) {
 											String[] pointidarr = dev.split("_");
 											for (int k = 0; k < pointidarr.length; k++) {
@@ -144,17 +136,12 @@ public class AlarmDevQuartz implements Job {
 													mid += "_" + devid;
 													pid += "_" + pointid;
 												}
-												String dayval = getDayValue(devtable,now, devid, pointid);
-												if (BaseUtil.isNotNull(dayval)) {
-													dayvalue = UtilTool.parseFloat(dayvalue) + UtilTool.parseFloat(dayval) + "";
-												}
-													
 											}
 										} else {
 											mid = dev.split(",")[0];
 											pid = dev.split(",")[1];
-											dayvalue = getDayValue(devtable,now, mid, pid);
 										}
+										dayvalue = getValue(rpttable,daybefore,now, mid, pid);
 										if (BaseUtil.isNotNull(dayvalue)) {
 											if(UtilTool.parseFloat(dayvalue)-UtilTool.parseFloat(alarmObj.get("dayvalue")+"")>0) {
 												String desc=towername+"/"+classname+",今日已用电:"+UtilTool.parseFloat(dayvalue)+
@@ -162,7 +149,7 @@ public class AlarmDevQuartz implements Job {
 												putData(code,classname,daybefore,monthbefore,now,"1","officeroom",desc);
 											}
 										}
-										String monthvalue=getMonthValue(rpttable,monthbefore,now,mid,pid);
+										monthvalue=getValue(rpttable,monthbefore,now,mid,pid);
 										if (BaseUtil.isNotNull(monthvalue)) {
 											if(UtilTool.parseFloat(monthvalue)-UtilTool.parseFloat(alarmObj.get("monthvalue")+"")>0) {
 												String desc=towername+"/"+classname+"本月已用电:"+UtilTool.parseFloat(monthvalue)+
@@ -181,23 +168,7 @@ public class AlarmDevQuartz implements Job {
 		}
 	}
 	
-	public String getDayValue(String devtable, String now, String devid, String pointid) throws Exception {
-		String MAXsql="select COALESCE(MAX(convert(value,decimal(10,2))),'0') as value from "
-				+ devtable + " WHERE time <= '"+ now + "' and mgrobjid='" + devid + "' and pointid='" + pointid+"'";
-		List<Map<String, Object>> maxlist = baseservice.getSqlListS(MAXsql, DB.HIS);
-		if(maxlist.size()>0&&BaseUtil.isNotNull(maxlist.get(0).get("VALUE")+"")) {
-			String maxvalue = maxlist.get(0).get("VALUE") + "";
-			String val =UtilTool.cutFloat2(UtilTool.parseFloat(maxvalue) + "");
-			if(!val.equals("0")&&!val.equals("0.00")) {
-				return val;
-			}else {
-				return null;
-			}
-			
-		}
-		return null;
-	}
-	public String getMonthValue(String rpttable, String nowBefore, String now, String devid, String pointid) throws Exception {
+	public String getValue(String rpttable, String nowBefore, String now, String devid, String pointid) throws Exception {
 		String sql= "select cast(sum(allvalue) as decimal(10,2)) as allvalue from "+rpttable+" WHERE time >= '"+nowBefore+"' and time <= '"+now+"'";
 		List<Map<String, Object>> list = baseservice.getSqlListS(sql, DB.HIS);
 		if(list.size()>0) {

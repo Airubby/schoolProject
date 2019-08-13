@@ -1039,17 +1039,24 @@ public class ServiceAction extends BaseServlet {
 	/**
 	 * 
 	 * 今天的总能耗和实时能耗
+	 * @param countlist 
 	 * */
 	
 	@MethodInfo(METHOD="/service/energy",ISLOG=false)
 	public String queryenergy() throws Exception{
+//		String startTime=getRequest().getParameter("startTime");
+//		String endTime=getRequest().getParameter("endTime");
+		String endTime = UtilTimeThread.format(new Date(), "yyyy-MM-dd HH:mm:ss");
+		String startTime = UtilTimeThread.format(new Date(), "yyyy-MM-dd 00:00:00");
+		List<ClassroomXml> classlist=new ArrayList<ClassroomXml>();
+		List<ClassroomXml> dormlist=new ArrayList<ClassroomXml>();
+		String sql="",rpttable="",allsql = "",countsql="";
+		
 		Map<String,Object> map=new HashMap<String,Object>();
-		String value="",allvalue="0",allsql="",sql="",ballsql="";
-		String now = UtilTimeThread.format(new Date(), "yyyy-MM-dd HH:mm:ss");
-		String nowBefore = UtilTimeThread.format(new Date(), "yyyy-MM-dd 00:00:00");
+		String value="",allvalue="0"; //,allsql="",sql=""
+//		String today = UtilTimeThread.format(new Date(), "yyyy-MM-dd 00:00:00");
 		
 		IBaseService baseservice = new BaseServiceImpl();
-		String devtable = String.format(CMD.HIS_DEVTABLE,UtilTimeThread.format(new Date(), "yyyyMMdd"));
 		
 		for(Service service : AppContext.getService()) {
 			for (GroupXml groupXml : service.getGroupcontrol().getGroup()) {
@@ -1072,30 +1079,11 @@ public class ServiceAction extends BaseServlet {
 										value=UtilTool.cutFloat2(UtilTool.parseFloat(value)+UtilTool.parseFloat(val)+"");
 									}
 								}
-								
-								if (classroomXml.getBaseItem().get(i).getDev().equals("powerdegree")&&
-										BaseUtil.isNotNull(classroomXml.getBaseItem().get(i).getPointid())) {
-									String dev = classroomXml.getBaseItem().get(i).getPointid();
-									String mid = "", pid = "",val="";
-									if (dev.indexOf("_") != -1) {
-										String[] pointidarr = dev.split("_");
-										for (int k = 0; k < pointidarr.length; k++) {
-											String devid = pointidarr[k].split(",")[0];
-											String pointid = pointidarr[k].split(",")[1];
-											sql=" (mgrobjid = '%s' and pointid='%s') or";
-											sql=String.format(sql,devid,pointid);
-											allsql+=sql;
-										}
-									} else {
-										mid = dev.split(",")[0];
-										pid = dev.split(",")[1];
-										sql=" (mgrobjid = '%s' and pointid='%s') or";
-										sql=String.format(sql,mid,pid);
-										allsql+=sql;
-									}
-								}
-								
 							}
+							rpttable=String.format(CMD.RPT_DEVTABLE, classroomXml.getCode());
+							sql=" select * from %s where time >= '%s' and time < '%s' UNION";
+							sql=String.format(sql,rpttable,startTime,endTime);
+							allsql+=sql;
 						}
 					}
 				}
@@ -1119,29 +1107,11 @@ public class ServiceAction extends BaseServlet {
 									}
 								}
 								
-								if (classroomXml.getBaseItem().get(i).getDev().equals("powerdegree")&&
-										BaseUtil.isNotNull(classroomXml.getBaseItem().get(i).getPointid())) {
-									String dev = classroomXml.getBaseItem().get(i).getPointid();
-									String mid = "", pid = "",val="";
-									if (dev.indexOf("_") != -1) {
-										String[] pointidarr = dev.split("_");
-										for (int k = 0; k < pointidarr.length; k++) {
-											String devid = pointidarr[k].split(",")[0];
-											String pointid = pointidarr[k].split(",")[1];
-											sql=" (mgrobjid = '%s' and pointid='%s') or";
-											sql=String.format(sql,devid,pointid);
-											allsql+=sql;
-										}
-									} else {
-										mid = dev.split(",")[0];
-										pid = dev.split(",")[1];
-										sql=" (mgrobjid = '%s' and pointid='%s') or";
-										sql=String.format(sql,mid,pid);
-										allsql+=sql;
-									}
-								}
-								
 							}
+							rpttable=String.format(CMD.RPT_DEVTABLE, classroomXml.getCode());
+							sql=" select * from %s where time >= '%s' and time < '%s' UNION";
+							sql=String.format(sql,rpttable,startTime,endTime);
+							allsql+=sql;
 						}
 					}
 				}
@@ -1149,11 +1119,10 @@ public class ServiceAction extends BaseServlet {
 		}
 		List<Map<String, Object>> list=new ArrayList<Map<String, Object>>();
 		if(allsql!="") {
-			allsql=allsql.substring(0, allsql.length()-2);
-			ballsql="select cast(sum(a.value) as decimal(10,2)) as allvalue from(select * from "+devtable+
-					" where time >= '"+nowBefore+"' and time <='"+now+"' and "+allsql+") a";
-			
-			list = baseservice.getSqlListS(ballsql, DB.HIS);
+			allsql=allsql.substring(0, allsql.length()-5);
+			countsql="select cast(sum(a.allvalue) as decimal(10,2)) as allvalue "
+					+ "from ("+allsql+") a";
+			list = baseservice.getSqlListS(countsql,DB.HIS);
 		}
 		if(list.size()>0&&list.get(0).get("ALLVALUE")!=null) {
 			allvalue=list.get(0).get("ALLVALUE")+"";
@@ -1163,7 +1132,6 @@ public class ServiceAction extends BaseServlet {
 		}
 		map.put("nowPower", value);
 		map.put("allPower", allvalue);
-		System.out.println(ballsql);
 		return JSONObject.fromObject(map).toString();
 	}
 
