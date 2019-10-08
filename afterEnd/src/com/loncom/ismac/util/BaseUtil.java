@@ -1336,8 +1336,8 @@ public class BaseUtil {
 //		System.out.println("*******************"+data);
 	}
 	public static void HandleState(String data) {
-		//System.out.println(data);
 		JSONArray array = JSONArray.fromObject(data);
+		System.out.println(array.toString());
 		JSONObject obj;
 		//commStatus 0 正常
 		for(int i=0;i<array.size();i++) {
@@ -1421,6 +1421,7 @@ public class BaseUtil {
 
 	public static void HandleData(String data) throws InterruptedException {
 		JSONArray array = JSONArray.fromObject(data);
+		System.out.println(array.toString());
 		MorphDynaBean bean = null;
 		List<DataPack> datalist = new ArrayList<DataPack>();
 		List json = JSONArray.toList(array);

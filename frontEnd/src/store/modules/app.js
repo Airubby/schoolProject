@@ -3,7 +3,7 @@ import Cookies from 'js-cookie'
 const app = {
   state: {
     wsData:{},
-    AjaxUrl:Cookies.get('AjaxUrl')||'',
+    AjaxUrl:'',
     changeUser:'',
     webSocket:'',
   },
@@ -13,7 +13,6 @@ const app = {
     },
     setAjaxUrl(state,ajaxUrl){
         state.AjaxUrl=ajaxUrl;
-        Cookies.set('AjaxUrl', ajaxUrl)
     },
     setWebSocketUrl(state,webSocket){
       state.webSocket=webSocket;

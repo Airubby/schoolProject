@@ -46,7 +46,7 @@ public class CookiesUtil {
             for (Cookie cookie : cookies) {
             	 if (cookie != null) {
                      cookieMap.put(cookie.getName(), cookie);
-                   }
+            	 }
             }
         }
         return cookieMap;
@@ -67,6 +67,7 @@ public class CookiesUtil {
         // tomcat下多应用共享
         cookie.setPath("/iSmacSite/");
         // 如果cookie的值中含有中文时，需要对cookie进行编码，不然会产生乱码
+        cookie.setHttpOnly(true);
         try {
             URLEncoder.encode(value, "utf-8");
         } catch (UnsupportedEncodingException e) {

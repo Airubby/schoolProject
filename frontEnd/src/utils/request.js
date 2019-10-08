@@ -39,19 +39,20 @@ service.interceptors.response.use(
     
     const res = response.data;
     console.log(res)
-    if (res.code == 200 || res.code == 900 || !res.code) {
-      return response.data;
-    } else {
-      let errorMsg = "抱歉，出错啦~~~";
-      if (res.code === 10003) {
-        errorMsg = "长时间未登录，请重新登陆！";
+    return res;
+    // if (res.code == 200 || res.code == 900 || !res.code) {
+    //   return response.data;
+    // } else {
+    //   let errorMsg = "抱歉，出错啦~~~";
+    //   if (res.code === 10003) {
+    //     errorMsg = "长时间未登录，请重新登陆！";
 
-        location.reload()
-      }
+    //     location.reload()
+    //   }
 
-      Message.error(errorMsg);
-      return Promise.reject("error");
-    }
+    //   Message.error(errorMsg);
+    //   return Promise.reject("error");
+    // }
   },
   error => {
     console.log("err" + error); // for debug

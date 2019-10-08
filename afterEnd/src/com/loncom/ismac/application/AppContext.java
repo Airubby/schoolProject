@@ -212,6 +212,7 @@ public class AppContext {
 					 */
 					String url = FileUtil
 							.readToString(xmlurl.replaceAll("WEB-INF/classes/", "xml/"+object.getSysxml()));
+					
 					RootXml root = XmlEdiParser.parseRootData(url);
 					 url = FileUtil
 								.readToString(xmlurl.replaceAll("WEB-INF/classes/", "xml/"+object.getDevxml()));

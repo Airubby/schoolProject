@@ -127,15 +127,16 @@ public class AsynServlet extends HttpServlet {
 	 */
 	public void sendMessage(String message) throws IOException {
 		i++;
+		synchronized(session) {
 		if (this.session.isOpen()) {
 
 			try {
-				Async asyc = this.session.getAsyncRemote();
-				asyc.sendText(message);
+				this.session.getBasicRemote().sendText(message);;
 			} catch (Exception e) {
 				Logs.log(e);
 			}
 
+		}
 		}
 		// this.session.getAsyncRemote().sendText(message);
 	}

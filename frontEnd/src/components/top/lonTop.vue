@@ -110,7 +110,7 @@ export default {
                 if(r.err_code=="0"){
                     this.alarmInfo[0].value=r.data.value;
                 }else{
-                    this.$message.warning(r.err_msg);
+                    // this.$message.warning(r.err_msg);
                 }
             });
         },

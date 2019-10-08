@@ -8,7 +8,7 @@
         </div>
         <div class="loncom_index_publicbox">
             <h2 class="loncom_index_top10title">教室节能排名TOP10</h2>
-            <ul class="loncom_index_top10">
+            <ul class="loncom_index_top10 loncom_index_asc">
                 <li v-for="(item,index) in top_data2" v-if="index<10"><em>{{index+1}}</em><span>{{item.classname}}</span><span class="loncom_fr">{{item.value}}</span></li>
             </ul>
         </div>
@@ -20,7 +20,7 @@
         </div>
         <div class="loncom_index_publicbox">
             <h2 class="loncom_index_top10title">办公室节能排名TOP10</h2>
-            <ul class="loncom_index_top10">
+            <ul class="loncom_index_top10 loncom_index_asc">
                 <li v-for="(item,index) in top_data4" v-if="index<10"><em>{{index+1}}</em><span>{{item.classname}}</span><span class="loncom_fr">{{item.value}}</span></li>
             </ul>
         </div>

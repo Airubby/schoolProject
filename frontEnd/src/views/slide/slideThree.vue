@@ -18,11 +18,9 @@
 
 export default {
     created () {
-        let _this=this;
+        
         this.getInfo();
-        this.timer=setInterval(function(){
-            _this.getInfo();
-        },15000)
+        
     },
     mounted() {
         
@@ -35,16 +33,20 @@ export default {
         }
     },
     destroyed() {
-        clearInterval(this.timer);
+        clearTimeout(this.timer);
         this.timer="";
     },
     methods:{
         async getInfo(){
+            let _this=this;
             this.loading=true;
             await this.getMoreDayInfo();
             await this.getTitle();
             await this.getTypeInfo();
             this.loading=false;
+            this.timer=setTimeout(function(){
+                _this.getInfo();
+            },15000)
         },
         getTitle:function(){
             return new Promise ((resolve, reject) => {

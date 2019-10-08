@@ -102,7 +102,9 @@ public class BaseServlet extends HttpServlet {
 		//		+ request.getSession().getId()+"SESSIONTIME:  "+request.getSession().getMaxInactiveInterval());
 		
    if (BaseUtil.isNotNull(AppContext.getSID().get(sid)+"") ||
-		 "/user/login".equals(url) ||"user/out".equals(url) ) {
+		 "/user/login".equals(url) ||"user/out".equals(url) ||
+		 "/slide/query".equals(url)||"/service/topInfo".equals(url)||"/service/moreDayInfo".equals(url)||
+		 "/service/tableTitle".equals(url)||"/service/typeInfo".equals(url)) {
 		this.username =getCookie("userid");
 		
 		/*if ( "/User/login".equals(url)){*/

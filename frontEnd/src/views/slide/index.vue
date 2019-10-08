@@ -39,10 +39,6 @@ export default {
         let _this=this;
         this.getList();
         
-        this.timer=setInterval(function(){
-            _this.getList();
-        },15000)
-            
     },
     mounted() {
         this.getSlide();
@@ -68,9 +64,10 @@ export default {
     destroyed() {
         clearInterval(this.slidetimer);
         this.slidetimer='';
-        clearInterval(this.timer);
+        clearTimeout(this.timer);
         this.timer='';
-        console.log("清楚interval"+this.timer)
+        clearTimeout(this.stimer);
+        this.stimer='';
     }, 
     data() {
         return {
@@ -81,6 +78,7 @@ export default {
             swiper:'',
             slidetimer:'',
             timer:'',
+            stimer:'',
         }
     },
     methods:{
@@ -92,6 +90,10 @@ export default {
                 }else{
                     this.$message.warning(r.err_msg);
                 }
+                let _this=this;
+                this.stimer=setTimeout(function(){
+                    _this.getSlide();
+                },300000)
             });
         },
         getList:function(){
@@ -99,12 +101,18 @@ export default {
             // let startTime=this.$tool.Format("yyyy-MM-dd 00:00:00",new Date(new Date().getTime()-3600*1000*24*1));
             let startTime=this.$tool.Format("yyyy-MM-dd 00:00:00",new Date());
             let endTime=this.$tool.Format("yyyy-MM-dd hh:mm:ss",new Date());
+            this.loading=true;
             this.$api.post('/service/topInfo', {startTime:startTime,endTime:endTime}, r => {
+                this.loading=false;
                 if(r.err_code=="0"){
                     this.topData=r.data;
                 }else{
                     this.$message.warning(r.err_msg);
                 }
+                let _this=this;
+                this.timer=setTimeout(function(){
+                    _this.getList();
+                },15000)
             })
         },
         enterHome:function(){

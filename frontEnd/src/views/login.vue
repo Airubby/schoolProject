@@ -74,10 +74,10 @@ export default {
 							sessionStorage.loginInfo= JSON.stringify(r.data);
 
 							var date=new Date();
-							var expiresDays=10;
-							//将date设置为10天以后的时间
+							var expiresDays=30000;
+							// 将date设置为30000天以后的时间
 							date.setTime(date.getTime()+expiresDays*24*3600*1000);
-							//将userId和userName两个cookie设置为10天后过期
+							// 将userId和userName两个cookie设置为10天后过期
 							document.cookie=" userid="+this.user.userid+"; expires="+date.toGMTString();
 							this.$router.push({path:'/'});
 						}else{

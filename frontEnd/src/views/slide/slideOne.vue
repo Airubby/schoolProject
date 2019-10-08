@@ -57,10 +57,10 @@ export default {
                 yData4.push(officetopn[i].value);
             }
             
-            let top1=this.$tool.barChar('top1',"教室能耗排名TOP10",xData1,yData1,"#3398DB",40);
-            let top2=this.$tool.barChar('top2',"教室节能排名TOP10",xData2,yData2,"#3398DB",40);
-            let top3=this.$tool.barChar('top3',"办公室能耗排名TOP10",xData3,yData3,"#3398DB",40);
-            let top4=this.$tool.barChar('top4',"办公室节能排名TOP10",xData4,yData4,"#3398DB",40);
+            let top1=this.$tool.barChar('top1',"教室能耗排名TOP10",xData1,yData1,"#f4092a",40);
+            let top2=this.$tool.barChar('top2',"教室节能排名TOP10",xData2,yData2,"#52c41a",40);
+            let top3=this.$tool.barChar('top3',"办公室能耗排名TOP10",xData3,yData3,"#f4092a",40);
+            let top4=this.$tool.barChar('top4',"办公室节能排名TOP10",xData4,yData4,"#52c41a",40);
             window.onresize=function(){
                 top1.resize();
                 top2.resize();

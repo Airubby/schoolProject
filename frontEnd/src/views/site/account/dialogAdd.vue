@@ -115,8 +115,7 @@ export default {
                 callback(new Error('请输入密码至少8位且包含数字、字母大小写'));
             } else {
                 if (this.ruleForm.psword) {
-                    let reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~!@#$%^&amp;*()_+`\-={}:";'&lt;&gt;?,.\/]).{8,64}$/; 
-                    if(reg.test(value)){
+                    if(/[a-z]/.test(value) && /[A-Z]/.test(value) && /[0-9]/.test(value)&& value.length>7){
                         callback();
                     }else{
                         callback(new Error('请输入密码至少8位且包含数字、字母大小写'));

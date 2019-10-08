@@ -3,6 +3,7 @@
     <groupcontrol name="能效监控">
         <group acreage="152464" classroomcount="1000" countnumber="3100" details="1#楼" dormcount="1000" groupname="1#楼" groupno="1" groupfloor="6">
             <classroomgroup name="教室" roomno="11">
+            	<!-- model 0 手动 1自动  floor楼层-->
 				<classroom classname="普通教室101" floor="1" closeair="21" code="11_101" model="0" openair="27" timegroup="" times="1">
 					<item dev="airstate" pointid="8012,2010500002;801710,3082012001"/> <!--空调设备-->
 					<item dev="lampstate" pointid="8013,3000300001"/>  <!--配电 智能电箱-->

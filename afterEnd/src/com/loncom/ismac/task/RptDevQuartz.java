@@ -21,6 +21,7 @@ import com.loncom.ismac.logs.Logs;
 import com.loncom.ismac.lservice.bean.Service;
 import com.loncom.ismac.service.IBaseService;
 import com.loncom.ismac.service.impl.BaseServiceImpl;
+import com.loncom.ismac.syslog.bean.Syslog;
 import com.loncom.ismac.util.BaseUtil;
 import com.loncom.ismac.util.CMD;
 import com.loncom.ismac.util.UtilTime;
@@ -47,11 +48,12 @@ public class RptDevQuartz implements Job {
 		// TODO Auto-generated method stub
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String now = UtilTimeThread.format(new Date(), "yyyy-MM-dd HH:mm:00");
-		String today = UtilTimeThread.format(new Date(), "yyyy-MM-dd 00:00:00");
+		Date dt=new Date();
+		String now = UtilTimeThread.format(dt, "yyyy-MM-dd HH:mm:00");	
+		String today = UtilTimeThread.format(dt, "yyyy-MM-dd 00:00:00");
 //		System.out.println("执行了抽取报表"+now);
 		Date date = sdf.parse(now);
-		String nowBefore = UtilTime.getNowBeforeMin(date, -10);
+		String nowBefore = UtilTime.getNowBeforeMin(date, -20);  //这个地方的时间为，定时器设置的时间的2倍，迭代求期间的最大最小值
 		List<ClassroomXml> classlist = new ArrayList<ClassroomXml>();
 		List<ClassroomXml> dormlist = new ArrayList<ClassroomXml>();
 		IBaseService baseservice = new BaseServiceImpl();
@@ -135,6 +137,7 @@ public class RptDevQuartz implements Job {
 													pid += "_" + pointid;
 												}
 												String val = getValue(nowBefore, now, devid, pointid,today,devtable);
+												
 												if (BaseUtil.isNotNull(val))
 													value = UtilTool.parseFloat(value) + UtilTool.parseFloat(val) + "";
 											}
@@ -177,25 +180,15 @@ public class RptDevQuartz implements Job {
 	 * @throws Exception
 	 */
 	public String getValue( String nowBefore, String now, String devid, String pointid,String today,String devtable) throws Exception {
+		
 		String MAXsql="select COALESCE(MAX(convert(value,decimal(10,2))),'0') as value from "
 				+ devtable + " WHERE time >= '"+ nowBefore + "' and time <= '"+ now + "' and mgrobjid='" + devid + "' and pointid='" + pointid+"'";
 		List<Map<String, Object>> maxlist = baseservice.getSqlListS(MAXsql, DB.HIS);
 		String MINsql="select COALESCE(MIN(convert(value,decimal(10,2))),'0') as value from "
 				+ devtable + " WHERE time >= '"+ nowBefore + "' and time <= '"+ now + "' and mgrobjid='" + devid + "' and pointid='" + pointid+"'";
 		List<Map<String, Object>> minlist = baseservice.getSqlListS(MINsql, DB.HIS);
-		
-//		String todaysql="select COALESCE(MIN(convert(value,decimal(10,2))),'0') as value from "
-//				+ devtable + " WHERE time >= '"+ today + "' and time <= '"+ now + "' and mgrobjid='" + devid + "' and pointid='" + pointid+"'";
-//		List<Map<String, Object>> todaylist = baseservice.getSqlListS(todaysql, DB.HIS);
 		if(maxlist.size()>0&&maxlist.get(0).get("VALUE")!=null&&!maxlist.get(0).get("VALUE").equals("0")) {
 			String maxvalue = maxlist.get(0).get("VALUE") + "";
-//			if(todaylist.size()>0&&todaylist.get(0).get("VALUE")!=null&&!todaylist.get(0).get("VALUE").equals("0")) {
-//				String tvalue = todaylist.get(0).get("VALUE") + "";
-//				String val =UtilTool.cutFloat2(UtilTool.parseFloat(maxvalue) - UtilTool.parseFloat(tvalue) + "");
-//				if(!val.equals("0")&&!val.equals("0.00")) {
-//					setTodayValue(val,today,devid,pointid);
-//				}
-//			}
 			if(minlist.size()>0&&minlist.get(0).get("VALUE")!=null&&!minlist.get(0).get("VALUE").equals("0")) {
 				String minvalue = minlist.get(0).get("VALUE") + "";
 				String val =UtilTool.cutFloat2(UtilTool.parseFloat(maxvalue) - UtilTool.parseFloat(minvalue) + "");
