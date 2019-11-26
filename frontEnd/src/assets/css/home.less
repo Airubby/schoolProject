@@ -1,7 +1,6 @@
 @charset "utf-8";
 .loncom_index_top{
     width: 100%;
-    max-width: 1300px;
     height: 80px;
     margin: 0 auto;
     position: relative;
@@ -32,14 +31,14 @@
 .loncom_index_top_text{
     text-align: center;
     height: 100%;
-    font-size: 22px;
-    letter-spacing: 6px;
+    font-size: 24px;
+    letter-spacing: 2px;
     background: radial-gradient(300px 50px, #4054a0, #151935);
-    color: #fff;
-    padding-top: 18px;
+    color: #b9c6f2;
+    padding-top: 22px;
+    font-weight: bold;
 }
 .loncom_index_top_text span{
-    cursor: pointer;
     display: block;
     box-reflect: below 0 linear-gradient(transparent,transparent 50%,rgba(255,255,255,.2));
 }
@@ -80,21 +79,65 @@
 }
 .loncom_index_con_top{
     width: 100%;
-    height: 100px;
+    height: 28%;
     position: relative;
-    top: -10px;
-    margin-bottom: 10px;
+    display: flex;
 }
-.loncom_index_con_topcon{
+.loncom_index_con_topconr,
+.loncom_index_con_topconl{
     width: calc(50% - 185px);
     height: 100%;
 }
+.loncom_index_con_topconr_title{
+    width: 100%;
+    height: 22px;
+    font-weight: bold;
+    .btn{
+        margin-left: 10px;
+        cursor: pointer;
+        &.active{
+            color: #4C78FF;
+        }
+    }
+}
+.loncom_index_con_topcen{
+    width: 370px;
+    height: 100%;
+    padding: 0 10px;
+}
+.classoffice{
+    h2{
+        font-weight: bold;
+    }
+    .number{
+        font-size: 14px;
+        margin-top: 3px;
+        span{
+            font-size: 32px;
+            margin-right: 5px;
+        }
+    }
+    .classnumber .color{
+        color: #4A78FF;
+    }
+    .officenumber .color{
+        color: #DDAF34;
+    }
+    .classroom{
+        margin-top: 25px;
+        .number span{
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+    }
+}
+
 .loncom_index_publicbox{
-    box-shadow: inset 0px 0px 20px #4963bd;
+    box-shadow: inset 0px 0px 10px #4963bd;
     position: relative;
     overflow: hidden;
     padding: 15px;
-    background: #192144;
+    background: rgba(25, 33, 68, 0.84);
 }
 .loncom_index_con_topbox{
     height: 100px;
@@ -153,29 +196,145 @@
 }
 .loncom_index_conbody{
     width: 100%;
-    height: calc(100% - 115px);
+    height: calc(72% - 15px);
 }
-.loncom_index_conbody_left{
-    width: calc((50% - 185px)/2);
-    float: left;
-    height: 470px;
-}
+// .loncom_index_conbody_left{
+//     width: calc((50% - 185px)/2);
+//     float: right;
+//     height: 470px;
+// }
 .loncom_index_conbody_right{
-    height: 470px;
-    width: calc((50% - 185px)/2);
+    height: 100%;
+    width: calc(50% - 170px);
     float: right;
+    .loncom_index_conbody_rightbox{
+        height: calc(100% - 40px);
+        width: calc(50% - 20px);
+        margin-left: 20px;
+        float: left;
+        .rightbox-scrollbar{
+            width:calc(100% + 15px);
+            height: calc(100% - 36px);
+            .loncom_index_top10{
+                padding-right: 15px;
+            }
+        }
+    }
 }
 .loncom_index_conbody_center{
-    width: calc(50% + 165px);
-    margin: 0 10px;
+    width: calc(50% + 170px);
     float: left;
     height: 100%;
     text-align: center;
+    position: relative;
+    img{
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        max-width: 100%;
+        max-height: 100%;
+    }
+    .mapshow{
+        position: absolute;
+        .maparea{
+            cursor: pointer;
+            display: block;
+            position: absolute;
+            bottom: 36px;
+            left: -11px;
+            &:before{
+                content: "";
+                width: 0;
+                height: 0;
+                display: block;
+                position: absolute;
+                border-left: 0px solid transparent;
+                border-right: 22px solid transparent;
+                border-top: 36px solid #4A78FF;
+                transform: rotate(-31deg);
+            }
+            &:after{
+                content: "";
+                width: 0;
+                height: 0;
+                display: block;
+                position: absolute;
+                border-right: 0px solid transparent;
+                border-left: 22px solid transparent;
+                border-top: 36px solid #6060E2;
+                transform: rotate(31deg);
+            }
+        }
+        .maparea:hover{
+            &:before{
+                border-top: 36px solid #E79626;
+            }
+            &:after{
+                border-top: 36px solid #ED7818;
+            }
+        }
+    }
+    .center_enter{
+        width: 280px;
+        text-align: center;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+    }
 }
-.loncom_index_conbody_center img{
-    max-width: 100%;
-    max-height: 100%;
+.center_route{
+    height: 35px;
+    line-height: 35px;
+    border: 1px solid #4A78FF;
+    display: inline-block;
+    width: 115px;
+    text-align: center;
+    border-radius: 5px;
+    color: #4A78FF;
+    cursor: pointer;
+    margin: 0 5px;
+    &:hover{
+        background: #4A78FF;
+        color: #fff;
+    }
 }
+.mapcon{
+    width: 100%;
+    h2{
+        color: #4A78FF;
+        margin-bottom: 10px;
+    }
+    .info{
+        p{
+            display: flex;
+            height: 30px;
+            line-height: 30px;
+            span{
+                display: inline-block;
+            }
+            .txt{
+                width: 80px;
+                color: #909BC4;
+                font-size: 12px;
+            }
+            .number{
+                color: #D1D9F5;
+                font-size: 12px;
+                em{
+                    font-size: 20px;
+                }
+            }
+        }
+    }
+    .echarts{
+        width: 260px;
+        height: 120px;
+    }
+}
+
 .loncom_index_conbody_li{
     height: 30px;
     line-height: 30px;
@@ -227,7 +386,108 @@
     background: #99d47d;
 }
 
-
+/*楼层*/
+.floor_left{
+    width: 150px;
+    height: 100%;
+    position: relative;
+    .floor_left_img{
+        width: 100px;
+        text-align: center;
+        p{
+            margin: 20px 0 15px 0;
+        }
+        .item{
+            cursor: pointer;
+        }
+        img{
+            height: 50px;
+        }
+    }
+    .floor_left_route{
+        position: absolute;
+        bottom: 20px;
+        left: 0;
+        .center_route{
+            margin-bottom: 15px;
+        }
+    }
+}
+.floor_right{
+    width: calc(100% - 200px);
+    height: 100%;
+    .floor_right_change{
+        width: 100%;
+        height: 80px;
+        line-height: 80px;
+        display: flex;
+    }
+    .floor_right_map{
+        width: 100%;
+        height: calc(100% - 100px);
+        text-align: center;
+        position: relative;
+        img{
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            width: 100%;
+            height: 100%;
+        }
+        .mapshow{
+            position: absolute;
+            .maparea{
+                cursor: pointer;
+                display: block;
+                position: absolute;
+                position: relative;
+                &.openair{
+                    background: rgba(138, 110, 35, 0.6);
+                }
+                .maparea-con{
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    z-index: 9;
+                    width: 100%;
+                    height: 100%;
+                    display: table;
+                    .maparea-conbox{
+                        display: table-cell;
+                        vertical-align: middle;
+                        text-align: center;
+                        font-size: 12px;
+                        color: #D1D9F5;
+                    }
+                }
+            }
+            .othermaparea{
+                background: none;
+                &.openair{
+                    background: none;
+                    .othermap{
+                        background: rgba(138, 110, 35, 0.6);
+                    }
+                }
+                .othermap{
+                    position: absolute;
+                    left: 0;
+                    z-index: 1;
+                }
+                .othermap-top{
+                    top: 0;
+                }
+                .othermap-bottom{
+                    bottom: 0;
+                }
+            }
+        }
+    }
+    
+}
 
 /**手机*/
 .mobile_index{

@@ -1,11 +1,8 @@
 <template>
     <div class="loncom_content">
-        <div class="loncom_index_top">
-            <em class="loncom_index_top_line"></em>
-            <em class="loncom_index_top_line1"></em>
-            <div class="loncom_index_top_text"><span @click="enterHome()">元岗校区能效管理系统</span></div>
-        </div>
+        <home-top></home-top>
         <div class="loncom_index_con" v-loading="loading">
+            <router-link to="/" style="position:absolute;top:-5px;left:30px;">返回首页</router-link>
             <div id="swiper-container" class="swiper-container">
                 <div class="swiper-wrapper" id="swiper-wrapper">
                
@@ -34,6 +31,7 @@
 import slideOne from './slideOne.vue'
 import slideTwo from './slideTwo.vue'
 import slideThree from './slideThree.vue'
+import homeTop from '@/components/homeTop.vue'
 export default {
     created () {
         let _this=this;
@@ -127,7 +125,7 @@ export default {
             })
         },
     },
-    components:{slideOne,slideTwo,slideThree}
+    components:{slideOne,slideTwo,slideThree,homeTop}
 
  }
 </script>

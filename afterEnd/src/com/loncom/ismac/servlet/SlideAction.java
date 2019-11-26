@@ -28,7 +28,6 @@ public class SlideAction extends BaseServlet  {
 	 */
 	@MethodInfo(METHOD="/slide/add",LOGSNAME="新增幻灯片")
 	public String add()throws Exception{
-		System.out.println(getRequest().getParameter("url"));
 		
 		obj.setId(BaseUtil.getUUID());
 		obj.setUrl(getRequest().getParameter("url"));

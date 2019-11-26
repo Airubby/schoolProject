@@ -25,35 +25,50 @@
                             </el-form-item>
                         </el-col>   
                         <div v-if="ruleForm.userid!='admin'">
-                        <el-col :span="12">
-                            <el-form-item label="开始时间" prop="time_start" size="small">
-                                <el-date-picker
-                                    style="width:100%"
-                                    value-format="yyyy-MM-dd HH:mm:ss"
-                                    v-model="ruleForm.time_start"
-                                    type="datetime"
-                                    :disabled="loginInfo.userid!='admin'"
-                                    placeholder="选择日期时间">
-                                </el-date-picker>
-                            </el-form-item>
-                        </el-col>   
-                        <el-col :span="12">
-                            <el-form-item label="结束时间" prop="time_end" size="small">
-                                <el-date-picker
-                                    style="width:100%"
-                                    value-format="yyyy-MM-dd HH:mm:ss"
-                                    v-model="ruleForm.time_end"
-                                    type="datetime"
-                                    :disabled="loginInfo.userid!='admin'"
-                                    placeholder="选择日期时间">
-                                </el-date-picker>
-                            </el-form-item>
-                        </el-col>  
-                        <el-col :span="12">
-                            <el-form-item label="管理域" prop="addrorrole" size="small">
-                                <el-input v-model="ruleForm.addrname" :disabled="loginInfo.userid!='admin'" @focus="selectTree"></el-input>
-                            </el-form-item>
-                        </el-col>    
+                            <el-col :span="12">
+                                <el-form-item label="角色" prop="roleid" size="small">
+                                    <el-select v-model="ruleForm.roleid">
+                                        <template v-for="item in role_data">
+                                            <el-option :label="item.name" :value="item.id"></el-option>
+                                        </template>
+                                    </el-select>
+                                </el-form-item>
+                            </el-col>  
+                            <el-col :span="12">
+                                <el-form-item label="状态" prop="state" size="small">
+                                    <el-select v-model="ruleForm.state">
+                                        <el-option label="启用" value="1"></el-option>
+                                        <el-option label="停用" value="0"></el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </el-col>   
+                            <el-col :span="12">
+                                <el-form-item label="开始时间" prop="time_start" size="small">
+                                    <el-date-picker
+                                        style="width:100%"
+                                        value-format="yyyy-MM-dd HH:mm:ss"
+                                        v-model="ruleForm.time_start"
+                                        type="datetime"
+                                        placeholder="选择日期时间">
+                                    </el-date-picker>
+                                </el-form-item>
+                            </el-col>   
+                            <el-col :span="12">
+                                <el-form-item label="结束时间" prop="time_end" size="small">
+                                    <el-date-picker
+                                        style="width:100%"
+                                        value-format="yyyy-MM-dd HH:mm:ss"
+                                        v-model="ruleForm.time_end"
+                                        type="datetime"
+                                        placeholder="选择日期时间">
+                                    </el-date-picker>
+                                </el-form-item>
+                            </el-col>  
+                            <el-col :span="12">
+                                <el-form-item label="管理域" prop="addrorrole" size="small">
+                                    <el-input v-model="ruleForm.addrname" @focus="selectTree"></el-input>
+                                </el-form-item>
+                            </el-col>    
                         </div>
                         <el-col :span="12">
                             <el-form-item label="手机" prop="phone" size="small">
@@ -80,9 +95,6 @@ import store from '@/store/index'
 import tree from './tree.vue'
 export default {
     created () {
-        if(sessionStorage.loginInfo){
-            this.loginInfo=JSON.parse(sessionStorage.loginInfo);
-        }
         if(this.dialogInfo.id){
             this.readonly=true;
             this.$api.get('/user/details', {id:this.dialogInfo.id}, r => {
@@ -99,6 +111,7 @@ export default {
             });
         }
         this.getArea();
+        this.getRole();
     },
     mounted() {
 
@@ -180,8 +193,8 @@ export default {
         return {
             loginInfo:{},
             readonly:false,
-            options: [],
             treedata:[],
+            role_data:[],
             ruleForm: {
                 id:'',
                 userid:'',
@@ -194,8 +207,8 @@ export default {
                 time_end:'',
                 phone: '',
                 email: '',
-                roleid:'2',
-                state:'1',
+                roleid:'',
+                state:'',
                 visible:false,
             },
             rules: {
@@ -223,6 +236,12 @@ export default {
                 email:[
                     { required: false, trigger: 'blur' ,validator:checkemail}
                 ],
+                roleid:[
+                    { required: true, message: '请选择角色', trigger: 'change' }
+                ],
+                state:[
+                    { required: true, message: '请选择状态', trigger: 'change' }
+                ]
             },
         }
     },
@@ -235,10 +254,18 @@ export default {
                 }
             });
         },
+        getRole:function(){
+            this.$api.post('/role/query', {}, r => {
+                console.log(r)
+                if(r.err_code=="0"){
+                  this.role_data=r.data;
+                }else{
+                    this.$message.warning(r.err_msg);
+                }
+            });
+        },
         selectTree:function(){
-            if(this.loginInfo.userid=='admin'){
-                this.ruleForm.visible=true;
-            }
+            this.ruleForm.visible=true;
         },
         //保存的操作
         dialogSure:function(){
@@ -248,14 +275,14 @@ export default {
                     this.ruleForm.psword=this.$tool.Encrypt(this.ruleForm.psword);
                     this.ruleForm.tpassword=this.$tool.Encrypt(this.ruleForm.tpassword);
                     this.ruleForm.addrorrole=this.ruleForm.addrorrole.toString();
-                    
                     this.$api.post(url, {"obj":this.ruleForm}, r => {
                         console.log(r)
                         if(r.err_code=="0"){
                             this.$message.success(r.err_msg);
                             this.$parent.getList();
-                            if(this.ruleForm.id){
-                                store.dispatch('setChangeUser',true);
+                            let userid=(this.$tool.Decrypt(sessionStorage.energyInfo)&&this.$tool.Decrypt(sessionStorage.energyInfo).split("_").length>1)?this.$tool.Decrypt(sessionStorage.energyInfo).split("_")[1]:""
+                            if(this.ruleForm.id&&this.ruleForm.id==userid){
+                                store.dispatch('setChangeUser',this.ruleForm);
                             }
                             this.dialogInfo.visible=false;
                         }else{
@@ -264,10 +291,6 @@ export default {
                     });
                 } 
             });
-        },
-        //取消操作
-        dialogCancel:function(){
-            this.dialogInfo.visible=false;
         },
 
     },

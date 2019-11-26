@@ -82,7 +82,6 @@ public class UploadAction extends BaseServlet {
 			});
 			// 解析
 			List<FileItem> items = upload.parseRequest(getRequest());
-			System.out.println(items);
 			for (FileItem item : items) {
 				if (item.isFormField())// 普通字段，表单提交过来的
 				{

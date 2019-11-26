@@ -5,7 +5,7 @@
             <div class="index_top_con">
                 <div class="index_top_box">
                     <p>{{dataInfo.allPower}}</p>
-                    <span>今日用电(kwh)</span>
+                    <span>今日用电(KWh)</span>
                 </div>
                 <div class="index_top_box">
                     <p>{{dataInfo.nowPower}}</p>
@@ -14,11 +14,11 @@
             </div>
         </div>
         <div class="loncom_index_center">
-            <router-link to="/msite"><img src="~@/assets/images/home.png"></router-link>
+            <router-link to="/msite"><img src="images/home.png"></router-link>
         </div>
         <div class="loncom_index_bottom">
             <div class="loncom_index_bottombox">
-                <router-link to="/msite/control">
+                <router-link to="/site/control">
                     <div class="loncom-box">
                         <em class="topleft"></em>
                         <em class="topright"></em>
@@ -29,7 +29,7 @@
                 </router-link>
             </div>
             <div class="loncom_index_bottombox">
-                <router-link to="/msite/analyze">
+                <router-link to="/site/analyze">
                     <div class="loncom-box">
                         <em class="topleft"></em>
                         <em class="topright"></em>
@@ -40,7 +40,7 @@
                 </router-link>
             </div>
             <div class="loncom_index_bottombox">
-                <router-link to="/msite/alarm">
+                <router-link to="/site/alarm">
                     <div class="loncom-box">
                         <em class="topleft"></em>
                         <em class="topright"></em>
@@ -58,9 +58,6 @@
 
 export default {
     created () {
-        if(!sessionStorage.loginInfo){
-            this.$router.push({path:'/login'});
-        }
         let _this=this;
         this.getInfo();
         this.timer=setInterval(function(){

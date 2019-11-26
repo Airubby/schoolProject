@@ -67,7 +67,7 @@
                                     </div>
                                     <div class="info info1">
                                         <span class="loncom_mr5">总用电量</span>
-                                        <em class="color2CA858">{{item.powerdegree}}</em>kwh
+                                        <em class="color2CA858">{{item.powerdegree}}</em>KWh
                                     </div>
                                 </div>
                             </div>
@@ -102,6 +102,8 @@ export default {
             groupno:'',
             floorno:'',
             classno:'',
+            airStatus:'',
+            lampStatus:'',
             name:'',
             groupOptions:[],
             floorOptions:[],
@@ -131,7 +133,10 @@ export default {
         },
         getList:function(){
             this.loading=true;
-            this.$api.post('/service/query', {name:this.name,groupno:this.groupno,floor:this.floorno,classno:this.classno}, r => {
+            this.$api.post('/service/query', {
+                name:this.name,groupno:this.groupno,
+                floor:this.floorno,classno:this.classno,
+                lampStatus:'',airStatus:''}, r => {
                 console.log(r)
                 this.loading=false;
                 if(r.err_code=="0"){

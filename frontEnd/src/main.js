@@ -23,6 +23,7 @@ Vue.prototype.$api = api
 //绑定工具函数到全局
 Vue.prototype.$tool = tool
 Vue.prototype.$Swiper = Swiper
+Vue.prototype.$store = store
 
 Vue.use(ElementUI)
 Vue.use(ElSearchTablePagination)
@@ -38,6 +39,7 @@ function getServerConfig () {
       Vue.prototype.$ajaxUrl=ajaxUrl;
       store.dispatch('setAjaxUrl',ajaxUrl);
       store.dispatch('setWebSocketUrl',config.webSocket);
+      require('@/permission')
       resolve();
     }).catch((error) => {
       console.log(error)

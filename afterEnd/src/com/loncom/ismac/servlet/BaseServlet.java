@@ -13,8 +13,8 @@ import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Map;
@@ -26,8 +26,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.lang.reflect.ParameterizedType;  
-import java.lang.reflect.Type;  
+
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
@@ -40,12 +40,10 @@ import com.loncom.ismac.service.IBaseService;
 import com.loncom.ismac.service.impl.BaseServiceImpl;
 import com.loncom.ismac.soket.service.impl.BaseSocketClient;
 import com.loncom.ismac.soket.service.impl.LoncomipDataAddOutClient;
-import com.loncom.ismac.timegroup.bean.TimeDetail;
 import com.loncom.ismac.user.bean.UserBean;
 import com.loncom.ismac.util.BaseUtil;
 import com.loncom.ismac.util.CookiesUtil;
 import com.loncom.ismac.util.UtilTool;
-import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -101,7 +99,7 @@ public class BaseServlet extends HttpServlet {
 		//System.out.println("SID:" + BaseUtil.isNotNull(AppContext.getSID().get(sid) + "") + "**********SID" + sid + "session"
 		//		+ request.getSession().getId()+"SESSIONTIME:  "+request.getSession().getMaxInactiveInterval());
 		
-   if (BaseUtil.isNotNull(AppContext.getSID().get(sid)+"") ||
+if (BaseUtil.isNotNull(AppContext.getSID().get(sid)+"") ||
 		 "/user/login".equals(url) ||"user/out".equals(url) ||
 		 "/slide/query".equals(url)||"/service/topInfo".equals(url)||"/service/moreDayInfo".equals(url)||
 		 "/service/tableTitle".equals(url)||"/service/typeInfo".equals(url)) {
@@ -217,7 +215,7 @@ public class BaseServlet extends HttpServlet {
 			}
 
 		} catch (Exception e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 			Logs.log(e);
 			data.setErr_msg("操作失败!");
 			// 日志
@@ -302,7 +300,7 @@ public class BaseServlet extends HttpServlet {
 	    }
 	}
 	
-	public  <T>T requestParameterToBean(HttpServletRequest request,Class<T> clszz) throws ClassNotFoundException {
+	public  <T>T requestParameterToBean(HttpServletRequest request,Class<T> clszz) throws Exception {
 	    T obj = null;
 	    BeanInfo beanInfo=null;
 	    try {
@@ -320,17 +318,38 @@ public class BaseServlet extends HttpServlet {
 	    //获取该类属性的描述
 	    PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
 	    Enumeration en = request.getParameterNames();
+	    Object bean=null;
+	    Method method=null;
+	    String beantype="";
 	    while (en.hasMoreElements()) {
 	        String paramName = (String) en.nextElement();
 	        PropertyDescriptor descriptor;
 	        for(int i=0;i<propertyDescriptors.length;i++){
+	        	if ("model".equals(propertyDescriptors[i].getName())) {
+					if (bean == null) {
+						bean = propertyDescriptors[i].getPropertyType().newInstance();
+					}
+					String value = request.getParameter(paramName);
+					if (!"[]".equals(value)) {
+						beantype = getObStyle(bean.getClass(), paramName);
+						if (!"java.util.List".equals(beantype)) {
+							BeanUtils.setProperty(bean, paramName, value);
+						} else {
+							BeanUtils.setProperty(bean, paramName, JSONArray.fromObject(value));
+						}
+						method = propertyDescriptors[i].getWriteMethod();
+						method.invoke(obj, new Object[] { bean });
+					}
+				}
+	        	
+	        	
 	            if(paramName.equals(propertyDescriptors[i].getName())&&!"class".equals(propertyDescriptors[i].getName())){
 	                descriptor = propertyDescriptors[i];
 	               // Type[] types=  descriptor.getPropertyEditorClass()
 	                
 	                String className = descriptor.getPropertyType().getName();
 	             
-	                Method method = descriptor.getWriteMethod();
+	                method = descriptor.getWriteMethod();
 	                if (!("undefined".equals(request.getParameter(paramName))||"null".equals(request.getParameter(paramName)))){
 	                    Object value;
 	                    //这里的类型不一一枚举，若传过来的class还有别的类型，在这里加上
@@ -376,6 +395,22 @@ public class BaseServlet extends HttpServlet {
 	    return obj;
 	}
 	
+	/**
+	 *      * 根据字段名得到类型      * @param ca  要操作的类      * @param name  要获类型的字段名     
+	 * * @return      * @throws Exception      *     
+	 */
+	public static String getObStyle(Class ca, String name) throws Exception {
+		Class c = null;
+		Field[] field = ca.getDeclaredFields();
+		Object info = ca.newInstance();
+		for (int i = 0; i < field.length; i++) {
+			if (field[i].getName().equals(name)) {
+				c = field[i].getType();
+				break;
+			}
+		}
+		return c == null ? "" : c.getName();
+	}
 	
 	/**
 	 * 获取Cookie登录用户的访问权限
@@ -388,8 +423,6 @@ public class BaseServlet extends HttpServlet {
 		if("admin".equals(roleid)){
 			return "0";
 		}
-		System.out.println(roleid);
-		System.out.println(AppContext.getUserMap().get(roleid));
 		if(AppContext.getUserMap().get(roleid)!=null) {
 			return  AppContext.getUserMap().get(roleid).getAddrorrole().equals("")?"-1":AppContext.getUserMap().get(roleid).getAddrorrole();
 		}

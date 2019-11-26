@@ -39,7 +39,7 @@ public class Histest implements Job {
 
 	public void task() throws Exception {
 		// TODO Auto-generated method stub
-		System.out.println("test写历史数据");
+//		System.out.println("test写历史数据");
 		DataPack datapack=new DataPack();
 		comitcount+=1;
 		datapack.setAgentbm("1");
@@ -54,7 +54,7 @@ public class Histest implements Job {
 			datapack.setMarktime(UtilTime.getNow());
 		}
 		AppContext.hisQueueVouData.put(datapack);
-		System.out.println(AppContext.hisQueueVouData.size());
+//		System.out.println(AppContext.hisQueueVouData.size());
 		
 		
 

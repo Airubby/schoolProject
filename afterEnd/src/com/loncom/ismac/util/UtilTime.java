@@ -56,6 +56,13 @@ public class UtilTime {
 		str=arr[1]+"-"+arr[2];
 		return str;
 	}
+	
+	public static String getYM(){
+		return ym.format(new Date());
+	}
+	public static String getY(){
+		return yyyy.format(new Date());
+	}
 	/**
 	 * 格式化Y-M
 	 * */
@@ -489,6 +496,8 @@ public class UtilTime {
 		return firstDay + " 00:00:00," + lastDay + " 23:59:59";
 
 	}
+	
+	
 
 	/**
 	 * 根据当前日期获得上周的日期区间（上周周一和周日日期）
@@ -674,6 +683,20 @@ public class UtilTime {
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
 		c.add(Calendar.DAY_OF_MONTH, month);
+		return sdf.format(c.getTime());
+	}
+	
+	/**
+	 * 获取+-天的时间
+	 * @param date 计算起始时间
+	 * @param month +-天数据
+	 * @return
+	 */
+	public static String getNowBeforeYear(Date date, int year) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		c.add(Calendar.YEAR, year);
 		return sdf.format(c.getTime());
 	}
 

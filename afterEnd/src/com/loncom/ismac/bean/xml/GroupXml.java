@@ -14,7 +14,7 @@ public class GroupXml {
 	@XStreamAsAttribute
 	private String groupfloor;  //有几层楼
 	@XStreamAsAttribute
-	private String details;
+	private String details;//每栋楼
 	@XStreamAsAttribute
 	private String acreage;//建筑面积
 	@XStreamAsAttribute

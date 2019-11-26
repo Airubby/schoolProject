@@ -1,5 +1,6 @@
 package com.loncom.ismac.util;
 
+
 /**
  * Project: lonweb Version:1.0 Package: com.lon.util File: CMD.java
  * 
@@ -61,6 +62,18 @@ public class CMD {
     	"	  PRIMARY KEY (`id`)"+
     	"	)";
 	// 历史能效
+	public final static String DAY_DEVTABLE="day%s";
+	public final static String YEAR_DEVTABLE = "year%s";
+	public final static String MONTH_DEVTABLE = "month%s";
+	public final static String MONTH_INSERT="INSERT INTO %s (mgrobjid,pointid,`value`,`time`) %s";
+	public final static String MONTH_CREATE=" CREATE TABLE %s ( "+
+    		"  `id` int(11) NOT NULL AUTO_INCREMENT,"+
+    		"  `mgrobjid` varchar(50) DEFAULT NULL,"+
+    		"  `pointid` varchar(50) DEFAULT NULL,"+
+    		"  `value` varchar(20) DEFAULT NULL,"+
+    		"  `time` varchar(50) DEFAULT NULL,"+
+    	"	  PRIMARY KEY (`id`)"+
+    	"	)";
 	public final static String HIS_ENERGY_HEAD = "INSERT INTO %s (NAME, VALUE, HDATA,ENERGYID) VALUES ";
 	public final static String HIS_ENERGY_CONTENT = " ('%s','%s','%s','%s','%s'),";
 	public final static String HIS_ENERGY_CREATE = "CREATE TABLE %s (" + " ID INTEGER IDENTITY(1, 1) DEFAULT NULL,"

@@ -51,10 +51,10 @@ function apiAxios (method, url, params, success, failure) {
     withCredentials: true
   })
   .then(function (res) {
-    if(res.data.err_code=="-1"&&sessionStorage.loginInfo){
+    if(res.data.err_code=="-1"&&sessionStorage.energyInfo){
         Message.warning("请登录系统");
         router.push({path:'/login'});
-        sessionStorage.removeItem('loginInfo');
+        sessionStorage.removeItem('energyInfo');
     }
     if(success&&res.data.err_code!="-1"){
       success(res.data);
@@ -65,10 +65,9 @@ function apiAxios (method, url, params, success, failure) {
     
   })
   .catch(function (err) {
-    let res = err.response
     if (err) {
       success({err_code:'500',err_msg:"接口异常,请联系管理员"})
-      console.log('api error, HTTP CODE: ' + res)
+      console.log('api error, HTTP CODE: ' + err)
     }
   })
 }

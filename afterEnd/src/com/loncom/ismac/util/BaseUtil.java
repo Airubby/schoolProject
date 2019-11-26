@@ -55,6 +55,7 @@ import com.loncom.ismac.scanning.PackageClassTable;
 import com.loncom.ismac.service.IBaseService;
 import com.loncom.ismac.service.impl.BaseServiceImpl;
 import com.loncom.ismac.task.his.HisDev;
+import com.loncom.ismac.user.bean.WebServiceSysmenu;
 import com.loncom.ismac.websocket.AsynServlet;
 
 import net.sf.ezmorph.bean.MorphDynaBean;
@@ -660,6 +661,8 @@ public class BaseUtil {
 	    		"  `value` varchar(20) DEFAULT NULL,"+
 	    		"  `time` varchar(20) DEFAULT NULL,"+
 	    		"  `allvalue` varchar(20) DEFAULT NULL,"+
+	    		"  `orvalue` varchar(20) DEFAULT NULL,"+
+	    		"  `mvalue` varchar(20) DEFAULT NULL,"+
 	    		sql+
 	    	"	  PRIMARY KEY (`id`)"+
 	    	"	)";
@@ -1337,9 +1340,9 @@ public class BaseUtil {
 	}
 	public static void HandleState(String data) {
 		JSONArray array = JSONArray.fromObject(data);
-		System.out.println(array.toString());
+//		System.out.println(array.toString());
 		JSONObject obj;
-		//commStatus 0 正常
+		//commStatus 0 正常  异常的时候往前端推空将数据置空；
 		for(int i=0;i<array.size();i++) {
 			obj=JSONObject.fromObject(array.get(i));
 			//System.out.println(!obj.get("commStatus").equals("0"));
@@ -1421,7 +1424,6 @@ public class BaseUtil {
 
 	public static void HandleData(String data) throws InterruptedException {
 		JSONArray array = JSONArray.fromObject(data);
-		System.out.println(array.toString());
 		MorphDynaBean bean = null;
 		List<DataPack> datalist = new ArrayList<DataPack>();
 		List json = JSONArray.toList(array);
@@ -1431,6 +1433,7 @@ public class BaseUtil {
 		for (Object object : json) {
 			map=new HashMap<String,Object>();
 			bean = (MorphDynaBean) object;
+			
 			datapack = new DataPack();
 			datapack.setAgentbm(bean.get("agentBM") + "");
 			datapack.setDatachar(bean.get("dataType") + "");
@@ -1439,15 +1442,16 @@ public class BaseUtil {
 			datapack.setValue(bean.get("value") + "");
 			datapack.setMarktime(bean.get("markTime") + "");
 			
-			datalist.add(datapack);
-			
 			map.put("key", bean.get("mgrObjId")+"_"+bean.get("propertyId"));
 			map.put("value", bean.get("value"));
-			list.add(map);
+			if(bean.get("value")!=null&&!bean.get("value").equals("")){
+				datalist.add(datapack);
+				list.add(map);
+			}
 			// AppContext.hisQueueVouData.put(datapack);
 			try {
 				//System.out.println(datapack.getMarktime());
-				HisDev.HisStorageDev(datapack);
+				//HisDev.HisStorageDev(datapack);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -1463,6 +1467,7 @@ public class BaseUtil {
 		
 		JSONArray json2=JSONArray.fromObject(list);
 		setMsg(json2.toString());
+		
 	}
 	
 	/**
@@ -1501,6 +1506,24 @@ public class BaseUtil {
 	 */
 
 	public static String getDevvouValue(String mgrobjid, String id) {
+//		if(	
+//				(mgrobjid.equals("8013")&&id.equals("3000300001"))||
+//				(mgrobjid.equals("8082")&&id.equals("2010500002"))||
+//				(mgrobjid.equals("801703")&&id.equals("3000300001"))||
+//				(mgrobjid.equals("8072")&&id.equals("2010500002"))||
+//				(mgrobjid.equals("801702")&&id.equals("2010500002"))||
+//				(mgrobjid.equals("8012")&&id.equals("2010500002"))||
+//				(mgrobjid.equals("8022")&&id.equals("2010500002"))||
+//				
+//				(mgrobjid.equals("801451")&&id.equals("3050314004"))||
+//				(mgrobjid.equals("801431")&&id.equals("3050314004"))||
+//				(mgrobjid.equals("801436")&&id.equals("3050314004"))||
+//				(mgrobjid.equals("8021")&&id.equals("3050314001"))
+//				
+//				
+//				) {
+//			return "3.1";
+//		}
 		DevvouXml devvou = null;
 		DevheadBean devhead = AppContext.getDevhead().get(mgrobjid);
 		if (devhead != null) {
@@ -1516,6 +1539,42 @@ public class BaseUtil {
 	}
 	
 	/**
+	 * 获取属性对象 rpt报表抽取的时候用
+	 * 
+	 * @param agentbm
+	 *            站点编码
+	 * @param mgrobjid
+	 *            设备ID
+	 * @param id
+	 *            设备属性ID
+	 */
+
+	public static String rptgetDevvouValue(String mgrobjid, String id) {
+
+		DevvouXml devvou = null;
+		DevheadBean devhead = AppContext.getDevhead().get(mgrobjid);
+		String value="0";
+		if (devhead != null) {
+			devvou = devhead.getItem().get(mgrobjid + "_" + id);
+			if(devvou!=null) {
+				if(devvou.getValue()!=null&&!devvou.getValue().equals("0")&&
+						!devvou.getValue().equals("0.0")&&!devvou.getValue().equals("0.00")
+						&&!devvou.getValue().equals("")) {
+					value=UtilTool.cutFloat2(devvou.getValue());
+				}else {
+					//首次也得判断backvalue是否存在
+					if(devvou.getBackvalue()!=null&&!devvou.getBackvalue().equals("0")&&
+						!devvou.getBackvalue().equals("0.0")&&!devvou.getBackvalue().equals("0.00")
+						&&!devvou.getBackvalue().equals("")) {
+						value=UtilTool.cutFloat2(devvou.getBackvalue());
+					}
+				}
+			}
+		}
+		return value;
+	}
+	
+	/**
 	 * 获取服务的信息（教学楼，教室等）
 	 * groupno:楼
 	 * classno:教室办公室：classroom/officeroom
@@ -1525,44 +1584,14 @@ public class BaseUtil {
 	 */
 	public static List getService(String groupno,String classno,String floor,String classname,String code) {
 		List<ClassroomXml> list=new ArrayList<ClassroomXml>();
-		for (Service service : AppContext.getService()) {
-			for (GroupXml groupXml : service.getGroupcontrol().getGroup()) {
-				String groupno1=groupXml.getGroupno();
-				if(!BaseUtil.isNotNull(groupno)||groupno.equals(groupno1)) {
-					if(!BaseUtil.isNotNull(classno)||classno.equals("classroom")) {
-						if(groupXml.getClassroomgroup().getItem()!=null)
-						for (ClassroomXml classroomXml: groupXml.getClassroomgroup().getItem()) {
-							classroomXml.setServerid(service.getId());
-							//如果获取详情就直接获取后return
-							if(BaseUtil.isNotNull(code)&&classroomXml.getCode().equals(code)) {
-								List<ClassroomXml> detaillist=new ArrayList<ClassroomXml>();
-								detaillist.add(classroomXml);
-								return detaillist;
-							}
-							//有楼层，有名字
-							if(BaseUtil.isNotNull(floor)&&BaseUtil.isNotNull(classname)) {
-								if(classroomXml.getClassname().indexOf(classname)!=-1
-										&&BaseUtil.isNotNull(classroomXml.getFloor())
-										&&classroomXml.getFloor().equals(floor)) {
-									list.add(classroomXml);
-								}
-							}else if(!BaseUtil.isNotNull(floor) && BaseUtil.isNotNull(classname)) {
-								if(classroomXml.getClassname().indexOf(classname)!=-1) {
-									list.add(classroomXml);
-								}
-							}else if(BaseUtil.isNotNull(floor) && !BaseUtil.isNotNull(classname)) {
-								if(BaseUtil.isNotNull(classroomXml.getFloor())&&classroomXml.getFloor().equals(floor)) {
-									list.add(classroomXml);
-								}
-							}else {
-								list.add(classroomXml);
-							}
-							
-						}
-					}
-					if(!BaseUtil.isNotNull(classno)||classno.equals("officeroom")) {
-						if(groupXml.getOfficegroup().getItem()!=null) {
-							for (ClassroomXml classroomXml : groupXml.getOfficegroup().getItem()) {
+		synchronized (AppContext.getService()) {
+			for (Service service : AppContext.getService()) {
+				for (GroupXml groupXml : service.getGroupcontrol().getGroup()) {
+					String groupno1=groupXml.getGroupno();
+					if(!BaseUtil.isNotNull(groupno)||groupno.equals(groupno1)) {
+						if(!BaseUtil.isNotNull(classno)||classno.equals("classroom")) {
+							if(groupXml.getClassroomgroup().getItem()!=null)
+							for (ClassroomXml classroomXml: groupXml.getClassroomgroup().getItem()) {
 								classroomXml.setServerid(service.getId());
 								//如果获取详情就直接获取后return
 								if(BaseUtil.isNotNull(code)&&classroomXml.getCode().equals(code)) {
@@ -1582,11 +1611,43 @@ public class BaseUtil {
 										list.add(classroomXml);
 									}
 								}else if(BaseUtil.isNotNull(floor) && !BaseUtil.isNotNull(classname)) {
-									if(classroomXml.getFloor().equals(floor)) {
+									if(BaseUtil.isNotNull(classroomXml.getFloor())&&classroomXml.getFloor().equals(floor)) {
 										list.add(classroomXml);
 									}
 								}else {
 									list.add(classroomXml);
+								}
+								
+							}
+						}
+						if(!BaseUtil.isNotNull(classno)||classno.equals("officeroom")) {
+							if(groupXml.getOfficegroup().getItem()!=null) {
+								for (ClassroomXml classroomXml : groupXml.getOfficegroup().getItem()) {
+									classroomXml.setServerid(service.getId());
+									//如果获取详情就直接获取后return
+									if(BaseUtil.isNotNull(code)&&classroomXml.getCode().equals(code)) {
+										List<ClassroomXml> detaillist=new ArrayList<ClassroomXml>();
+										detaillist.add(classroomXml);
+										return detaillist;
+									}
+									//有楼层，有名字
+									if(BaseUtil.isNotNull(floor)&&BaseUtil.isNotNull(classname)) {
+										if(classroomXml.getClassname().indexOf(classname)!=-1
+												&&BaseUtil.isNotNull(classroomXml.getFloor())
+												&&classroomXml.getFloor().equals(floor)) {
+											list.add(classroomXml);
+										}
+									}else if(!BaseUtil.isNotNull(floor) && BaseUtil.isNotNull(classname)) {
+										if(classroomXml.getClassname().indexOf(classname)!=-1) {
+											list.add(classroomXml);
+										}
+									}else if(BaseUtil.isNotNull(floor) && !BaseUtil.isNotNull(classname)) {
+										if(classroomXml.getFloor().equals(floor)) {
+											list.add(classroomXml);
+										}
+									}else {
+										list.add(classroomXml);
+									}
 								}
 							}
 						}
@@ -1594,6 +1655,7 @@ public class BaseUtil {
 				}
 			}
 		}
+		
 		return list;
 	}
 	public static List<GroupXml> getFloor(){
@@ -1624,7 +1686,7 @@ public class BaseUtil {
 	public static void ObjToXMl(RootXml groupxml, String filepath) throws IOException, JAXBException {
 		if (groupxml != null) {
 			String content = JaxbUtil.toXml(groupxml);
-			System.out.println(content);
+//			System.out.println(content);
 			FileUtil.writeFileContent(filepath, content);
 		}
 	}
@@ -1657,6 +1719,16 @@ public class BaseUtil {
 			}
 		}
 		return list;
+	}
+
+	public static WebServiceSysmenu getWebServiceSys(List<WebServiceSysmenu> list, String pid) {
+		// TODO Auto-generated method stub
+		for (WebServiceSysmenu webServiceSysmenu : list) {
+			if(webServiceSysmenu.getId().equals(pid)) {
+				return webServiceSysmenu;
+			}
+		}
+		return null;
 	}
 
 }

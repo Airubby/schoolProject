@@ -8,10 +8,10 @@
         </div>
         <div class="public_content">
             <ul class="menu">
-                <li><router-link to="/mobile"><i class="el-icon-s-home"></i>主页</router-link></li>
-                <li><router-link to="/msite/control"><i class="el-icon-camera-solid"></i>实时监控</router-link></li>
-                <li><router-link to="/msite/analyze"><i class="el-icon-s-data"></i>用电排行</router-link></li>
-                <li><router-link to="/msite/alarm"><i class="el-icon-message-solid"></i>超限告警</router-link></li>
+                <li><router-link to="/"><i class="el-icon-s-home"></i>主页</router-link></li>
+                <li><router-link to="/site/control"><i class="el-icon-camera-solid"></i>实时监控</router-link></li>
+                <li><router-link to="/site/analyze"><i class="el-icon-s-data"></i>用电排行</router-link></li>
+                <li><router-link to="/site/alarm"><i class="el-icon-message-solid"></i>超限告警</router-link></li>
             </ul>
         </div>
     </div>

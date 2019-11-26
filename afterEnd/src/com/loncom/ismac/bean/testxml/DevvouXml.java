@@ -193,7 +193,6 @@ public class DevvouXml {
 
 	@XmlAttribute(name = "ch")
 	public String getCh() {
-		System.out.println(ch);
 		return ch;
 	}
 

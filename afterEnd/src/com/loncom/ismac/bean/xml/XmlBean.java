@@ -58,11 +58,11 @@ public class XmlBean implements Serializable {
 			com.setDevicelist(devicevou);
 			sydw.setCommand(com);
 			
-			System.out.println(JaxbUtil.toXml(sydw));
+			
 			
 			 * String xml=JaxbUtil.toXml(sydw); YwYyghSydw sydw1 = new
 			 * YwYyghSydw(); sydw1=JaxbUtil.fromXml(xml,YwYyghSydw.class);
-			 * System.out.println(JaxbUtil.toXml(sydw1));
+			 * 
 			 
 		} catch (JAXBException e) {
 			// TODO Auto-generated catch block

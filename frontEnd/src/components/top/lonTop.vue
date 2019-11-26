@@ -6,47 +6,60 @@
         <div class="loncom_index_top_right">
             <ul>
                 <li>
-                    <a href="javascript:void(0)" @click="switcFullScreen()">
-                        <i class="el-icon-full-screen"></i>
-                    </a>
+                    <el-tooltip class="item" effect="dark" content="返回首页" placement="bottom">
+                        <router-link to="/">
+                            <img src="~@/assets/images/home.png" alt="" style="height:28px;">
+                        </router-link>
+                    </el-tooltip>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" @click="enterAlarm()">
-                        <el-badge :value="alarmInfo[0]['value']"  class="item">
-                            <i class="el-icon-bell"></i>
-                        </el-badge>
-                    </a>
+                    <el-tooltip class="item" effect="dark" content="全屏展示" placement="bottom">
+                        <a href="javascript:void(0)" @click="switcFullScreen()">
+                            <i class="el-icon-full-screen"></i>
+                        </a>
+                    </el-tooltip>
+                </li>
+                <li>
+                    <el-tooltip class="item" effect="dark" content="告警信息" placement="bottom">
+                        <a href="javascript:void(0)" @click="enterAlarm()">
+                            <el-badge :value="alarmInfo[0]['value']"  class="item">
+                                <i class="el-icon-bell"></i>
+                            </el-badge>
+                        </a>
+                    </el-tooltip>
                 </li>
                 <li class="loncom_index_userhover">
                     <el-popover
                         placement="bottom"
                         trigger="hover">
-                        <div class="loncom_index_user_info" style="width:200px;height: 150px;">
+                        <div class="loncom_index_user_info loncom_index_publicbox" style="width:200px;height: 170px;">
                             <h2>
                                 <span>账户信息</span>
                             </h2>
                             <ul>
                                 <li>
-                                    <label>账号：</label><div class="loncom_dis_inline">{{loginInfo.userid}}</div>
+                                    <label>账号：</label><div class="loncom_dis_inline">{{userInfo.userid}}</div>
                                 </li>
                                 <li>
-                                    <label>电话：</label><div class="loncom_dis_inline">{{loginInfo.phone}}</div>
+                                    <label>电话：</label><div class="loncom_dis_inline">{{userInfo.phone}}</div>
                                 </li>
                                 <li>
-                                    <label>邮箱：</label><div class="loncom_dis_inline">{{loginInfo.email}}</div>
+                                    <label>邮箱：</label><div class="loncom_dis_inline">{{userInfo.email}}</div>
                                 </li>
                             </ul>
                         </div>
                         <a href="javascript:void(0)" slot="reference" @click="enterUserList">
                             <i class="el-icon-user loncom_mr5"></i>
-                            <span id="username" style="vertical-align: top;">{{loginInfo.name}}</span>
+                            <span id="username" style="vertical-align: top;">{{userInfo.name}}</span>
                         </a>
                     </el-popover>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" @click="powerOff">
-                        <i class="el-icon-switch-button"></i>
-                    </a>
+                    <el-tooltip class="item" effect="dark" content="退出登录" placement="bottom">
+                        <a href="javascript:void(0)" @click="powerOff">
+                            <i class="el-icon-switch-button"></i>
+                        </a>
+                    </el-tooltip>
                 </li>
             </ul>
         </div>
@@ -62,9 +75,9 @@ import webSocket from '@/components/webSocket.vue'
 export default {
     name:'lonTop',
     created () {
-        if(sessionStorage.loginInfo){
-            let loginInfo=JSON.parse(sessionStorage.loginInfo);
-            this.getDetail(loginInfo.id)
+        if(sessionStorage.energyInfo){
+            let userid=this.$tool.Decrypt(sessionStorage.energyInfo).split("_")[1];
+            this.getDetail(userid)
             this.getAlarm();
         }
     },
@@ -73,9 +86,14 @@ export default {
 
     },
     computed:{
-        ...mapGetters([
-            'getChangeUser'
-        ]),
+        // ...mapGetters([
+        //     'getChangeUser'
+        // ]),
+        userInfo:{
+            get(){
+                return this.$store.getters.userInfo;
+            }
+        }
     },
     data(){
         return {
@@ -83,12 +101,6 @@ export default {
                 alarmkey:"alarmAll",
                 value:'0',
             }],
-            loginInfo:{
-                userid:"",
-                name:"",
-                phone:'',
-                email:'',
-            },
         }
     },
     methods:{
@@ -96,11 +108,7 @@ export default {
             this.$api.post('/user/details', {id:id}, r => {
                 console.log(r)
                 if(r.err_code=="0"){
-                    for(var item in this.loginInfo){
-                        this.loginInfo[item]=r.data[item];
-                    }
-                    sessionStorage.loginInfo= JSON.stringify(r.data);
-                    store.dispatch('setChangeUser',false);
+                    store.dispatch("setChangeUser",r.data);
                 }
             });
         },
@@ -130,20 +138,7 @@ export default {
                     this.$api.post('/user/out', {}, r => {
                         if(r.err_code=="0"){
                             sessionStorage.clear();
-                            Cookies.remove("userid");
-                            // let exp = new Date(); 
-                            // console.log(exp.setTime(exp.getTime()-1))
-                            // exp.setTime(exp.getTime() - 1); 
-
-                            // let cval,arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
-                            // if(arr=document.cookie.match(reg)){
-                            //     cval= unescape(arr[2]);
-                            // }else{
-                            //     cval= null;
-                            // }
-                            // if(cval!=null) 
-                            //     document.cookie =" userid="+cval+";expires=" + exp.toGMTString() + ";path=/lottery";
-                                
+                            sessionStorage.energyInfo=""; 
                             this.$router.push({path:'/login'});
                         }else{
                             this.$message.warning(r.err_msg);
@@ -159,12 +154,12 @@ export default {
     }, 
     components:{webSocket},
     watch:{
-        getChangeUser: function(val) { 
-            if(val){
-                let loginInfo=JSON.parse(sessionStorage.loginInfo);
-                this.getDetail(loginInfo.id);
-            }
-        },
+        // getChangeUser: function(val) { 
+        //     if(val){
+        //         let userid=this.$tool.Decrypt(sessionStorage.energyInfo).split("_")[1];
+        //         this.getDetail(userid);
+        //     }
+        // },
     } 
 }
 </script>

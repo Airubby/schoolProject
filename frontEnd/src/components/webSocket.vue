@@ -1,5 +1,5 @@
 <template>
-    <span></span>
+    
 </template>
 <script>
 import { mapGetters } from 'vuex'
@@ -124,6 +124,7 @@ export default {
 
                     }
                 }
+                this.$emit("backInfo");
             }
             
         },

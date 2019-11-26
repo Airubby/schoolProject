@@ -9,7 +9,7 @@
                         @keyup.native="keySearch($event)"
                         style="width:250px;margin:0 5px 10px 0"></el-input>
                         <el-button type="primary" size="small" @click="getList" @keydown="keySearch($event)">查询</el-button>
-                        <el-button @click="add()" type="primary" size="small" style="position:absolute;right:0;top:0;">新增</el-button>                                        
+                        <el-button @click="add()" type="primary" size="small" v-permission="'edit'" style="position:absolute;right:0;top:0;">新增</el-button>                                        
                     </form>
                 </div>
                 <el-scrollbar style="height:calc(100% - 45px)">
@@ -33,13 +33,13 @@
                         </template>
                         <template slot-scope="scope" slot="preview-handle">
                             <div>
-                                <p>
+                                <p v-permission="'edit'">
                                     <a href="javascript:;" class="loncom_color loncom_mr5" @click="edit(scope.row)">编辑</a> 
                                     <a href="javascript:;" class="loncom_color" @click="remove(scope.row)">删除</a>
                                 </p>
                             </div>
                         </template>
-                        <div class="loncom_table_btn">
+                        <div class="loncom_table_btn" v-permission="'edit'">
                             <el-button @click="remove()" type="primary" size="mini">删除</el-button>
                         </div>
                     </el-search-table-pagination>
@@ -56,9 +56,6 @@ import Add from './dialogAdd.vue'
 import Vue from 'vue'
 export default {
     created () {
-        if(sessionStorage.loginInfo){
-            this.loginInfo=JSON.parse(sessionStorage.loginInfo);
-        }
         this.getList();
     },
     mounted() {

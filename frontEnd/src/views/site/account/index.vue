@@ -9,7 +9,7 @@
                         @keyup.native="keySearch($event)"
                         style="width:250px;margin:0 5px 10px 0"></el-input>
                         <el-button type="primary" size="small" @click="getList" @keydown="keySearch($event)">查询</el-button>
-                        <el-button @click="add()" type="primary" size="small" style="position:absolute;right:0;top:0;" v-if="loginInfo.userid=='admin'">新增</el-button>                                        
+                        <el-button @click="add()" type="primary" size="small" style="position:absolute;right:0;top:0;" v-permission="'edit'">新增</el-button>                                        
                     </form>
                 </div>
                 <el-scrollbar style="height:calc(100% - 45px)">
@@ -23,27 +23,26 @@
                         :params="initParams"
                         @selection-change="handleSelectionChange"
                         >   
-                        
                         <el-table-column slot="prepend" type="selection"></el-table-column>
-                        
                         <template slot-scope="scope" slot="preview-state">
                             <div>
                                 {{scope.row.state|stateFilter}}
                             </div>
                         </template>
+                        <template slot-scope="scope" slot="preview-addrname">
+                            <div style="width: 100%;height:100%;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;" :title="scope.row.addrname">
+                                {{scope.row.addrname}}
+                            </div>
+                        </template>
                         <template slot-scope="scope" slot="preview-handle">
-                            <div>
-                                <p v-if="loginInfo.userid=='admin'">
+                            <div v-permission="'edit'">
+                                <p>
                                     <a href="javascript:;" class="loncom_color loncom_mr10" @click="edit(scope.row)">编辑</a> 
                                     <a href="javascript:;" class="loncom_color" @click="remove(scope.row)" v-if="scope.row.userid!='admin'">删除</a>
                                 </p>
-                                <p v-else-if="loginInfo.userid==scope.row.userid">
-                                    <a href="javascript:;" class="loncom_color" @click="edit(scope.row)">编辑</a> 
-                                </p>
-                                <p v-else>--</p>
                             </div>
                         </template>
-                        <div class="loncom_table_btn" v-if="loginInfo.userid=='admin'">
+                        <div class="loncom_table_btn" v-permission="'edit'">
                             <el-button @click="start()" size="mini" type="primary">启用</el-button>
                             <el-button @click="assert()" size="mini" type="primary">维护</el-button>
                         </div>
@@ -68,9 +67,6 @@ export default {
         //         this.getList();
         //     }
         // });
-        if(sessionStorage.loginInfo){
-            this.loginInfo=JSON.parse(sessionStorage.loginInfo);
-        }
         this.getList();
     },
     mounted() {
@@ -96,7 +92,7 @@ export default {
               { prop: 'email', label: '邮箱',minWidth:15},
               { prop: 'time_start', label: '开始时间',minWidth:15},
               { prop: 'time_end', label: '结束时间',minWidth:15},
-              { prop: 'addrname', label: '管理域',minWidth:25},
+              { prop: 'addrname', label: '管理域',slotName:'preview-addrname',minWidth:25},
               { prop: 'state', label: '状态',slotName:'preview-state',minWidth:8},
               { prop: 'handel', label: '操作',slotName:'preview-handle',width:100},
           ],

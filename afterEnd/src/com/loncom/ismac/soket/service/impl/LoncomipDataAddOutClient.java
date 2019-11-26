@@ -135,28 +135,29 @@ public class LoncomipDataAddOutClient extends BaseSocketClient {
 		String response = "";
 		if (getStatusCode() == 2)
 			try {
+				System.out.println("****************************************************");
 				out.write(xml);
 				out.flush();
 //				System.out.println(object.getIp());
 //				System.out.println(object.getSocketconnecttimeout());
 
-				StringBuffer sb = new StringBuffer();
-				try {
-					do {
-						String inx = in.readLine();
-						if (inx == null) {
-							throw new Exception("连接已断开");
-						}
-						sb.append(inx + "\n");
-					} while (sb.indexOf("</root>") == -1);
-				} catch (InterruptedIOException ioex) {
-					Logs.log("接收消息超时：" + ioex.getLocalizedMessage());
-					throw new RuntimeException("接收消息超时：" + ioex.getLocalizedMessage());
-				}
-				
-
-				if ((sb.length() > 0) && (sb.indexOf("<?xml") > -1))
-					response = sb.substring(sb.indexOf("<?xml"));
+//				StringBuffer sb = new StringBuffer();
+//				try {
+//					do {
+//						String inx = in.readLine();
+//						if (inx == null) {
+//							throw new Exception("连接已断开");
+//						}
+//						sb.append(inx + "\n");
+//					} while (sb.indexOf("</root>") == -1);
+//				} catch (InterruptedIOException ioex) {
+//					Logs.log("接收消息超时：" + ioex.getLocalizedMessage());
+//					throw new RuntimeException("接收消息超时：" + ioex.getLocalizedMessage());
+//				}
+//				
+//
+//				if ((sb.length() > 0) && (sb.indexOf("<?xml") > -1))
+//					response = sb.substring(sb.indexOf("<?xml"));
 				closeSocket();
 			} catch (Exception e) {
 				e.printStackTrace();

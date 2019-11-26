@@ -10,8 +10,8 @@ public class HisProcesser extends Thread{
 	public void run() {
 		while(isRunning) {
 			try {
-				DataPack data = AppContext.hisQueueVouData.take();
-				HisDev.HisStorageDev(data);
+				/*DataPack data = AppContext.hisQueueVouData.take();
+				HisDev.HisStorageDev(data);*/
 			} catch (Exception e) {
 				// TODO: handle exception
 				e.printStackTrace();

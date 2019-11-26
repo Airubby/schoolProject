@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.openxml4j.opc.internal.marshallers.ZipPackagePropertiesMarshaller;
@@ -14,6 +16,9 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import com.loncom.ismac.annotation.MethodInfo;
 import com.loncom.ismac.annotation.Modular;
 import com.loncom.ismac.application.AppContext;
+import com.loncom.ismac.bean.CharsBean;
+import com.loncom.ismac.bean.Objc;
+import com.loncom.ismac.bean.RquestObject;
 import com.loncom.ismac.bean.zTreeByOther;
 import com.loncom.ismac.bean.xml.ClassroomXml;
 import com.loncom.ismac.bean.xml.GroupXml;
@@ -22,7 +27,9 @@ import com.loncom.ismac.bean.xml.XmlEdiParser;
 import com.loncom.ismac.jdbc.DB;
 import com.loncom.ismac.lservice.bean.Service;
 import com.loncom.ismac.service.IBaseService;
+import com.loncom.ismac.service.IMainService;
 import com.loncom.ismac.service.impl.BaseServiceImpl;
+import com.loncom.ismac.service.impl.MainServiceImpl;
 import com.loncom.ismac.util.BaseUtil;
 import com.loncom.ismac.util.CMD;
 import com.loncom.ismac.util.ExcelExportUtil;
@@ -38,18 +45,18 @@ import net.sf.json.JSONObject;
 public class ServiceAction extends BaseServlet {
 	
 	ClassroomXml obj=new ClassroomXml();
-	
-	public static Map<String, Object> querychange(ClassroomXml classroomXml){
+	IMainService mainservice=new MainServiceImpl();
+	public static Map<String, Object> querychange(ClassroomXml classroomXml,String airStatus,String lampStatus){
 		Map<String,Object> map=new HashMap<String,Object>();
 		map.put("code", classroomXml.getCode());
-		map.put("serverid", classroomXml.getServerid());
 		map.put("classname", classroomXml.getClassname());
 		map.put("model", classroomXml.getModel());
 		map.put("times", classroomXml.getTimes());
 		map.put("timegroup", classroomXml.getTimegroup());
 		map.put("serviceid", classroomXml.getServerid());
 		//空调
-		String lamp=null,air = null;
+		
+		String lamp="0",air = "0";
 		for(int i=0;i<classroomXml.getBaseItem().size();i++) {
 			if(BaseUtil.isNotNull(classroomXml.getBaseItem().get(i).getPointid())) {
 				String dev=classroomXml.getBaseItem().get(i).getPointid();
@@ -146,11 +153,27 @@ public class ServiceAction extends BaseServlet {
 		//模式 0手动 1自动  手动且开着的可以编辑，其它不能编辑 ；true禁止编辑，false不禁止编辑 &&!air.equals("0")  开空调前端不下发
 		map.put("airtype", classroomXml.getModel().equals("0")?false:true); 
 		map.put("lamptype", classroomXml.getModel().equals("0")?false:true); 
-		return map;
-		
+		//lamp=null,air = null;  //airStatus 0 关， 1开
+		if((airStatus!=null&& !airStatus.equals(""))&&(lampStatus==null|| lampStatus.equals(""))) {
+			if(air.equals(airStatus)) {
+				return map;
+			}
+		}else if((airStatus==null||airStatus.equals(""))&&(lampStatus!=null&&!lampStatus.equals(""))) {
+			if(lamp.equals(lampStatus)) {
+				return map;
+			}
+		}else if((airStatus!=null&&!airStatus.equals(""))&&(lampStatus!=null&&!lampStatus.equals(""))) {
+			if(lamp.equals(lampStatus)&&air.equals(airStatus)) {
+				return map;
+			}
+		}else{
+			return map;
+		}
+		return null;
 	}
 	public static Map<String, Object> detailchange(ClassroomXml classroomXml){
 		Map<String,Object> map=new HashMap<String,Object>();
+		map.put("classname", classroomXml.getClassname());
 		map.put("code", classroomXml.getCode());
 		map.put("model", classroomXml.getModel());
 		map.put("times", classroomXml.getTimes());
@@ -204,18 +227,28 @@ public class ServiceAction extends BaseServlet {
 		String groupno=getRequest().getParameter("groupno");
 		String floor=getRequest().getParameter("floor");
 		String classno=getRequest().getParameter("classno");
+		String airStatus=getRequest().getParameter("airStatus");
+		String lampStatus=getRequest().getParameter("lampStatus");
 		List<ClassroomXml> list=new ArrayList<ClassroomXml>();
+		Map<String,Object> map=new HashMap<String,Object>();
 		list=BaseUtil.getService(groupno, classno,floor, classname, null);
 		List list1=new ArrayList<>();
 		String str=getRoleAddrList();
 		for (ClassroomXml classroomXml : list) {
 			if(classroomXml.getBaseItem()!=null) {
+				map=new HashMap<String,Object>();
 				if(str.equals("0")) { //0  admin获取所有
-					list1.add(querychange(classroomXml));
+					map=querychange(classroomXml,airStatus,lampStatus);
+					if(map!=null) {
+						list1.add(map);
+					}
 				}else if(!str.equals("-1")){
 					List<String> arr=Arrays.asList(str.split(","));
 					if(arr.contains(classroomXml.getCode())) {
-						list1.add(querychange(classroomXml));
+						map=querychange(classroomXml,airStatus,lampStatus);
+						if(map!=null) {
+							list1.add(map);
+						}
 					}
 				}
 			}
@@ -223,6 +256,41 @@ public class ServiceAction extends BaseServlet {
 		}
 		return JSONArray.fromObject(list1).toString();
 	}
+	/**
+	 * 获取所有 教室列表的名称
+	 * @return
+	 * @throws Exception
+	 */
+	@MethodInfo(METHOD="/service/querylist",ISLOG=false)
+	public String querylist()throws Exception{
+		List list=new ArrayList<>();
+		Map<String,Object> map=new HashMap<String,Object>();
+		for (Service service : AppContext.getService()) {
+			for (GroupXml groupXml : service.getGroupcontrol().getGroup()) {
+				if(groupXml.getClassroomgroup().getItem()!=null)
+					for (ClassroomXml classroomXml: groupXml.getClassroomgroup().getItem()) {
+						map=new HashMap<String,Object>();
+						map.put("code", classroomXml.getCode());
+						map.put("classname", classroomXml.getClassname());
+						map.put("newname", classroomXml.getClassname());
+						map.put("serviceid", service.getId());
+						list.add(map);
+					}
+				if(groupXml.getOfficegroup().getItem()!=null) {
+					for (ClassroomXml classroomXml : groupXml.getOfficegroup().getItem()) {
+						map=new HashMap<String,Object>();
+						map.put("code", classroomXml.getCode());
+						map.put("classname", classroomXml.getClassname());
+						map.put("newname", classroomXml.getClassname());
+						map.put("serviceid", service.getId());
+						list.add(map);
+					}
+				}
+			}
+		}
+		return JSONArray.fromObject(list).toString();
+	}
+	
 	/**
 	 * 获取详情
 	 * @return
@@ -232,22 +300,49 @@ public class ServiceAction extends BaseServlet {
 	public String detail() throws Exception{
 		String code=getRequest().getParameter("code");
 		List list=new ArrayList<>();
-		list=BaseUtil.getService(null, null,null, null, code);
+		list=getDetail(code);
 		if(list.size()>0) {
-			
 			return JSONObject.fromObject(detailchange((ClassroomXml) list.get(0))).toString();
 		}else {
 			return null;
 		}	
+	}
+	public static List getDetail(String code) {
+		List<ClassroomXml> list=new ArrayList<ClassroomXml>();
+		List<ClassroomXml> detaillist=new ArrayList<ClassroomXml>();
+		for (Service service : AppContext.getService()) {
+			for (GroupXml groupXml : service.getGroupcontrol().getGroup()) {
+				if(groupXml.getClassroomgroup().getItem()!=null) {
+					for (ClassroomXml classroomXml: groupXml.getClassroomgroup().getItem()) {
+						if(classroomXml.getCode().equals(code)) {
+							detaillist.add(classroomXml);
+							return detaillist;
+						}
+					}
+				}
+				if(groupXml.getOfficegroup().getItem()!=null) {
+					for (ClassroomXml classroomXml : groupXml.getOfficegroup().getItem()) {
+						classroomXml.setServerid(service.getId());
+						if(BaseUtil.isNotNull(code)&&classroomXml.getCode().equals(code)) {
+							detaillist.add(classroomXml);
+							return detaillist;
+						}
+					}
+				}
+			}
+		}
+		return list;
 	}
 	
 	/**
 	 * 更新信息
 	 * @return
 	 * @throws Exception
+	 * classname 教室名称  closeair关机温度 serviceid那个xml文件的id  timegroup时间组 times多少分钟监测一下，单位分钟
 	 */
 	@MethodInfo(METHOD="/service/update",LOGSNAME="更新")
 	public String update() throws Exception{
+		String classname=getRequest().getParameter("classname");
 		String code=getRequest().getParameter("code");
 		String model=getRequest().getParameter("model");
 		String times=getRequest().getParameter("times");
@@ -256,20 +351,22 @@ public class ServiceAction extends BaseServlet {
 		String closeair=getRequest().getParameter("closeair");
 		String serviceid=getRequest().getParameter("serviceid");
 		//setOtioncontent("");
+		
+		Service service=BaseUtil.getService(serviceid);
+		
 		List<ClassroomXml> list=new ArrayList<ClassroomXml>();
-		list=BaseUtil.getService(null,null, null, null, code);
+		list=getDetail(code);
+		list.get(0).setClassname(classname);
 		list.get(0).setModel(model);
 		list.get(0).setTimes(times);
 		list.get(0).setTimegroup(timegroup);
 		list.get(0).setOpenair(openair);
 		list.get(0).setCloseair(closeair);
 		
-		Service service=BaseUtil.getService(serviceid);
-		
-		
 		String sysxml="<?xml version='1.0' encoding='gb2312'?>"+
 				"<root>"+
 				"<Command type='Modify'>"+
+				"<Field name='classname' value='"+classname+"'/>"+
 				"<Field name='code' value='"+code+"'/>"+
 				"<Field name='model' value='"+model+"'/>"+
 				"<Field name='times' value='"+times+"'/>"+
@@ -279,15 +376,160 @@ public class ServiceAction extends BaseServlet {
 				"</Command>"+
 				"</root>";	
 		String rquestxml = getTcpclient().sendData(sysxml, service);
-		System.out.println(rquestxml);
-		if(rquestxml.indexOf("data=\"true\"")!=-1) {
+		String xml = getRequest().getSession().getServletContext().getRealPath("/xml/" + service.getSysxml());
+		String url = FileUtil.readToString(xml);
+		RootXml root = XmlEdiParser.parseRootData(url);
+		root.setGroupcontrol(service.getGroupcontrol());
+		BaseUtil.ObjToXMl(root,xml);
+//		if(rquestxml.indexOf("data=\"true\"")!=-1) {
+//			
+//			String xml = getRequest().getSession().getServletContext().getRealPath("/xml/" + service.getSysxml());
+//			String url = FileUtil.readToString(xml);
+//			RootXml root = XmlEdiParser.parseRootData(url);
+//			root.setGroupcontrol(service.getGroupcontrol());
+//			BaseUtil.ObjToXMl(root,xml);
+//		}else {
+//			
+//			throw new RuntimeException("修改失败!");
+//		}
+		return null;
+	}
+	/**
+	 * 批量更新信息
+	 * @return
+	 * @throws Exception
+	 * 
+	 */
+	@MethodInfo(METHOD="/service/updateN",LOGSNAME="批量更新名称")
+	public String updateN() throws Exception{
+		JSONArray list=JSONArray.fromObject(getRequest().getParameter("list"));
+		
+		for (Object object : list) {
+			JSONObject obj=(JSONObject) object;
+			if(!obj.get("classname").equals(obj.get("newname"))) {
+				List<ClassroomXml> list1=new ArrayList<ClassroomXml>();
+				for (Service service : AppContext.getService()) {
+					if(service.getId().equals(obj.get("serviceid"))) {
+						for (GroupXml groupXml : service.getGroupcontrol().getGroup()) {
+							if(groupXml.getClassroomgroup().getItem()!=null)
+								for (ClassroomXml classroomXml: groupXml.getClassroomgroup().getItem()) {
+									if(classroomXml.getCode().equals(obj.get("code"))) {
+										classroomXml.setClassname((String) obj.get("newname"));
+									}
+								}
+							if(groupXml.getOfficegroup().getItem()!=null) {
+								for (ClassroomXml classroomXml : groupXml.getOfficegroup().getItem()) {
+									if(classroomXml.getCode().equals(obj.get("code"))) {
+										classroomXml.setClassname((String) obj.get("newname"));
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		for (Service service : AppContext.getService()) {
 			String xml = getRequest().getSession().getServletContext().getRealPath("/xml/" + service.getSysxml());
 			String url = FileUtil.readToString(xml);
 			RootXml root = XmlEdiParser.parseRootData(url);
-			
 			root.setGroupcontrol(service.getGroupcontrol());
 			BaseUtil.ObjToXMl(root,xml);
-		}else {
+		}
+
+		return null;
+	}
+	/**
+	 * 批量更新信息
+	 * @return
+	 * @throws Exception
+	 * closeair关机温度 serviceid那个xml文件的id  timegroup时间组 times多少分钟监测一下，单位分钟
+	 */
+	@MethodInfo(METHOD="/service/updateT",LOGSNAME="批量更新阀值")
+	public String updateT() throws Exception{
+		String model=getRequest().getParameter("model");
+		String times=getRequest().getParameter("times");
+		String timegroup=getRequest().getParameter("timegroup");
+		String openair=getRequest().getParameter("openair");
+		String closeair=getRequest().getParameter("closeair");
+		JSONArray classnode=JSONArray.fromObject(getRequest().getParameter("classnode"));
+		Map map=new HashMap<>();
+		List<Map<String,String>> list=new ArrayList<Map<String,String>>();
+		for (Service service : AppContext.getService()) {
+			map=new HashMap<>();
+			map.put("serviceid", service.getId());
+			map.put("sysxml", "");
+			list.add(map);
+		}
+		for (Object object : classnode) {
+			JSONObject nodeobj=(JSONObject) object;
+			for (Map<String,String> object2 : list) {
+				
+				List<ClassroomXml> list1=new ArrayList<ClassroomXml>();
+				if(object2.get("serviceid").equals(nodeobj.get("serviceid"))) {
+					String sysxml = (String) object2.get("sysxml");
+					sysxml+="<Command type='Modify'>"+
+							"<Field name='code' value='"+nodeobj.get("code")+"'/>"+
+							"<Field name='model' value='"+model+"'/>"+
+							"<Field name='times' value='"+times+"'/>"+
+							"<Field name='timegroup' value='"+timegroup+"'/>"+
+							"<Field name='openair' value='"+openair+"'/>"+
+							"<Field name='closeair' value='"+closeair+"'/>"+
+							"</Command>";
+					object2.put("sysxml", object2.get("sysxml")+sysxml);
+				}
+			}
+			
+			for (Service service : AppContext.getService()) {
+				if(service.getId().equals(nodeobj.get("serviceid"))) {
+					for (GroupXml groupXml : service.getGroupcontrol().getGroup()) {
+						if(groupXml.getClassroomgroup().getItem()!=null)
+							for (ClassroomXml classroomXml: groupXml.getClassroomgroup().getItem()) {
+								if(classroomXml.getCode().equals(nodeobj.get("code"))) {
+									classroomXml.setModel(model);
+									classroomXml.setTimes(times);
+									classroomXml.setTimegroup(timegroup);
+									classroomXml.setOpenair(openair);
+									classroomXml.setCloseair(closeair);
+								}
+							}
+						if(groupXml.getOfficegroup().getItem()!=null) {
+							for (ClassroomXml classroomXml : groupXml.getOfficegroup().getItem()) {
+								if(classroomXml.getCode().equals(nodeobj.get("code"))) {
+									classroomXml.setModel(model);
+									classroomXml.setTimes(times);
+									classroomXml.setTimegroup(timegroup);
+									classroomXml.setOpenair(openair);
+									classroomXml.setCloseair(closeair);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		int hasNum=0,trueNum=0;
+		for(Map<String,String> object2 : list) {
+		//	JSONObject obj=(JSONObject) object2;
+			if(object2.get("sysxml")!="") {
+				hasNum+=1;
+				Service service=BaseUtil.getService((String) object2.get("serviceid"));
+				String sysxml="<?xml version='1.0' encoding='gb2312'?>"+ object2.get("sysxml")+"</root>";	
+				System.out.println(sysxml);
+				String rquestxml = getTcpclient().sendData(sysxml, service);
+				if(rquestxml.indexOf("data=\"true\"")!=-1) {
+					trueNum+=1;
+					String xml = getRequest().getSession().getServletContext().getRealPath("/xml/" + service.getSysxml());
+					String url = FileUtil.readToString(xml);
+					RootXml root = XmlEdiParser.parseRootData(url);
+					root.setGroupcontrol(service.getGroupcontrol());
+					BaseUtil.ObjToXMl(root,xml);
+				}
+			}
+		}
+		//判断多个xml文件都修改成功
+		if(hasNum!=trueNum) {
 			throw new RuntimeException("修改失败!");
 		}
 		return null;
@@ -332,7 +574,42 @@ public class ServiceAction extends BaseServlet {
 		rList=BaseUtil.downSort(dataList, "value");
 		return JSONArray.fromObject(rList).toString();
 	}
-	
+
+	/**
+	 * 获取1年的用用电情况-1月一个颗粒点
+	 */
+	@MethodInfo(METHOD="/service/queryYear",ISLOG=false)
+	public RquestObject queryYear()throws Exception{
+		RquestObject data=new RquestObject();
+		 String type=getRequest().getParameter("type");
+		 String table=String.format(CMD.YEAR_DEVTABLE, UtilTime.getY());
+		 try {
+			 if("1".equals(type)) {
+					//UtilTime.getYM()
+					table= String.format(CMD.YEAR_DEVTABLE,UtilTime.getNowBeforeYear(new Date(),-1));
+				}
+			   data.setErr_code("0");
+			   data.setData(JSONArray.fromObject(baseservice.getSqlListBean(String.format("select time ,SUM(value) as `value` from %s GROUP BY time", table), new CharsBean())));
+		} catch (Exception e) {
+			data.setErr_code("1");
+			data.setErr_msg("查询年表不存在！");
+		}
+		
+		
+		return data;
+	}
+	/**
+	 * 根据楼宇获取对应的 今日，当月 ， 今日 教室，办公室用电
+	 * @return
+	 * @throws Exception
+	 */
+	@MethodInfo(METHOD="/service/queryGroup",ISLOG=false)
+	public String queryGroup()throws Exception{
+	    String group=getRequest().getParameter("group");
+	    String floor=getRequest().getParameter("floor");
+	   
+		return JSONObject.fromObject( mainservice.queryGroup(group,floor)).toString();
+	}
 	
 
 	/**
@@ -446,7 +723,10 @@ public class ServiceAction extends BaseServlet {
 								rmap=new HashMap<String,Object>();
 								rmap.put("classname",classroomXml.getClassname());
 								rmap.put("value",toplist.get(i).get("ALLVALUE"));
-								float rate=(Float.parseFloat(toplist.get(i).get("ALLVALUE")+"")/Float.parseFloat(countlist.get(0).get("ALLVALUE")+""))*100;
+								float rate=0;
+								if(!(countlist.get(0).get("ALLVALUE").equals("0")||countlist.get(0).get("ALLVALUE").equals("0.0")||countlist.get(0).get("ALLVALUE").equals("0.00"))){
+									rate=(Float.parseFloat(toplist.get(i).get("ALLVALUE")+"")/Float.parseFloat(countlist.get(0).get("ALLVALUE")+""))*100;
+								}
 								rmap.put("rate",UtilTool.cutFloat2(rate+"")) ;
 								rtoplist.add(rmap);
 							}
@@ -480,7 +760,10 @@ public class ServiceAction extends BaseServlet {
 								rmap=new HashMap<String,Object>();
 								rmap.put("classname",classroomXml.getClassname());
 								rmap.put("value",toplist.get(i).get("ALLVALUE"));
-								float rate=(Float.parseFloat(toplist.get(i).get("ALLVALUE")+"")/Float.parseFloat(countlist.get(0).get("ALLVALUE")+""))*100;
+								float rate=0;
+								if(!(countlist.get(0).get("ALLVALUE").equals("0")||countlist.get(0).get("ALLVALUE").equals("0.0")||countlist.get(0).get("ALLVALUE").equals("0.00"))){
+									rate=(Float.parseFloat(toplist.get(i).get("ALLVALUE")+"")/Float.parseFloat(countlist.get(0).get("ALLVALUE")+""))*100;
+								}
 								rmap.put("rate",UtilTool.cutFloat2(rate+"")) ;
 								rtoplist.add(rmap);
 							}
@@ -944,10 +1227,10 @@ public class ServiceAction extends BaseServlet {
 	
 	
 	/**
-	 * 获取人均面积教室办公楼占比用电量，
+	 * 获取人均面积教室办公楼占比用电量，没用了
 	 */
-	@MethodInfo(METHOD="/service/rate",ISLOG=false)
-	public String queryRate() throws Exception{
+	@MethodInfo(METHOD="/service/rate1",ISLOG=false)
+	public String queryRate1() throws Exception{
 		List<Map<String, Object>> clist=new ArrayList<Map<String, Object>>();
 		List<Map<String, Object>> olist=new ArrayList<Map<String, Object>>();
 		List<Map<String, Object>> alist=new ArrayList<Map<String, Object>>();
@@ -1135,6 +1418,86 @@ public class ServiceAction extends BaseServlet {
 		return JSONObject.fromObject(map).toString();
 	}
 
+	/**
+	 * 实时总功率，教室办公室占比功率；今日用电量，教室办公室占比用电量,classvalue今日教室用电量；nowclass教室功率
+	 */
+	@MethodInfo(METHOD="/service/rate",ISLOG=false)
+	public String queryRate() throws Exception{
+
+		String classvalue="",officevalue="",allvalue="",
+				classmvalue="",officemvalue="",allmvalue="",
+				nowclass="",nowoffice="",nowall="";
+		
+		Map<String,Object> map=new HashMap<String, Object>();
+		Map<String,Object> backmap=new HashMap<String, Object>();
+		List<Objc> classroom = new ArrayList<Objc>();//教室集合
+		List<Objc> office = new ArrayList<Objc>();//教室集合
+		
+		Iterator<Entry<String, Map<String, Map<String, List<Objc>>>>> itemap=AppContext.group.entrySet().iterator();
+		while (itemap.hasNext()) {
+			Entry<String, Map<String, Map<String, List<Objc>>>> type = itemap.next();
+			map=mainservice.queryGroup((String)type.getKey(),"");
+			classvalue=UtilTool.cutFloat2(UtilTool.parseFloat(classvalue)+UtilTool.parseFloat((String) map.get("classvalue"))+"");
+			officevalue=UtilTool.cutFloat2(UtilTool.parseFloat(officevalue)+UtilTool.parseFloat((String) map.get("officevalue"))+"");
+			classmvalue=UtilTool.cutFloat2(UtilTool.parseFloat(classmvalue)+UtilTool.parseFloat((String) map.get("classmvalue"))+"");
+			officemvalue=UtilTool.cutFloat2(UtilTool.parseFloat(officemvalue)+UtilTool.parseFloat((String) map.get("officemvalue"))+"");
+			allmvalue=UtilTool.cutFloat2(UtilTool.parseFloat(allmvalue)+UtilTool.parseFloat((String) map.get("monthsum"))+"");
+			String value=UtilTool.parseFloat(allvalue)+UtilTool.parseFloat((String) map.get("classvalue"))+UtilTool.parseFloat((String) map.get("officevalue"))+"";
+			allvalue=UtilTool.cutFloat2(value);
+			AppContext.getMapClassooffice(type.getValue(),classroom,office);
+		}
+		
+//		for (Objc objc : classroom) {
+//			for(int i=0;i<objc.getItem().size();i++) {
+//				if(objc.getItem().get(i).getDev().equals("roompower")&&BaseUtil.isNotNull(objc.getItem().get(i).getPointid())) {
+//					String dev=objc.getItem().get(i).getPointid();
+//					String val="";
+//					if(dev.indexOf("_")!=-1) {
+//						String[] arr=dev.split("_");
+//						for(int k=0;k<arr.length;k++) {
+//							val=UtilTool.parseFloat(val)+UtilTool.parseFloat(BaseUtil.getDevvouValue(arr[k].split(",")[0],arr[k].split(",")[1])+"")+"";
+//						}
+//					}else {
+//						val=BaseUtil.getDevvouValue(dev.split(",")[0],dev.split(",")[1]);
+//					}
+//					nowclass=UtilTool.cutFloat2(UtilTool.parseFloat(nowclass)+UtilTool.parseFloat(val)+"");
+//					nowall=UtilTool.cutFloat2(UtilTool.parseFloat(nowall)+UtilTool.parseFloat(val)+"");
+//				}
+//			}
+//		}
+//		
+//		for (Objc objc : office) {
+//			for(int i=0;i<objc.getItem().size();i++) {
+//				if(objc.getItem().get(i).getDev().equals("roompower")&&BaseUtil.isNotNull(objc.getItem().get(i).getPointid())) {
+//					String dev=objc.getItem().get(i).getPointid();
+//					String val="";
+//					if(dev.indexOf("_")!=-1) {
+//						String[] arr=dev.split("_");
+//						for(int k=0;k<arr.length;k++) {
+//							val=UtilTool.parseFloat(val)+UtilTool.parseFloat(BaseUtil.getDevvouValue(arr[k].split(",")[0],arr[k].split(",")[1])+"")+"";
+//						}
+//					}else {
+//						val=BaseUtil.getDevvouValue(dev.split(",")[0],dev.split(",")[1]);
+//					}
+//					nowoffice=UtilTool.cutFloat2(UtilTool.parseFloat(nowoffice)+UtilTool.parseFloat(val)+"");
+//					nowall=UtilTool.cutFloat2(UtilTool.parseFloat(nowall)+UtilTool.parseFloat(val)+"");
+//				}
+//			}
+//		}
+//		
+		backmap.put("classvalue", classvalue);
+		backmap.put("officevalue", officevalue);
+		backmap.put("allvalue", allvalue);
+		backmap.put("allmvalue", allmvalue);
+		backmap.put("classmvalue", classmvalue);
+		backmap.put("officemvalue", officemvalue);
+//		backmap.put("nowclass", nowclass);
+//		backmap.put("nowoffice", nowoffice);
+//		backmap.put("nowall", nowall);
+		return JSONObject.fromObject(backmap).toString();
+		
+	}
+	
 	
 	/**
 	 * 关空调，电灯
@@ -1156,7 +1519,32 @@ public class ServiceAction extends BaseServlet {
 	}
 	
 	/**
-	 * 校园概况信息
+	 * 批量关闭空调
+	 */
+	@MethodInfo(METHOD="/service/moreswitchOrder",ISLOG=false)
+	public String moreswitchOrder() throws Exception{
+		JSONArray classnode=JSONArray.fromObject(getRequest().getParameter("classnode"));
+		Map map=new HashMap<>();
+		List list=new ArrayList<>();
+		for (Object object : classnode) {
+			JSONObject nodeobj=(JSONObject) object;
+			String devid=nodeobj.getString("aircontrol_devid");
+			String stateid=nodeobj.getString("aircontrol_pointid");
+			String closecmd=nodeobj.getString("airClosecmd");
+	        String serviceid=nodeobj.getString("serviceid");
+			Service service=BaseUtil.getService(serviceid);
+			String xml="<?xml version='1.0' encoding='gb2312'?>"+
+						"<root>"+
+						"<Command type='Control' moid='"+devid+"' id='"+stateid+"' value='"+closecmd+"'/>"+
+						"</root>";	
+			String rquestxml = getTcpclient().sendData(xml, service);
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * 校园概况信息 没用了
 	 * @return
 	 * @throws Exception
 	 */
@@ -1207,7 +1595,86 @@ public class ServiceAction extends BaseServlet {
 		return JSONObject.fromObject(map).toString();
 	}
 	
-	
+	/**
+	 * 开空调、开灯率
+	 * @return
+	 * @throws Exception
+	 */
+	@MethodInfo(METHOD="/service/airlightRate",ISLOG=false)
+	public String queryAirLight() throws Exception{
+		Map<String,Object> map=new HashMap<String,Object>();
+		int classair=0,officeair=0,classlight=0,officelight=0,classnumber=0,officenumber=0,allnumber=0;
+		for(Service service : AppContext.getService()) {
+			for (GroupXml groupXml : service.getGroupcontrol().getGroup()) {
+				if(groupXml.getClassroomgroup().getItem()!=null) {
+					for (ClassroomXml classroomXml: groupXml.getClassroomgroup().getItem()) {
+						//多个空调的情况下，子xml不计算总数 element="child" 为不作为计算
+						if(classroomXml.getBaseItem() != null&&!BaseUtil.isNotNull(classroomXml.getElement()))	{
+							boolean airflag=airlightStatus(classroomXml,"airstate");
+							boolean lampflag=airlightStatus(classroomXml,"lampstate");
+							if(airflag) {
+								classair++;
+							}
+							if(lampflag) {
+								classlight++;
+							}
+							classnumber++;
+							allnumber++;
+						}
+					}
+				}
+				if(groupXml.getOfficegroup().getItem()!=null) {
+					for (ClassroomXml classroomXml : groupXml.getOfficegroup().getItem()) {
+						if(classroomXml.getBaseItem() != null&&!BaseUtil.isNotNull(classroomXml.getElement()))	{
+							boolean airflag=airlightStatus(classroomXml,"airstate");
+							boolean lampflag=airlightStatus(classroomXml,"lampstate");
+							if(airflag) {
+								officeair++;
+							}
+							if(lampflag) {
+								officelight++;
+							}
+							officenumber++;
+							allnumber++;
+						}
+					}
+				}
+			}
+		}
+			
+		map.put("classair", classair);  //教室运行的空调
+		map.put("officeair", officeair);  //办公室运行的空调
+		map.put("classlight", classlight);  //教室运行的灯
+		map.put("officelight", officelight);  //办公室运行的灯
+		map.put("classnumber", classnumber); // 教室数量
+		map.put("officenumber", officenumber); //办公室数量
+		map.put("allnumber", allnumber); //办公室教室总数		
+		return JSONObject.fromObject(map).toString();
+	}
+	public static boolean airlightStatus(ClassroomXml classroomXml,String type){
+		boolean flag=false;
+		for(int i=0;i<classroomXml.getBaseItem().size();i++) {
+			if(classroomXml.getBaseItem().get(i).getDev().equals(type)&&BaseUtil.isNotNull(classroomXml.getBaseItem().get(i).getPointid())) {
+				String dev=classroomXml.getBaseItem().get(i).getPointid();
+				String devid = "",pointid="";
+				if(dev.indexOf("_")!=-1||dev.indexOf(";")!=-1) {
+					String [] pointidarr=dev.split("_").length>1?dev.split("_"):dev.split(";");
+					for(int k=0;k<pointidarr.length;k++) {
+						if(k==0) { //空调状态只取第一个的状态
+							devid=pointidarr[k].split(",")[0];
+							pointid=pointidarr[k].split(",")[1];
+						}
+					}
+				}else {
+					devid=dev.split(",")[0];
+					pointid=dev.split(",")[1];
+				}
+				String value=BaseUtil.getDevvouValue(devid,pointid);
+				flag=value.equals("0")?false:true;
+			}
+		}
+		return flag;
+	}
 	
 	/**
 	 * 获取楼宇的树形接口
@@ -1290,7 +1757,14 @@ public class ServiceAction extends BaseServlet {
 				
 			}
 		}
-		
+		//去掉没有办公室或者没有教室的  节点展示为教室或办公室
+		for(int m=0;m<backlist.size();m++) {
+			for(int n=0;n<backlist.get(m).getChildren().size();n++) {
+				if(backlist.get(m).getChildren().get(n).getChildren().size()==0) {
+					backlist.get(m).getChildren().remove(backlist.get(m).getChildren().get(n));
+				}
+			}
+		}
 		return JSONArray.fromObject(backlist).toString();
 	}
 	

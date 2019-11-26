@@ -17,7 +17,9 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Attachment {
-
+	
+	String PRIMARY() default "";
+	
 	String KEY() default "";
 
 	boolean ISENABLE() default true;

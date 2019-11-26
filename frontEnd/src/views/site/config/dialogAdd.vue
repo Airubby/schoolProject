@@ -89,9 +89,6 @@ import dialogBtnInfo from '@/components/dialogBtnInfo.vue'
 import store from '@/store/index'
 export default {
     created () {
-        if(sessionStorage.loginInfo){
-            this.loginInfo=JSON.parse(sessionStorage.loginInfo);
-        }
         if(this.dialogInfo.id){
             this.readonly=true;
             this.getDetail();

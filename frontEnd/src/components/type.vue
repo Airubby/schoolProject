@@ -1,7 +1,7 @@
 <template>
     <div class="btnbox">
         <ul>
-            <li @click="change('all')" :class="{'active':typeInfo.roomtype=='all'}">所有</li>
+            <li @click="change('all')" :class="{'active':typeInfo.roomtype=='all'}">房间类型</li>
             <li @click="change('classroom')" :class="{'active':typeInfo.roomtype=='classroom'}">教室</li>
             <li @click="change('officeroom')" :class="{'active':typeInfo.roomtype=='officeroom'}">办公室</li>
         </ul>

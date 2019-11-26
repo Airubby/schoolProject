@@ -189,10 +189,8 @@ public class XmlEdiParser {
 			 */
 			String url = FileUtil
 					.readToString("D:/111/tm.xml");
-			System.out.println(url);
 			Dataroot1 datarot=parseDataroot1Data(url);
 			BaseUtil.ObjToXMl(datarot,"d:/111/devvou2.xml");
-			System.out.println(11111111);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

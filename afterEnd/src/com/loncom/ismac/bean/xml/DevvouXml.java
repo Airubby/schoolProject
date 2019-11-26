@@ -44,6 +44,8 @@ public class DevvouXml {
 	@XStreamAsAttribute
 	private String value;
 	@XStreamAsAttribute
+	private String backvalue;
+	@XStreamAsAttribute
 	private String tm;
 	@XStreamAsAttribute
 	private String unit;
@@ -192,7 +194,6 @@ public class DevvouXml {
 
 	@XmlAttribute(name = "ch")
 	public String getCh() {
-		System.out.println(ch);
 		return ch;
 	}
 
@@ -297,6 +298,16 @@ public class DevvouXml {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	
+	@XmlAttribute(name = "backvalue")
+	public String getBackvalue() {
+		return backvalue;
+	}
+
+	public void setBackvalue(String backvalue) {
+		this.backvalue = backvalue;
 	}
 
 	@XmlAttribute(name = "tm")

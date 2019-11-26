@@ -100,20 +100,22 @@ function annulus(ID,xData,yData){
     let myChart = echarts.init(document.getElementById(ID))
     // 绘制图表
     let option = {
-        color:["#FF3F3E","#E79627","#DDD437","#4C78FF"],
+        color:["#2AA857","#DDAF34","#4A78FF","#4C78FF"],
         tooltip: {
             trigger: 'item',
             formatter: "{b}: {c} ({d}%)"
         },
         legend: {
             orient: 'vertical',
-            x: 'center',
-            y:'bottom',
+            x: 'left',
+            y:'center',
+            align:'left',
+            itemWidth:10,
+            itemHeight:10,
             data:xData,
             formatter: function(name) {
                 var index = 0;
-                var clientlabels = xData;
-                clientlabels.forEach(function(value,i){
+                xData.forEach(function(value,i){
                     if(value == name){
                         index = i;
                     }
@@ -121,7 +123,7 @@ function annulus(ID,xData,yData){
                 return name + "  " + yData[index].value;
             },
             textStyle:{
-                color:'#fff'
+                color:'#B9C6F2'
             }
         },
         series: [
@@ -129,17 +131,18 @@ function annulus(ID,xData,yData){
                 name:'能效概况',
                 type:'pie',
                 radius: ['50%', '70%'],
-                center: ['50%', '32%'],
+                silent:true,
+                center: ['60%', '50%'],
                 avoidLabelOverlap: false,
                 label: {
                     normal: {
                         show: false,
-                        position: 'center'
+                        position: 'right'
                     },
                     emphasis: {
                         show: true,
                         textStyle: {
-                            fontSize: '30',
+                            fontSize: '12',
                             fontWeight: 'bold'
                         }
                     }
@@ -154,6 +157,11 @@ function annulus(ID,xData,yData){
         ]
     };
     myChart.setOption(option, true);
+    window.addEventListener("resize", function() { 
+        setTimeout(function(){
+            myChart.resize();
+        },0)
+    });
     return myChart;
 }
 
@@ -246,12 +254,76 @@ function allannulus(ID,title,data,xData,yData,all){
     };
 
     myChart.setOption(option, true);
-    myChart.on('click', function (param) {
-        console.log(param)
-            var index = param.dataIndex;
-    }); 
+    window.addEventListener("resize", function() { 
+        setTimeout(function(){
+            myChart.resize();
+        },0)
+    });
     return myChart; 
 }
+function moreannulus(ID,title,data,rate,color){
+    // var rate=47%;
+    // var data=[
+    //     {value:335, name:'教室'},
+    //     {value:310, name:'办公室'}
+    // ];
+    var color=color?color:["#6D4AFF","#2AA857","#DDAF34","#4A78FF"];
+    var myChart = echarts.init(document.getElementById(ID));
+    var option = {
+        color:color,
+        series: [
+            {
+                name:"",
+                type:'pie',
+                radius: ['50%', '70%'],
+                center: ['50%', '50%'],
+                silent:true, 
+                avoidLabelOverlap: false,
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'center',
+                        formatter:'{num|'+rate+'}\r\n{text|'+title+'}',
+                        rich: {
+                            num: {
+                                fontSize: 18,
+                                color:'#B9C6F2'
+                            },
+                            text: {
+                                color: '#B9C6F2',
+                                fontSize: 12,
+                                padding: [10, 0],
+                                borderRadius: 2
+                            }
+                        },
+                    },
+                    emphasis: {
+                        show: true,
+                        textStyle: {
+                            fontSize: '30',
+                            fontWeight: 'bold'
+                        }
+                    }
+                },
+                labelLine: {
+                    normal: {
+                        show: false
+                    }
+                },
+                data:data
+            }
+        ]
+    };
+
+    myChart.setOption(option, true);
+    window.addEventListener("resize", function() { 
+        setTimeout(function(){
+            myChart.resize();
+        },0)
+    });
+    return myChart; 
+}
+
 
 function lineChar(ID,xData,yData,type){
     // let xData=["2018-10-11 09:00:11", "2018-10-11 09:03", "2018-10-11 09:13", "2018-10-11 09:14",
@@ -360,6 +432,11 @@ function lineChar(ID,xData,yData,type){
        ]
     };
     myChart.setOption(option, true);
+    window.addEventListener("resize", function() { 
+        setTimeout(function(){
+            myChart.resize();
+        },0)
+    });
     return myChart; 
 }
 function showWeek(week){
@@ -382,22 +459,23 @@ function showWeek(week){
     })
     return show;
 }
-function barChar(ID,title,xData,yData,color,rotate1){
+function barChar(ID,title,xData,yData,color,rotate1,fontSize1){
     // let xData=['温湿度13','温湿度12','温湿度11','温湿度10','温湿度09','温湿度08','温湿度07','温湿度06','温湿度05','温湿度04'];
     // let yData=[10, 8, 14, 34, 29, 33, 45,30,25,20];
     // let color="#f00"
     let rotate=rotate1?rotate1:0;
+    let fontSize=fontSize1?fontSize1:16;
     let myChart = echarts.init(document.getElementById(ID));
     let option = {
         color: ['#3398DB'],
         title:{
             text:title,  
-            left:10,
+            left:0,
             top:5,
             textStyle:{
-                fontSize:16,
+                fontSize:fontSize,
                 fontWeight:"normal",
-                color:"#F5F6FA",
+                color:"#B9C6F2",
             },
         },
         tooltip : {
@@ -409,7 +487,7 @@ function barChar(ID,title,xData,yData,color,rotate1){
         },
         grid: {
             top:'50px',
-            bottom: '0px',
+            bottom: '20px',
             left:'15px',
             right:'15px',
             containLabel: true
@@ -478,9 +556,105 @@ function barChar(ID,title,xData,yData,color,rotate1){
         ]
     };
     myChart.setOption(option, true);
+    window.addEventListener("resize", function() { 
+        setTimeout(function(){
+            myChart.resize();
+        },0)
+    });
     return myChart; 
 }
 
+function homeChar(ID,xData,yData,color){
+    // let xData=['温湿度13','温湿度12','温湿度11','温湿度10','温湿度09','温湿度08','温湿度07','温湿度06','温湿度05','温湿度04'];
+    // let yData=[10, 8, 14, 34, 29, 33, 45,30,25,20];
+    // let color="#f00"
+    let myChart = echarts.init(document.getElementById(ID));
+    let option = {
+        color: ['#3398DB'],
+        tooltip : {
+            trigger: 'axis',
+            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+            },
+            formatter:'{b}：{c}'
+        },
+        grid: {
+            top:'10px',
+            bottom: '20px',
+            left:'5px',
+            right:'0px',
+            containLabel: true
+        },
+        xAxis : [
+            {
+                type : 'category',
+                data : xData,
+                axisTick:{
+                    show:false
+                },
+                axisLabel:{
+                    color:"#8691BA"
+                },
+                splitLine:{
+                    show:false,
+                },
+                axisLine:{
+                    lineStyle:{
+                        color:"#2B3151",
+                        width:1,
+                    }
+                },
+                axisLabel:{
+                    interval:0,
+                    color: "#8691BA"
+                },
+            }
+        ],
+        yAxis : [
+            {
+                type : 'value',
+                axisLabel:{
+                    color:"#8691BA"
+                },
+                axisTick:{
+                    show:false
+                },
+                splitLine:{
+                    show:true,
+                    lineStyle:{
+                        color:"#2B3151",
+                        width:1,
+                    }
+                },
+                axisLine:{
+                    lineStyle:{
+                        color:"#2B3151",
+                        width:1,
+                    }
+                },
+            }
+        ],
+        series : [
+            {
+                type:'bar',
+                barWidth: '35%',
+                itemStyle:{
+                    normal:{
+                        color: color
+                    }
+                },
+                data:yData
+            }
+        ]
+    };
+    myChart.setOption(option, true);
+    window.addEventListener("resize", function() { 
+        setTimeout(function(){
+            myChart.resize();
+        },0)
+    });
+    return myChart; 
+}
 
 function wsConnection(sendMsg, callback) {
   try {
@@ -605,8 +779,10 @@ export default {
     Format,
     annulus,
     allannulus,
+    moreannulus,
     lineChar,
     barChar,
+    homeChar,
     showWeek,
     wsConnection,
     checkPORT,

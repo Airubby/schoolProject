@@ -16,8 +16,11 @@ public class TaskQuartz {
      * 任务调度执行类
      */
     public void executes() {
-    	addJob("rpt1",RptDevQuartz.class,"0 */10 * * * ?","");//定时执行执行生成报表
-    	
+    	addJob("rpt1",MonthQuartz.class,"57 58 */23 * * ?","");//执行月报表
+    	addJob("rpt2",YearQuzrtz.class,"00 59 23 L * ?","");//执行年报表
+    	addJob("rpt3",RptDevQuartz.class,"0 0 */1 * * ?","");//定时执行执行生成报表
+//    	addJob("rpt3",RptDevQuartz.class,"0 */2 * * * ?","");//定时执行执行生成报表
+//    	addJob("test",MonthQuartz.class,"0 */1 * * * ?","");//test
     	addJob("alarm",AlarmDevQuartz.class,"0 */10 * * * ?","");//定时执行执行生成报表
     	
     	//addJob("test",Histest.class," */2 * * * * ?","");//测试写历史数据

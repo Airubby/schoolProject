@@ -1,24 +1,19 @@
 package com.loncom.ismac.test;
 
 import java.text.ParseException;
-import java.util.List;
+import java.util.Date;
 
-import com.loncom.ismac.bean.PageBean;
-import com.loncom.ismac.bean.User;
-import com.loncom.ismac.service.IBaseService;
-import com.loncom.ismac.service.impl.BaseServiceImpl;
-import com.loncom.ismac.syslog.bean.Syslog;
+import com.loncom.ismac.application.AppContext;
+import com.loncom.ismac.task.MonthQuartz;
+import com.loncom.ismac.task.TaskQuartz;
+import com.loncom.ismac.util.UtilTime;
 
 public class Test {
 
 	public static void main(String[] args) throws ParseException {
 		//UtilTime.getTimes("2019-03-27 17:21:43").getTime();
-		IBaseService service=new BaseServiceImpl();
 		try {
-			Syslog syslg=new Syslog();
-			syslg.setOpe_id("00102");
-		 PageBean list=	service.queryPage(syslg);
-		 System.out.println(list.toString());
+			System.out.println(UtilTime.getNowBeforeYear(new Date(),-1));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
