@@ -179,7 +179,7 @@ export default {
     methods:{
         getFloor:function(){
             this.$api.post('/service/queryFloor', {}, r => {
-                console.log(r)
+                
                 if(r.err_code=="0"){
                    this.groupOptions=r.data
                 }else{
@@ -194,7 +194,7 @@ export default {
                 floor:this.floorno,classno:this.classno,
                 airStatus:this.airStatus,lampStatus:this.lampStatus
                 }, r => {
-                console.log(r)
+                
                 if(r.err_code=="0"){
                     this.data=r.data;
                 }else{
@@ -208,14 +208,14 @@ export default {
             this.dialog_info.visible=true;
         },
         changeair:function(item){
-            console.log(item)
+            
             let obj={closecmd:item.airClosecmd,serviceid:item.serviceid};
             if(!item.air){ //开着的 发关机指令
                 obj.devid=item.aircontrol_devid;
                 obj.stateid=item.aircontrol_pointid;
                 this.loading=true;
                 this.$api.post('/service/switchOrder', obj, r => {
-                    console.log(r)
+                    
                     this.loading=false;
                     if(r.err_code=="0"){
                         this.$message.success(r.err_msg);
@@ -245,7 +245,7 @@ export default {
             }  
             this.loading=true;
             this.$api.post('/service/switchOrder', obj, r => {
-                console.log(r)
+                
                 this.loading=false;
                 if(r.err_code=="0"){
                     this.$message.success(r.err_msg);
@@ -268,7 +268,7 @@ export default {
     },
     watch:{
         groupno:function(val){
-            console.log(val)
+            
             let groupfloor="";
             for(let i=0;i<this.groupOptions.length;i++){
                 if(val==this.groupOptions[i].groupno){

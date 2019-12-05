@@ -84,7 +84,7 @@ export default {
     methods:{
         getTime:function(){
             this.$api.post('/time/query', {}, r => {
-                console.log(r)
+                
                 if(r.err_code=="0"){
                     this.options=r.data;
                 }
@@ -92,9 +92,9 @@ export default {
         },
         //获取详情
         getDetail:function(){
-            console.log(this.dialogInfo.code)
+            
             this.$api.post('/service/detail', {"code":this.dialogInfo.code}, r => {
-                console.log(r)
+                
                 if(r.err_code=="0"){
                     for(let item in this.ruleForm){
                         this.ruleForm[item]=r.data[item];
@@ -108,7 +108,7 @@ export default {
                 if(valid){ //验证通过
                     this.loading=true;
                     this.$api.post('/service/update',this.ruleForm, r => {
-                        console.log(r)
+                        
                         this.loading=false;
                         if(r.err_code=="0"){
                             this.$message.success(r.err_msg);

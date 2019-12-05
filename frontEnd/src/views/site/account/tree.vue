@@ -50,7 +50,7 @@ export default {
         getArea:function(){
             this.loading=true;
             this.$api.get("/service/tree",{},r =>{
-                console.log(r)
+                
                 this.loading=false;
                 if(r.err_code=="0"){
                     this.treedata=r.data;

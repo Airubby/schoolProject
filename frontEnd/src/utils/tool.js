@@ -665,14 +665,12 @@ function wsConnection(sendMsg, callback) {
       let ws = new WebSocket(SOCKECT_ADDR);
       Vue.prototype.$ws=ws;
       ws.onopen = function (event) {
-          console.log(event)
           console.log("已经与服务器建立了连接\r\n当前连接状态：" + event);
           ws.send(sendMsg);
       };
     
       ws.onmessage = callback;
       ws.onclose = function (event) {
-        console.log(event)
       };
       ws.onerror = function (event) {
         console.log("WebSocket异常！" + event.toString());
@@ -680,11 +678,10 @@ function wsConnection(sendMsg, callback) {
       Vue.prototype.$ws=ws;
 
   } catch (ex) {
-      console.log(ex);
+      
   }
 }
 function checkPORT(obj) {
-    console.log(obj);
     if (!obj.value) {
         if(obj.rules.required){
             obj.callback(new Error('不能为空'))

@@ -51,7 +51,7 @@ export default {
         getTitle:function(){
             return new Promise ((resolve, reject) => {
                 this.$api.post('/service/tableTitle', {}, r => {
-                    console.log(r)
+                    
                     if(r.err_code=="0"){
                         this.title=r.data;
                     }else{
@@ -67,7 +67,7 @@ export default {
                 let startTime=this.$tool.Format("yyyy-MM-dd 00:00:00",new Date());
                 let endTime=this.$tool.Format("yyyy-MM-dd hh:mm:ss",new Date());
                 this.$api.post('/service/typeInfo', {startTime:startTime,endTime:endTime}, r => {
-                    console.log(r)
+                    
                     if(r.err_code=="0"){
                         let classlist=r.data.classlist[0];
                         let officelist=r.data.officelist[0];
@@ -123,7 +123,7 @@ export default {
                 let startTime=this.$tool.Format("yyyy-MM-dd 00:00:00",new Date(new Date().getTime()-3600*1000*24*4));
                 let endTime=this.$tool.Format("yyyy-MM-dd hh:mm:ss",new Date());
                 this.$api.post('/service/moreDayInfo', {startTime:startTime,endTime:endTime}, r => {
-                    console.log(r)
+                    
                     if(r.err_code=="0"){
                         let classxData=[], classyData=[],officexData=[],officeyData=[];
                         let classList=r.data.classList;

@@ -1,7 +1,7 @@
 <template>
     <div class="loncom_content mobile_index" v-loading="loading">
         <div class="index_top">
-            <div class="index_top_title">元岗校区能效管理系统</div>
+            <div class="index_top_title">广州市市政职业学校能耗管理系统</div>
             <div class="index_top_con">
                 <div class="index_top_box">
                     <p>{{dataInfo.allPower}}</p>
@@ -86,7 +86,6 @@ export default {
             this.loading=true;
             //startTime:this.$tool.Format("yyyy-MM-dd 00:00:00",new Date()),endTime:this.$tool.Format("yyyy-MM-dd hh:mm:ss",new Date())
             this.$api.get('/service/energy', {}, r => {
-                console.log(r)
                 this.loading=false;
                 if(r.err_code=="0"){
                     this.dataInfo=r.data;

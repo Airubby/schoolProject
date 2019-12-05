@@ -234,14 +234,11 @@ public class RptDevQuartz implements Job {
 		sql = String.format(sql, tablename);
 		List<Map<String, Object>> list = baseservice.getSqlList(sql);
 		if (list.size() > 0) {
-			if(list.get(0).get(key)!=null&&!list.get(0).get(key).equals("")) {
+			if(list.get(0).get(key)!=null&&!list.get(0).get(key).equals("")&&!list.get(0).get(key).equals("0")&&!list.get(0).get(key).equals("0.0")&&!list.get(0).get(key).equals("0.00")) {
 				return list.get(0).get(key) + "";
-			}else {
-				return "0";
 			}
-		}else {
-			return null;
 		}
+		return null;
 	}
 
 	/**

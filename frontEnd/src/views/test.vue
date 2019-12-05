@@ -77,7 +77,6 @@ export default {
 	methods:{
 		chaxun:function(){
 			// this.$refs.thisRef.searchHandler(false);
-			// console.log(this.$refs.thisRef.allSelection)
 			this.$refs.thisRef.allSelection=['1232']
 		},
 		checkItem:function(arr1,arr2){
@@ -104,7 +103,7 @@ export default {
 			this.currentSelection=[];
 		},
 		handleSelectionChange:function(val){
-			console.log(val)
+			
 			if(this.multipleSelection){
 				let currentArr = [];
 				if(val.length>this.currentSelection.length){ //增加
@@ -142,10 +141,10 @@ export default {
 
 
 		add:function(file){
-            console.log(file)
+            
             if(file.response.err_code=="0"){
                 this.$api.post('/slide/add', {url:file.response.data}, r => {
-                    console.log(r)
+                    
                     if(r.err_code=="0"){
                         this.$message.success('上传成功');
                         this.getList();
@@ -160,7 +159,7 @@ export default {
         },
         getList(){
             this.$api.get('/slide/query', {}, r => {
-                console.log(r)
+                
                 if(r.err_code=="0"){
                     this.fileList=r.data;
                 }else{
@@ -186,7 +185,7 @@ export default {
             });
         },
         onSuccess(res, file, fileList){
-            console.log(res,file,fileList)
+            
             if(res.err_code=="0"){
                 this.add(file);
             }else{//上传失败
@@ -195,7 +194,7 @@ export default {
             
         },
         onError(err, file, fileList){
-            console.log(err,file,fileList)
+            
             this.$message.warning(err);
         },
         beforeUpload(file){
@@ -207,7 +206,7 @@ export default {
             // }
         },
         onchange(file,fileList){
-            console.log(file,fileList)
+            
         },
 	},
 	watch:{

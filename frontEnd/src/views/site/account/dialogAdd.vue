@@ -98,7 +98,7 @@ export default {
         if(this.dialogInfo.id){
             this.readonly=true;
             this.$api.get('/user/details', {id:this.dialogInfo.id}, r => {
-                console.log(r)
+                
                 if(r.err_code=="0"){
                     for(var item in this.ruleForm){
                         this.ruleForm[item]=r.data[item];
@@ -153,7 +153,7 @@ export default {
             } else {
                 if(this.ruleForm.id==""){
                     this.$api.get('/user/synuserid', {"userid":value}, r => {
-                        console.log(r)
+                        
                         if(r.err_code=="0"){
                             callback();
                         }else{
@@ -167,7 +167,7 @@ export default {
         };
         let validateStart = (rule, value, callback) => {
             if (value === ''||value==null) {
-                console.log(value)
+                
                 callback(new Error('请输开始时间'));
             } else {
                 if(this.ruleForm.time_end){
@@ -248,7 +248,7 @@ export default {
     methods:{
         getArea:function(){
             this.$api.get("/service/tree",{},r =>{
-                console.log(r)
+                
                 if(r.err_code=="0"){
                     this.treedata=r.data;
                 }
@@ -256,7 +256,7 @@ export default {
         },
         getRole:function(){
             this.$api.post('/role/query', {}, r => {
-                console.log(r)
+                
                 if(r.err_code=="0"){
                   this.role_data=r.data;
                 }else{
@@ -276,7 +276,7 @@ export default {
                     this.ruleForm.tpassword=this.$tool.Encrypt(this.ruleForm.tpassword);
                     this.ruleForm.addrorrole=this.ruleForm.addrorrole.toString();
                     this.$api.post(url, {"obj":this.ruleForm}, r => {
-                        console.log(r)
+                        
                         if(r.err_code=="0"){
                             this.$message.success(r.err_msg);
                             this.$parent.getList();

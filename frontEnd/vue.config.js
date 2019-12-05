@@ -1,6 +1,8 @@
+const path = require("path");
+const isProduction = process.env.NODE_ENV === 'production';
 module.exports = {
     // 基本路径
-    baseUrl: './',
+    publicPath: './',
     //baseUrl: process.env.NODE_ENV === "production" ? "./" : "/"
     // 输出文件目录
     outputDir: 'dist',
@@ -11,9 +13,58 @@ module.exports = {
     // compiler: false,
     // webpack配置
     // see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
-    chainWebpack: () => {
+    chainWebpack: config => {
+        if(isProduction){
+            // 删除预加载
+            config.plugins.delete('preload');
+            config.plugins.delete('prefetch');
+            // 压缩代码
+            config.optimization.minimize(true);
+            // 分割代码
+            config.optimization.splitChunks({
+                chunks: 'all'
+            })
+        }
     },
-    configureWebpack: () => {
+    configureWebpack: config => {
+        if (isProduction){
+            let optimization= {
+                splitChunks: {
+                  cacheGroups: {
+                    vendor:{
+                      chunks:"all",
+                          test: /node_modules/,
+                          name:"vendor",
+                          minChunks: 1,
+                          maxInitialRequests: 5,
+                          minSize: 0,
+                          priority:100,
+                    },
+                    common: {
+                      chunks:"all",
+                      test:/[\\/]src[\\/]js[\\/]/,
+                      name: "common",
+                      minChunks: 2,
+                      maxInitialRequests: 5,
+                      minSize: 0,
+                      priority:60
+                    },
+                    styles: {
+                      name: 'styles',
+                      test: /\.(le|sa|sc|c)ss$/,
+                      chunks: 'all',
+                      enforce: true,
+                    },
+                    runtimeChunk: {
+                      name: 'manifest'
+                    }
+                  }
+                }
+            }
+            Object.assign(config, {
+                optimization
+            })
+        }
         // if (process.env.NODE_ENV === 'production') {
         //     // 为生产环境修改配置...
         //     config.mode = 'production';
@@ -29,6 +80,7 @@ module.exports = {
         //         }
         //     }
         // });
+        
     },
     // vue-loader 配置项
     // https://vue-loader.vuejs.org/en/options.html
@@ -70,7 +122,7 @@ module.exports = {
         // 设置代理
         proxy: {
             '/ISmac/ismacsite': {
-            target: 'http://127.0.0.1:8090', // 你接口的域名 http://192.168.16.26:8081  8090
+            target: 'http://127.0.0.1:8090', // 你接口的域名 http://192.168.16.26:8081  8090   172.18.47.162:8089
                 secure: false, // 如果是https接口，需要配置这个参数
                 changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
                 pathRewrite:{

@@ -64,7 +64,7 @@ export default {
         getList:function(){
             this.loading=true;
             this.$api.post('/waterele/query', {}, r => {
-                console.log(r)
+                
                 this.loading=false;
                 if(r.err_code=="0"){
                    this.table_data=r.data;

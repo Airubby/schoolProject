@@ -103,12 +103,12 @@ export default {
 				if(r.err_code=="0"){
 					if(r.data.length>0){
 						this.$store.dispatch('setAuthInfo',r.data);
-						let url=window.document.URL.split("#")[1];
-						this.filterAsyncRouter(url,r.data);
+						// let url=window.document.URL.split("#")[1];
+						// this.filterAsyncRouter(url,r.data);
 						this.$router.push({path:'/'});
 					}else{
 						console.log("没有任何权限，跳转到没有任何权限的页面")
-						router.push({path:'/login'});
+						this.$router.push({path:'/login'});
 					}
 				}else{
 					this.$message.error(r.err_msg);

@@ -104,7 +104,7 @@ export default {
         getList:function(){
             // this.$refs['thisRef'].searchHandler(false);
             this.$api.post('/role/query', {name:this.initParams.name}, r => {
-                console.log(r)
+                
                 if(r.err_code=="0"){
                   this.table_data=r.data;
                 }else{
@@ -161,7 +161,7 @@ export default {
                 type:'warning',
                 }).then(() => {
                     var thisID=ids.toString();
-                    console.log(thisID);
+                    ;
                     this.$api.post('/user/updatestate', {"ids":thisID,state:'0'}, r => {
                         if(r.err_code=="0"){
                             this.$message.success(r.err_msg);
@@ -196,7 +196,7 @@ export default {
                 type:'warning',
                 }).then(() => {
                     var thisID=ids.toString();
-                    console.log(thisID);
+                    ;
                     this.$api.post('/user/updatestate', {"ids":thisID,state:'1'}, r => {
                         if(r.err_code=="0"){
                             this.$message.success(r.err_msg);

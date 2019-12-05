@@ -128,6 +128,7 @@ public class RoleAction extends BaseServlet {
 	@MethodInfo(METHOD = "/role/rolequery", LOGSNAME = "rolequery", ISLOG = false)
 	public Object RoleQuery() throws Exception {
 		String roleid = getRequest().getParameter("id");
+		System.out.println("#########################");
 		List<Map<String, String>> map = menuservice.QueryRoleMenu(roleid);
 		List<WebServiceSysmenu> listbean = new ArrayList<WebServiceSysmenu>();
 		WebServiceSysmenu menubean = null;

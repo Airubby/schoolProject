@@ -31,7 +31,7 @@ public class YearQuzrtz implements Job {
 				if (count <= 0) {
 					baseservice.exeSql(String.format(CMD.MONTH_CREATE, yeartable));
 				}
-			    sql=String.format(CMD.MONTH_INSERT, yeartable,"select mgrobjid,pointid,DATE_FORMAT(time,'%Y-%m-01 00:00:00') as `time`,SUM(`value`) as `value` from "+monthtable+" GROUP BY mgrobjid");
+			    sql=String.format(CMD.MONTH_INSERT, yeartable,"select mgrobjid,pointid,SUM(`value`) as `value`,DATE_FORMAT(time,'%Y-%m-01 00:00:00') as `time` from "+monthtable+" GROUP BY mgrobjid");
 			    baseservice.exeSql(sql);
 				
 		} catch (Exception e) {

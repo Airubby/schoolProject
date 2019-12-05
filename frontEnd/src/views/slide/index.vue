@@ -82,7 +82,7 @@ export default {
     methods:{
         getSlide:function(){
             this.$api.get('/slide/query', {}, r => {
-                console.log(r)
+                
                 if(r.err_code=="0"){
                     this.slideData=r.data;
                 }else{

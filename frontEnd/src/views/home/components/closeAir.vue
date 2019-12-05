@@ -54,7 +54,6 @@ export default {
             };
             this.loading=true;
             this.$api.post('/service/switchOrder', obj, r => {
-                console.log(r)
                 this.loading=false;
                 if(r.err_code=="0"){
                     this.$message.success(r.err_msg);
@@ -64,11 +63,8 @@ export default {
             });
         },
         morecloseAir:function(){
-            console.log(this.$refs.thisRef.allSelection)
             let data=this.$refs.thisRef.allSelection.length>0?this.$refs.thisRef.allSelection:this.dialogInfo.table_data;
-            console.log(data)
             this.$api.post('/service/moreswitchOrder', {classnode:data}, r => {
-                console.log(r)
                 this.loading=false;
                 if(r.err_code=="0"){
                     this.$message.success(r.err_msg);

@@ -54,10 +54,10 @@ export default {
     },
     methods:{
         add:function(file){
-            console.log(file)
+            
             if(file.response.err_code=="0"){
                 this.$api.post('/slide/add', {url:file.response.data}, r => {
-                    console.log(r)
+                    
                     if(r.err_code=="0"){
                         this.$message.success('上传成功');
                         this.getList();
@@ -72,7 +72,7 @@ export default {
         },
         getList(){
             this.$api.get('/slide/query', {}, r => {
-                console.log(r)
+                
                 if(r.err_code=="0"){
                     this.fileList=r.data;
                 }else{
@@ -98,7 +98,7 @@ export default {
             });
         },
         onSuccess(res, file, fileList){
-            console.log(res,file,fileList)
+            
             if(res.err_code=="0"){
                 this.add(file);
             }else{//上传失败
@@ -107,7 +107,7 @@ export default {
             
         },
         onError(err, file, fileList){
-            console.log(err,file,fileList)
+            
             this.$message.warning(err);
         },
         beforeUpload(file){
@@ -119,7 +119,7 @@ export default {
             }
         },
         onchange(file,fileList){
-            console.log(file,fileList)
+            
         },
         //保存的操作
         dialogSure:function(){

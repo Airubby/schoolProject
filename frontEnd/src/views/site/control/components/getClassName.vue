@@ -50,7 +50,7 @@ export default {
         //获取列表
         getList:function(){
             this.$api.post('/service/querylist', {}, r => {
-                console.log(r)
+                
                 if(r.err_code=="0"){
                     this.table_data=r.data;
                 }else{

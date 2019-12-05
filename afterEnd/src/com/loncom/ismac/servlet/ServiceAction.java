@@ -511,27 +511,26 @@ public class ServiceAction extends BaseServlet {
 		
 		int hasNum=0,trueNum=0;
 		for(Map<String,String> object2 : list) {
-		//	JSONObject obj=(JSONObject) object2;
 			if(object2.get("sysxml")!="") {
-				hasNum+=1;
+//				hasNum+=1;
 				Service service=BaseUtil.getService((String) object2.get("serviceid"));
 				String sysxml="<?xml version='1.0' encoding='gb2312'?>"+ object2.get("sysxml")+"</root>";	
 				System.out.println(sysxml);
 				String rquestxml = getTcpclient().sendData(sysxml, service);
-				if(rquestxml.indexOf("data=\"true\"")!=-1) {
-					trueNum+=1;
-					String xml = getRequest().getSession().getServletContext().getRealPath("/xml/" + service.getSysxml());
-					String url = FileUtil.readToString(xml);
-					RootXml root = XmlEdiParser.parseRootData(url);
-					root.setGroupcontrol(service.getGroupcontrol());
-					BaseUtil.ObjToXMl(root,xml);
-				}
+//				if(rquestxml.indexOf("data=\"true\"")!=-1) {
+//					trueNum+=1;
+//					String xml = getRequest().getSession().getServletContext().getRealPath("/xml/" + service.getSysxml());
+//					String url = FileUtil.readToString(xml);
+//					RootXml root = XmlEdiParser.parseRootData(url);
+//					root.setGroupcontrol(service.getGroupcontrol());
+//					BaseUtil.ObjToXMl(root,xml);
+//				}
 			}
 		}
 		//判断多个xml文件都修改成功
-		if(hasNum!=trueNum) {
-			throw new RuntimeException("修改失败!");
-		}
+//		if(hasNum!=trueNum) {
+//			throw new RuntimeException("修改失败!");
+//		}
 		return null;
 	}
 	
@@ -589,7 +588,7 @@ public class ServiceAction extends BaseServlet {
 					table= String.format(CMD.YEAR_DEVTABLE,UtilTime.getNowBeforeYear(new Date(),-1));
 				}
 			   data.setErr_code("0");
-			   data.setData(JSONArray.fromObject(baseservice.getSqlListBean(String.format("select time ,SUM(value) as `value` from %s GROUP BY time", table), new CharsBean())));
+			   data.setData(JSONArray.fromObject(baseservice.getSqlListBean(String.format("select time ,cast(SUM(value) as decimal(10,2)) as `value` from %s GROUP BY time", table), new CharsBean())));
 		} catch (Exception e) {
 			data.setErr_code("1");
 			data.setErr_msg("查询年表不存在！");

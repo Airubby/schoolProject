@@ -87,13 +87,12 @@ export default {
     },
     methods:{
         async getInfo(id){
-            console.log(id)
             this.loading=true;
             await this.getTree();
             await this.getRole();
             this.$api.post("/role/details",{id:id},r=>{
                 this.loading=false;
-                console.log(r)
+                
                 if(r.err_code=='0'){
                     this.initParams=r.data;
                 }else{
@@ -103,7 +102,7 @@ export default {
         },
         getRole:function(){
             this.$api.post('/role/rolemenu',{id:this.dialogInfo.id},r=>{
-                console.log(r)
+                
                 if(r.err_code=="0"){
                     if(r.data &&r.data.length>0 && this.dialogInfo.id!='1'){
                         this.$refs.tree.setCheckedKeys(r.data);
@@ -115,7 +114,7 @@ export default {
         },
         getTree:function(){
             this.$api.post('/role/sysmenutree',{},r=>{
-                console.log(r)
+                
                 if(r.err_code=="0"){
                     this.tree_data=r.data;
                 }else{
@@ -126,7 +125,6 @@ export default {
         changeCheck:function(){
             this.treechecked=this.$refs.tree.getCheckedNodes();
             this.treehalfchecked  = this.$refs.tree.getHalfCheckedNodes();
-            console.log(this.treechecked)
         },
         dialogSure:function(){
             this.$refs['ruleForm'].validate((valid) => {
@@ -185,7 +183,7 @@ export default {
                     this.initParams.item=item;
 
                     this.$api.post(url,this.initParams, r => {
-                        console.log(r)
+                        
                         this.loading=false;
                         if(r.err_code=="0"){
                             this.dialogInfo.visible=false;

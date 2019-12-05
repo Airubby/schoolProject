@@ -1,0 +1,209 @@
+<!DOCTYPE html><html lang=zh><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"><link rel=icon href=favicon.ico><title>元岗校区能效管理系统</title><style>html,
+      body,
+      #app {
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+      }
+      .chromeframe {
+        margin: 0.2em 0;
+        background: #ccc;
+        color: #000;
+        padding: 0.2em 0;
+      }
+      #loader-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 999999;
+      }
+      #loader {
+        display: block;
+        position: relative;
+        left: 50%;
+        top: 50%;
+        width: 150px;
+        height: 150px;
+        margin: -75px 0 0 -75px;
+        border-radius: 50%;
+        border: 3px solid transparent;
+        /* COLOR 1 */
+        border-top-color: #FFF;
+        -webkit-animation: spin 2s linear infinite;
+        /* Chrome, Opera 15+, Safari 5+ */
+        -ms-animation: spin 2s linear infinite;
+        /* Chrome, Opera 15+, Safari 5+ */
+        -moz-animation: spin 2s linear infinite;
+        /* Chrome, Opera 15+, Safari 5+ */
+        -o-animation: spin 2s linear infinite;
+        /* Chrome, Opera 15+, Safari 5+ */
+        animation: spin 2s linear infinite;
+        /* Chrome, Firefox 16+, IE 10+, Opera */
+        z-index: 1001;
+      }
+      #loader:before {
+        content: "";
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        right: 5px;
+        bottom: 5px;
+        border-radius: 50%;
+        border: 3px solid transparent;
+        /* COLOR 2 */
+        border-top-color: #FFF;
+        -webkit-animation: spin 3s linear infinite;
+        /* Chrome, Opera 15+, Safari 5+ */
+        -moz-animation: spin 3s linear infinite;
+        /* Chrome, Opera 15+, Safari 5+ */
+        -o-animation: spin 3s linear infinite;
+        /* Chrome, Opera 15+, Safari 5+ */
+        -ms-animation: spin 3s linear infinite;
+        /* Chrome, Opera 15+, Safari 5+ */
+        animation: spin 3s linear infinite;
+        /* Chrome, Firefox 16+, IE 10+, Opera */
+      }
+      #loader:after {
+        content: "";
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        right: 15px;
+        bottom: 15px;
+        border-radius: 50%;
+        border: 3px solid transparent;
+        border-top-color: #FFF;
+        /* COLOR 3 */
+        -moz-animation: spin 1.5s linear infinite;
+        /* Chrome, Opera 15+, Safari 5+ */
+        -o-animation: spin 1.5s linear infinite;
+        /* Chrome, Opera 15+, Safari 5+ */
+        -ms-animation: spin 1.5s linear infinite;
+        /* Chrome, Opera 15+, Safari 5+ */
+        -webkit-animation: spin 1.5s linear infinite;
+        /* Chrome, Opera 15+, Safari 5+ */
+        animation: spin 1.5s linear infinite;
+        /* Chrome, Firefox 16+, IE 10+, Opera */
+      }
+      @-webkit-keyframes spin {
+        0% {
+          -webkit-transform: rotate(0deg);
+          /* Chrome, Opera 15+, Safari 3.1+ */
+          -ms-transform: rotate(0deg);
+          /* IE 9 */
+          transform: rotate(0deg);
+          /* Firefox 16+, IE 10+, Opera */
+        }
+        100% {
+          -webkit-transform: rotate(360deg);
+          /* Chrome, Opera 15+, Safari 3.1+ */
+          -ms-transform: rotate(360deg);
+          /* IE 9 */
+          transform: rotate(360deg);
+          /* Firefox 16+, IE 10+, Opera */
+        }
+      }
+      @keyframes spin {
+        0% {
+          -webkit-transform: rotate(0deg);
+          /* Chrome, Opera 15+, Safari 3.1+ */
+          -ms-transform: rotate(0deg);
+          /* IE 9 */
+          transform: rotate(0deg);
+          /* Firefox 16+, IE 10+, Opera */
+        }
+        100% {
+          -webkit-transform: rotate(360deg);
+          /* Chrome, Opera 15+, Safari 3.1+ */
+          -ms-transform: rotate(360deg);
+          /* IE 9 */
+          transform: rotate(360deg);
+          /* Firefox 16+, IE 10+, Opera */
+        }
+      }
+      #loader-wrapper .loader-section {
+        position: fixed;
+        top: 0;
+        width: 51%;
+        height: 100%;
+        background: #7171C6;
+        /* Old browsers */
+        z-index: 1000;
+        -webkit-transform: translateX(0);
+        /* Chrome, Opera 15+, Safari 3.1+ */
+        -ms-transform: translateX(0);
+        /* IE 9 */
+        transform: translateX(0);
+        /* Firefox 16+, IE 10+, Opera */
+      }
+      #loader-wrapper .loader-section.section-left {
+        left: 0;
+      }
+      #loader-wrapper .loader-section.section-right {
+        right: 0;
+      }
+      /* Loaded */
+      .loaded #loader-wrapper .loader-section.section-left {
+        -webkit-transform: translateX(-100%);
+        /* Chrome, Opera 15+, Safari 3.1+ */
+        -ms-transform: translateX(-100%);
+        /* IE 9 */
+        transform: translateX(-100%);
+        /* Firefox 16+, IE 10+, Opera */
+        -webkit-transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
+        transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
+      }
+      .loaded #loader-wrapper .loader-section.section-right {
+        -webkit-transform: translateX(100%);
+        /* Chrome, Opera 15+, Safari 3.1+ */
+        -ms-transform: translateX(100%);
+        /* IE 9 */
+        transform: translateX(100%);
+        /* Firefox 16+, IE 10+, Opera */
+        -webkit-transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
+        transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
+      }
+      .loaded #loader {
+        opacity: 0;
+        -webkit-transition: all 0.3s ease-out;
+        transition: all 0.3s ease-out;
+      }
+      .loaded #loader-wrapper {
+        visibility: hidden;
+        -webkit-transform: translateY(-100%);
+        /* Chrome, Opera 15+, Safari 3.1+ */
+        -ms-transform: translateY(-100%);
+        /* IE 9 */
+        transform: translateY(-100%);
+        /* Firefox 16+, IE 10+, Opera */
+        -webkit-transition: all 0.3s 1s ease-out;
+        transition: all 0.3s 1s ease-out;
+      }
+      /* JavaScript Turned Off */
+      .no-js #loader-wrapper {
+        display: none;
+      }
+      .no-js h1 {
+        color: #222222;
+      }
+      #loader-wrapper .load_title {
+        font-family: 'Open Sans';
+        color: #FFF;
+        font-size: 19px;
+        width: 100%;
+        text-align: center;
+        z-index: 9999999999999;
+        position: absolute;
+        top: 60%;
+        opacity: 1;
+        line-height: 30px;
+      }
+      #loader-wrapper .load_title span {
+        font-weight: normal;
+        font-style: italic;
+        font-size: 13px;
+        color: #FFF;
+        opacity: 0.5;
+      }</style><link href=css/chunk-171a.0d220065.css rel=prefetch><link href=css/chunk-18be.df657cdf.css rel=prefetch><link href=css/chunk-22d1.a1c2b099.css rel=prefetch><link href=css/chunk-2de5.8844b13c.css rel=prefetch><link href=css/chunk-31a0.dbf40aea.css rel=prefetch><link href=css/chunk-32d4.aa3e8433.css rel=prefetch><link href=css/chunk-4c92.08d4665f.css rel=prefetch><link href=css/chunk-56a3.3ff5b8e3.css rel=prefetch><link href=css/chunk-57e7.c8012692.css rel=prefetch><link href=css/chunk-682c.91211a1d.css rel=prefetch><link href=css/chunk-72b0.664e5bb6.css rel=prefetch><link href=css/chunk-78db.2d4cc422.css rel=prefetch><link href=css/chunk-85fa.48471aeb.css rel=prefetch><link href=js/1e4b.0cada7e8.js rel=prefetch><link href=js/4943.bb38b6a4.js rel=prefetch><link href=js/6894.0c2c134d.js rel=prefetch><link href=js/69e4.2def3813.js rel=prefetch><link href=js/chunk-171a.3445e6f1.js rel=prefetch><link href=js/chunk-18be.16551de6.js rel=prefetch><link href=js/chunk-22d1.898d75e1.js rel=prefetch><link href=js/chunk-2753.d9966bac.js rel=prefetch><link href=js/chunk-2de5.6c584123.js rel=prefetch><link href=js/chunk-31a0.8ff3ca47.js rel=prefetch><link href=js/chunk-32d4.8e44b3da.js rel=prefetch><link href=js/chunk-36c5.a171530a.js rel=prefetch><link href=js/chunk-4c92.13ebaaf5.js rel=prefetch><link href=js/chunk-5308.303e1686.js rel=prefetch><link href=js/chunk-56a3.9dd306f8.js rel=prefetch><link href=js/chunk-57e7.7f3d7958.js rel=prefetch><link href=js/chunk-682c.fccb8c32.js rel=prefetch><link href=js/chunk-70ac.64ffcea8.js rel=prefetch><link href=js/chunk-72b0.03f0a82d.js rel=prefetch><link href=js/chunk-78db.46a745cb.js rel=prefetch><link href=js/chunk-85fa.617c0e94.js rel=prefetch><link href=css/app.67f79bdf.css rel=preload as=style><link href=css/chunk-vendors.1dbef7f6.css rel=preload as=style><link href=js/app.1fedd561.js rel=preload as=script><link href=js/chunk-vendors.0bc1c1e6.js rel=preload as=script><link href=css/chunk-vendors.1dbef7f6.css rel=stylesheet><link href=css/app.67f79bdf.css rel=stylesheet></head><body><noscript><strong>We're sorry but hello doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id=app><div id=loader-wrapper><div id=loader></div><div class="loader-section section-left"></div><div class="loader-section section-right"></div><div class=load_title>正在加载,请耐心等待...</div></div></div><script src=js/chunk-vendors.0bc1c1e6.js></script><script src=js/app.1fedd561.js></script></body></html>

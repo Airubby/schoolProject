@@ -100,7 +100,7 @@ export default {
         },
         getList:function(){
             this.$api.post('/time/query', {name:this.search_input}, r => {
-                console.log(r)
+                
                 if(r.err_code=="0"){
                    this.table_data=r.data;
                     for(let j=0;j<this.table_data.length;j++){

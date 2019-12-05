@@ -99,7 +99,7 @@ export default {
     },
     data() {
         let checktime = (rule, value, callback) => {
-            console.log(value)
+            
             if (value === ''||value==null) {
                 callback(new Error('请选择时间范围'));
             } else {
@@ -147,7 +147,7 @@ export default {
     methods:{
         getDetail:function(){
             this.$api.get('/time/detail', {id:this.dialogInfo.id}, r => {
-                console.log(r)
+                
                 if(r.err_code=="0"){
                    this.ruleForm.id=r.data.id;
                    this.ruleForm.name=r.data.name;
@@ -203,7 +203,7 @@ export default {
                     param.end_time=this.ruleForm.date[1];
                     let url=this.ruleForm.id?'/time/update':'/time/add';
                     this.$api.post(url,{"obj":param,"item":timeweek}, r => {
-                        console.log(r)
+                        
                         if(r.err_code=="0"){
                             this.$message.success(r.err_msg);
                             this.$parent.getList();

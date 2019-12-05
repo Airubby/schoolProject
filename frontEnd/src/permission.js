@@ -39,6 +39,7 @@ function getInfo(){  //刷新页面重新获取权限
             }else{
                 Message.warning("权限获取失败");
             }
+            resolve()
         })
     })
 }
@@ -60,9 +61,12 @@ async function routerGo(){
                 if(JSON.stringify(to.meta)!="{}"){
                     if(to.meta.show&&to.meta.show=="true"){
                         if(to.meta.limits&&to.meta.limits!=""){
-                            store.dispatch('setLimits',to.meta.limits.split(","));
+                            store.dispatch('setLimits',to.meta.limits.split(",")).then(()=>{
+                                next();
+                            });
+                        }else{
+                            next();
                         }
-                        next() 
                     }else{
                         next('/401') 
                         console.log("没有权限访问")
@@ -84,7 +88,7 @@ async function routerGo(){
     })
     
     router.afterEach((to,from) => {
-        let title=to.meta.title?`${to.meta.title}`:'元岗校区能效管理系统';
+        let title=to.meta.title?`${to.meta.title}`:'广州市市政职业学校能耗管理系统';
         window.document.title = title;
         loadingInstance&&loadingInstance.close();
         // NProgress.done() // 结束Progress

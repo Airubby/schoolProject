@@ -90,7 +90,7 @@ export default {
             }
             this.loading=true;
             this.$api.post('/service/moreInfo', {startTime:this.search[0],endTime:this.search[1]}, r => {
-                console.log(r)
+                
                 this.loading=false;
                 if(r.err_code=="0"){
                     this.table_data=r.data.top;
@@ -102,7 +102,7 @@ export default {
     },
     watch:{
         time:function(val){
-            console.log(val)
+            
             this.type=val;
         }
     },

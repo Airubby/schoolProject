@@ -43,7 +43,6 @@ export default {
         },
         getInfo:function(){
             this.$api.post('/service/queryGroup', {group:this.info.building,floor:this.floor}, r => {
-                console.log(r)
                 if(r.err_code=="0"){
                     this.info.data=r.data;
                 }else{

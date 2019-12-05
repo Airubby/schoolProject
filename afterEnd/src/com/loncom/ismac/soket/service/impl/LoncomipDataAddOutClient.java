@@ -135,9 +135,9 @@ public class LoncomipDataAddOutClient extends BaseSocketClient {
 		String response = "";
 		if (getStatusCode() == 2)
 			try {
-				System.out.println("****************************************************");
 				out.write(xml);
 				out.flush();
+				System.out.println(xml);
 //				System.out.println(object.getIp());
 //				System.out.println(object.getSocketconnecttimeout());
 
@@ -158,6 +158,7 @@ public class LoncomipDataAddOutClient extends BaseSocketClient {
 //
 //				if ((sb.length() > 0) && (sb.indexOf("<?xml") > -1))
 //					response = sb.substring(sb.indexOf("<?xml"));
+				
 				closeSocket();
 			} catch (Exception e) {
 				e.printStackTrace();

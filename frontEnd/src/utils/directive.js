@@ -6,6 +6,8 @@ Vue.directive('permission', {
     inserted(el, binding, vnode, oldVnode) {
         const { value } = binding
         const limits = store.getters && store.getters.limits
+        console.log(limits);
+        debugger;
         if (value) {
             const permissionRoles = value
             const hasPermission = limits.some(limit => {
@@ -135,7 +137,6 @@ Vue.directive("scrollBar", {
                 const rules = ["fixed", "absolute", "relative"];
                 if (!rules.includes(window.getComputedStyle(el, null).position)) {
                     el.style.position="relative";
-                    console.log(el)
                 // console.error(`perfect-scrollbar所在的容器的position属性必须是以下之一：${rules.join("、")}`)
                 }
                 el_scrollBar(el);//el上挂一份属性

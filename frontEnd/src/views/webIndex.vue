@@ -433,7 +433,6 @@ export default {
                 rate=mapWidth/width;  ////高度有多的 按宽度缩放比例
                 number=domHeight-mapHeight;
             }
-            console.log("imgk:"+width+";imgh:"+height+";domk:"+domWidth+";domh:"+domHeight+";mapk:"+mapWidth+";maph:"+mapHeight+";rate:"+rate)
             if(width<=domWidth&&height<=domHeight){
                 for(let i=0;i<maplist.length;i++){
                     let oldCoords = maplist[i].getAttribute("coords"); //定义一个初始化的coords 改变浏览器用这个值去计算

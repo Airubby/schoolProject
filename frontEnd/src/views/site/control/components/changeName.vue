@@ -44,7 +44,7 @@ export default {
         //获取列表
         getList:function(){
             this.$api.post('/service/querylist', {}, r => {
-                console.log(r)
+                
                 if(r.err_code=="0"){
                     this.table_data=r.data;
                 }else{
@@ -58,7 +58,7 @@ export default {
                 if(valid){ //验证通过
                     this.loading=true;
                     this.$api.post('/service/updateN',{list:this.table_data}, r => {
-                        console.log(r)
+                        
                         this.loading=false;
                         if(r.err_code=="0"){
                             this.$message.success(r.err_msg);

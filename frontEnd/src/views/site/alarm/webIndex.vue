@@ -83,7 +83,7 @@ export default {
         getList:function(){
             this.loading=true;
             this.$api.post('/alarm/query', {createTime:this.$tool.Format('yyyy-MM-dd 00:00:00',new Date())}, r => {
-                console.log(r)
+                
                 this.loading=false;
                 if(r.err_code=="0"){
                    this.table_data=r.data;

@@ -109,7 +109,7 @@ export default {
     methods:{
         getTime:function(){
             this.$api.post('/time/query', {}, r => {
-                console.log(r)
+                
                 if(r.err_code=="0"){
                     this.options=r.data;
                 }
@@ -119,7 +119,6 @@ export default {
             this.selectInfo.visible=true;
         },
         backInfo:function(info){
-            console.log(info)
             if(info.length>0){
                 let arr=[];
                 for(let i=0;i<info.length;i++){
@@ -138,7 +137,7 @@ export default {
                 if(valid){ //验证通过
                     this.loading=true;
                     // this.$api.post('/service/updateT',this.ruleForm, r => {
-                    //     console.log(r)
+                        
                     //     this.loading=false;
                     //     if(r.err_code=="0"){
                     //         this.$message.success(r.err_msg);
@@ -176,6 +175,7 @@ export default {
                 this.ruleForm1.code=node.code;
                 this.ruleForm1.serviceid=node.serviceid;
                 this.$api.post('/service/update',this.ruleForm1, r => {
+                    console.log(this.ruleForm1)
                     if(r.err_code!="0"){
                         this.backData+=node.classname+"；";
                     }

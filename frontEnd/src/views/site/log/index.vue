@@ -51,7 +51,7 @@ export default {
     },
     watch:{
 		table_data:function(val){
-            console.log(val)
+            
         }
 	},
     props:[],  

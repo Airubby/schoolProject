@@ -1,760 +1,784 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <root>
     <groupcontrol name="能效监控">
-        <group acreage="152464" classroomcount="1000" countnumber="3100" details="1#楼" dormcount="1000" groupname="1#楼" groupno="1" groupfloor="6">
+        <group acreage="152464" classroomcount="1000" countnumber="3100" details="1#楼" dormcount="1000" groupname="1#楼" groupno="1" groupfloor="10">
             <classroomgroup name="教室" roomno="11" />
             <officegroup name="办公室" roomno="12">
                 <classroom classname="医务室1#" floor="1" closeair="" code="12_yws1" model="0" openair="" timegroup="" times="15" subcodes="12_yws2">
-                    <item dev="airstate" pointid="8092,2010500002"/> <!--空调设备-->
-					<item dev="lampstate" pointid="8093,3000300001"/>  <!--配电 智能电箱-->
-					<item dev="linestate" pointid="8094,000001"/> <!--人体感应-->
-					<item dev="temp" pointid="8092,2010101001"/> <!--空调温度-->
-					<item dev="hum" pointid="8092,2010102001"/> <!--空调湿度-->
-					<item dev="ammeterstate" pointid="8094,000001"/>  <!--干接点 无线人体检测器-->
-					<item dev="roompower" pointid="8091,3050314001"/>  <!--电量仪-->
-					<item dev="aircontrol" pointid="8092,2010000003"/> <!--空调关闭-->
-					<item dev="powercontrol" pointid="8093,3000000002;80103,3000000002"/> <!--配电 智能电箱 关闭-->
-					<item dev="powerdegree" pointid="8091,3050618001_80101,3050618001"/> <!--电量仪 电表 -->
-					<item dev="aircontrolopen" pointid="8092,2010000001"/> <!--空调打开-->
-					<item dev="powercontrolopen" pointid="8093,3000000001"/> <!--配电 智能电箱 打开-->
+                    <item dev="airstate" pointid="8092,2010500002" />
+                    <!--空调设备-->
+                    <item dev="lampstate" pointid="8093,3000300001" />
+                    <!--配电 智能电箱-->
+                    <item dev="linestate" pointid="8094,000001" />
+                    <!--人体感应-->
+                    <item dev="temp" pointid="8092,2010101001" />
+                    <!--空调温度-->
+                    <item dev="hum" pointid="8092,2010102001" />
+                    <!--空调湿度-->
+                    <item dev="ammeterstate" pointid="8094,000001" />
+                    <!--干接点 无线人体检测器-->
+                    <item dev="roompower" pointid="8091,3050314001" />
+                    <!--电量仪-->
+                    <item dev="aircontrol" pointid="8092,2010000003" />
+                    <!--空调关闭-->
+                    <item dev="powercontrol" pointid="8093,3000000002;80103,3000000002" />
+                    <!--配电 智能电箱 关闭-->
+                    <item dev="powerdegree" pointid="8091,3050618001_80101,3050618001" />
+                    <!--电量仪 电表 -->
+                    <item dev="aircontrolopen" pointid="8092,2010000001" />
+                    <!--空调打开-->
+                    <item dev="powercontrolopen" pointid="8093,3000000001" />
+                    <!--配电 智能电箱 打开-->
                 </classroom>
-                <classroom classname="医务室2#" floor="1" closeair="" code="12_yws2" model="0" openair="" timegroup="" times="15" element="child" >
-                    <item dev="airstate" pointid="80102,2010500002"/> <!--空调设备 红外学习遥控模块 -->
-					<item dev="lampstate" pointid="80103,3000300001"/>  <!--配电 智能电箱-->
-					<item dev="linestate" pointid="80104,000001"/> <!--人体感应 无线人体探测器 -->
-					<item dev="temp" pointid="80102,2010101001"/> <!--空调温度-->
-					<item dev="hum" pointid="80102,2010102001"/> <!--空调湿度-->
-					<item dev="ammeterstate" pointid="80104,000001"/>  <!--干接点-->
-					<item dev="roompower" pointid="80101,3050314001"/>  <!--电量仪-->
-					<item dev="aircontrol" pointid="80102,2010000003"/> <!--空调关闭-->
-					<item dev="powercontrol" pointid=""/> <!--配电 智能电箱 关闭-->
-					<item dev="powerdegree" pointid=""/> <!--电量仪 智能电表 -->
-					<item dev="aircontrolopen" pointid="80102,2010000001"/> <!--空调打开-->
-					<item dev="powercontrolopen" pointid="80103,3000000001"/> <!--配电 智能电箱 打开-->
+                <classroom classname="医务室2#" floor="1" closeair="" code="12_yws2" model="0" openair="" timegroup="" times="15" element="child">
+                    <item dev="airstate" pointid="80102,2010500002" />
+                    <!--空调设备 红外学习遥控模块 -->
+                    <item dev="lampstate" pointid="80103,3000300001" />
+                    <!--配电 智能电箱-->
+                    <item dev="linestate" pointid="80104,000001" />
+                    <!--人体感应 无线人体探测器 -->
+                    <item dev="temp" pointid="80102,2010101001" />
+                    <!--空调温度-->
+                    <item dev="hum" pointid="80102,2010102001" />
+                    <!--空调湿度-->
+                    <item dev="ammeterstate" pointid="80104,000001" />
+                    <!--干接点-->
+                    <item dev="roompower" pointid="80101,3050314001" />
+                    <!--电量仪-->
+                    <item dev="aircontrol" pointid="80102,2010000003" />
+                    <!--空调关闭-->
+                    <item dev="powercontrol" pointid="" />
+                    <!--配电 智能电箱 关闭-->
+                    <item dev="powerdegree" pointid="" />
+                    <!--电量仪 智能电表 -->
+                    <item dev="aircontrolopen" pointid="80102,2010000001" />
+                    <!--空调打开-->
+                    <item dev="powercontrolopen" pointid="80103,3000000001" />
+                    <!--配电 智能电箱 打开-->
                 </classroom>
-				<classroom classname="招生办1#" floor="1" closeair="" code="12_zsb1" model="0" openair="" timegroup="" times="15" subcodes="12_zsb2;12_zsb3">
-                    <item dev="airstate" pointid="80112,2010500002"/>
-					<item dev="lampstate" pointid="80113,3000300001"/>
-					<item dev="linestate" pointid="80114,000001"/>
-					<item dev="temp" pointid="80112,2010101001"/>
-					<item dev="hum" pointid="80112,2010102001"/>
-					<item dev="ammeterstate" pointid="80114,000001"/>
-					<item dev="roompower" pointid="80111,3050314001"/>
-					<item dev="aircontrol" pointid="80112,2010000003"/>
-					<item dev="powercontrol" pointid="80113,3000000002"/>
-					<item dev="powerdegree" pointid="80111,3050618001"/>
-					<item dev="aircontrolopen" pointid="80112,2010000001"/>
-					<item dev="powercontrolopen" pointid="80113,3000000001"/>
+                <classroom classname="招生办1#" floor="1" closeair="" code="12_zsb1" model="0" openair="" timegroup="" times="15" subcodes="12_zsb2;12_zsb3">
+                    <item dev="airstate" pointid="80112,2010500002" />
+                    <item dev="lampstate" pointid="80113,3000300001" />
+                    <item dev="linestate" pointid="80114,000001" />
+                    <item dev="temp" pointid="80112,2010101001" />
+                    <item dev="hum" pointid="80112,2010102001" />
+                    <item dev="ammeterstate" pointid="80114,000001" />
+                    <item dev="roompower" pointid="80111,3050314001" />
+                    <item dev="aircontrol" pointid="80112,2010000003" />
+                    <item dev="powercontrol" pointid="80113,3000000002" />
+                    <item dev="powerdegree" pointid="80111,3050618001" />
+                    <item dev="aircontrolopen" pointid="80112,2010000001" />
+                    <item dev="powercontrolopen" pointid="80113,3000000001" />
                 </classroom>
-				<classroom classname="招生办2#" floor="1" closeair="" code="12_zsb2" model="0" openair="" timegroup="" times="15" element="child">
-                    <item dev="airstate" pointid="80122,2010500002"/>
-					<item dev="lampstate" pointid=""/>
-					<item dev="linestate" pointid="80124,000001"/>
-					<item dev="temp" pointid="80122,2010101001"/>
-					<item dev="hum" pointid="80122,2010102001"/>
-					<item dev="ammeterstate" pointid="80124,000001"/>
-					<item dev="roompower" pointid=""/>
-					<item dev="aircontrol" pointid="80122,2010000003"/>
-					<item dev="powercontrol" pointid=""/>
-					<item dev="powerdegree" pointid=""/>
-					<item dev="aircontrolopen" pointid="80122,2010000001"/>
-					<item dev="powercontrolopen" pointid=""/>
+                <classroom classname="招生办2#" floor="1" closeair="" code="12_zsb2" model="0" openair="" timegroup="" times="15" element="child">
+                    <item dev="airstate" pointid="80122,2010500002" />
+                    <item dev="lampstate" pointid="" />
+                    <item dev="linestate" pointid="80124,000001" />
+                    <item dev="temp" pointid="80122,2010101001" />
+                    <item dev="hum" pointid="80122,2010102001" />
+                    <item dev="ammeterstate" pointid="80124,000001" />
+                    <item dev="roompower" pointid="" />
+                    <item dev="aircontrol" pointid="80122,2010000003" />
+                    <item dev="powercontrol" pointid="" />
+                    <item dev="powerdegree" pointid="" />
+                    <item dev="aircontrolopen" pointid="80122,2010000001" />
+                    <item dev="powercontrolopen" pointid="" />
                 </classroom>
-				<classroom classname="招生办3#" floor="1" closeair="" code="12_zsb3" model="0" openair="" timegroup="" times="15" element="child">
-                    <item dev="airstate" pointid="80132,2010500002"/>
-					<item dev="lampstate" pointid=""/>
-					<item dev="linestate" pointid="80134,000001"/>
-					<item dev="temp" pointid="80132,2010101001"/>
-					<item dev="hum" pointid="80132,2010102001"/>
-					<item dev="ammeterstate" pointid="80134,000001"/>
-					<item dev="roompower" pointid=""/>
-					<item dev="aircontrol" pointid="80132,2010000003"/>
-					<item dev="powercontrol" pointid=""/>
-					<item dev="powerdegree" pointid=""/>
-					<item dev="aircontrolopen" pointid="80132,2010000001"/>
-					<item dev="powercontrolopen" pointid=""/>
+                <classroom classname="招生办3#" floor="1" closeair="" code="12_zsb3" model="0" openair="" timegroup="" times="15" element="child">
+                    <item dev="airstate" pointid="80132,2010500002" />
+                    <item dev="lampstate" pointid="" />
+                    <item dev="linestate" pointid="80134,000001" />
+                    <item dev="temp" pointid="80132,2010101001" />
+                    <item dev="hum" pointid="80132,2010102001" />
+                    <item dev="ammeterstate" pointid="80134,000001" />
+                    <item dev="roompower" pointid="" />
+                    <item dev="aircontrol" pointid="80132,2010000003" />
+                    <item dev="powercontrol" pointid="" />
+                    <item dev="powerdegree" pointid="" />
+                    <item dev="aircontrolopen" pointid="80132,2010000001" />
+                    <item dev="powercontrolopen" pointid="" />
                 </classroom>
-				<classroom classname="团体辅导室" floor="3" closeair="" code="12_ttfds" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="80412,2010500002"/>
-					<item dev="lampstate" pointid="80413,3000300001"/>
-					<item dev="linestate" pointid="80414,000001"/>
-					<item dev="temp" pointid="80412,2010101001"/>
-					<item dev="hum" pointid="80412,2010102001"/>
-					<item dev="ammeterstate" pointid="80414,000001"/>
-					<item dev="roompower" pointid="80411,3050314001"/>
-					<item dev="aircontrol" pointid="80412,2010000003"/>
-					<item dev="powercontrol" pointid="80413,3000000002"/>
-					<item dev="powerdegree" pointid="80411,3050618001"/>
-					<item dev="aircontrolopen" pointid="80412,2010000001"/>
-					<item dev="powercontrolopen" pointid="80413,3000000001"/>
+                <classroom classname="团体辅导室" floor="3" closeair="28" code="12_ttfds" model="0" openair="null" timegroup="" times="5">
+                    <item dev="airstate" pointid="80412,2010500002" />
+                    <item dev="lampstate" pointid="80413,3000300001" />
+                    <item dev="linestate" pointid="80414,000001" />
+                    <item dev="temp" pointid="80412,2010101001" />
+                    <item dev="hum" pointid="80412,2010102001" />
+                    <item dev="ammeterstate" pointid="80414,000001" />
+                    <item dev="roompower" pointid="80411,3050314001" />
+                    <item dev="aircontrol" pointid="80412,2010000003" />
+                    <item dev="powercontrol" pointid="80413,3000000002" />
+                    <item dev="powerdegree" pointid="80411,3050618001" />
+                    <item dev="aircontrolopen" pointid="80412,2010000001" />
+                    <item dev="powercontrolopen" pointid="80413,3000000001" />
                 </classroom>
-				<classroom classname="心理活动中心" floor="3" closeair="" code="12_xlhdzx" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="80422,2010500002"/>
-					<item dev="lampstate" pointid="80423,3000300001"/>
-					<item dev="linestate" pointid="80424,000001"/>
-					<item dev="temp" pointid="80422,2010101001"/>
-					<item dev="hum" pointid="80422,2010102001"/>
-					<item dev="ammeterstate" pointid="80424,000001"/>
-					<item dev="roompower" pointid="80421,3050314001"/>
-					<item dev="aircontrol" pointid="80422,2010000003"/>
-					<item dev="powercontrol" pointid="80423,3000000002"/>
-					<item dev="powerdegree" pointid="80421,3050618001"/>
-					<item dev="aircontrolopen" pointid="80422,2010000001"/>
-					<item dev="powercontrolopen" pointid="80423,3000000001"/>
+                <classroom classname="心理活动中心" floor="3" closeair="28" code="12_xlhdzx" model="0" openair="null" timegroup="" times="5">
+                    <item dev="airstate" pointid="80422,2010500002" />
+                    <item dev="lampstate" pointid="80423,3000300001" />
+                    <item dev="linestate" pointid="80424,000001" />
+                    <item dev="temp" pointid="80422,2010101001" />
+                    <item dev="hum" pointid="80422,2010102001" />
+                    <item dev="ammeterstate" pointid="80424,000001" />
+                    <item dev="roompower" pointid="80421,3050314001" />
+                    <item dev="aircontrol" pointid="80422,2010000003" />
+                    <item dev="powercontrol" pointid="80423,3000000002" />
+                    <item dev="powerdegree" pointid="80421,3050618001" />
+                    <item dev="aircontrolopen" pointid="80422,2010000001" />
+                    <item dev="powercontrolopen" pointid="80423,3000000001" />
                 </classroom>
-				<classroom classname="电脑室411-2" floor="4" closeair="" code="12_411_2" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="80582,2010500002"/>
-					<item dev="lampstate" pointid="80583,3000300001"/>
-					<item dev="linestate" pointid="80584,000001"/>
-					<item dev="temp" pointid="80582,2010101001"/>
-					<item dev="hum" pointid="80582,2010102001"/>
-					<item dev="ammeterstate" pointid="80584,000001"/>
-					<item dev="roompower" pointid="80581,3050314001"/>
-					<item dev="aircontrol" pointid="80582,2010000003"/>
-					<item dev="powercontrol" pointid="80583,3000000002"/>
-					<item dev="powerdegree" pointid="80581,3050618001"/>
-					<item dev="aircontrolopen" pointid="80582,2010000001"/>
-					<item dev="powercontrolopen" pointid="80583,3000000001"/>
+                <classroom classname="电脑室411-2" floor="4" closeair="" code="12_411_2" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="80582,2010500002" />
+                    <item dev="lampstate" pointid="80583,3000300001" />
+                    <item dev="linestate" pointid="80584,000001" />
+                    <item dev="temp" pointid="80582,2010101001" />
+                    <item dev="hum" pointid="80582,2010102001" />
+                    <item dev="ammeterstate" pointid="80584,000001" />
+                    <item dev="roompower" pointid="80581,3050314001" />
+                    <item dev="aircontrol" pointid="80582,2010000003" />
+                    <item dev="powercontrol" pointid="80583,3000000002" />
+                    <item dev="powerdegree" pointid="80581,3050618001" />
+                    <item dev="aircontrolopen" pointid="80582,2010000001" />
+                    <item dev="powercontrolopen" pointid="80583,3000000001" />
                 </classroom>
-				<classroom classname="广播室409" floor="4" closeair="" code="12_409" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="80602,2010500002"/>
-					<item dev="lampstate" pointid="80603,3000300001"/>
-					<item dev="linestate" pointid="80604,000001"/>
-					<item dev="temp" pointid="80602,2010101001"/>
-					<item dev="hum" pointid="80602,2010102001"/>
-					<item dev="ammeterstate" pointid="80604,000001"/>
-					<item dev="roompower" pointid="80601,3050314001"/>
-					<item dev="aircontrol" pointid="80602,2010000003"/>
-					<item dev="powercontrol" pointid="80603,3000000002"/>
-					<item dev="powerdegree" pointid="80601,3050618001"/>
-					<item dev="aircontrolopen" pointid="80602,2010000001"/>
-					<item dev="powercontrolopen" pointid="80603,3000000001"/>
+                <classroom classname="广播室409" floor="4" closeair="29" code="12_409" model="0" openair="null" timegroup="" times="1">
+                    <item dev="airstate" pointid="80602,2010500002" />
+                    <item dev="lampstate" pointid="80603,3000300001" />
+                    <item dev="linestate" pointid="80604,000001" />
+                    <item dev="temp" pointid="80602,2010101001" />
+                    <item dev="hum" pointid="80602,2010102001" />
+                    <item dev="ammeterstate" pointid="80604,000001" />
+                    <item dev="roompower" pointid="80601,3050314001" />
+                    <item dev="aircontrol" pointid="80602,2010000003" />
+                    <item dev="powercontrol" pointid="80603,3000000002" />
+                    <item dev="powerdegree" pointid="80601,3050618001" />
+                    <item dev="aircontrolopen" pointid="80602,2010000001" />
+                    <item dev="powercontrolopen" pointid="80603,3000000001" />
                 </classroom>
-				<classroom classname="电脑室508-2" floor="5" closeair="" code="12_508_2" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="80762,2010500002"/>
-					<item dev="lampstate" pointid="80763,3000300001"/>
-					<item dev="linestate" pointid="80764,000001"/>
-					<item dev="temp" pointid="80762,2010101001"/>
-					<item dev="hum" pointid="80762,2010102001"/>
-					<item dev="ammeterstate" pointid="80764,000001"/>
-					<item dev="roompower" pointid="80761,3050314001"/>
-					<item dev="aircontrol" pointid="80762,2010000003"/>
-					<item dev="powercontrol" pointid="80763,3000000002"/>
-					<item dev="powerdegree" pointid="80761,3050618001"/>
-					<item dev="aircontrolopen" pointid="80762,2010000001"/>
-					<item dev="powercontrolopen" pointid="80763,3000000001"/>
+                <classroom classname="电脑室508-2" floor="5" closeair="" code="12_508_2" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="80762,2010500002" />
+                    <item dev="lampstate" pointid="80763,3000300001" />
+                    <item dev="linestate" pointid="80764,000001" />
+                    <item dev="temp" pointid="80762,2010101001" />
+                    <item dev="hum" pointid="80762,2010102001" />
+                    <item dev="ammeterstate" pointid="80764,000001" />
+                    <item dev="roompower" pointid="80761,3050314001" />
+                    <item dev="aircontrol" pointid="80762,2010000003" />
+                    <item dev="powercontrol" pointid="80763,3000000002" />
+                    <item dev="powerdegree" pointid="80761,3050618001" />
+                    <item dev="aircontrolopen" pointid="80762,2010000001" />
+                    <item dev="powercontrolopen" pointid="80763,3000000001" />
                 </classroom>
-				<classroom classname="电脑室510-2" floor="5" closeair="" code="12_510_2" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="80792,2010500002"/>
-					<item dev="lampstate" pointid="80793,3000300001"/>
-					<item dev="linestate" pointid="80794,000001"/>
-					<item dev="temp" pointid="80792,2010101001"/>
-					<item dev="hum" pointid="80792,2010102001"/>
-					<item dev="ammeterstate" pointid="80794,000001"/>
-					<item dev="roompower" pointid="80791,3050314001"/>
-					<item dev="aircontrol" pointid="80792,2010000003"/>
-					<item dev="powercontrol" pointid="80793,3000000002"/>
-					<item dev="powerdegree" pointid="80791,3050618001"/>
-					<item dev="aircontrolopen" pointid="80792,2010000001"/>
-					<item dev="powercontrolopen" pointid="80793,3000000001"/>
+                <classroom classname="电脑室510-2" floor="5" closeair="" code="12_510_2" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="80792,2010500002" />
+                    <item dev="lampstate" pointid="80793,3000300001" />
+                    <item dev="linestate" pointid="80794,000001" />
+                    <item dev="temp" pointid="80792,2010101001" />
+                    <item dev="hum" pointid="80792,2010102001" />
+                    <item dev="ammeterstate" pointid="80794,000001" />
+                    <item dev="roompower" pointid="80791,3050314001" />
+                    <item dev="aircontrol" pointid="80792,2010000003" />
+                    <item dev="powercontrol" pointid="80793,3000000002" />
+                    <item dev="powerdegree" pointid="80791,3050618001" />
+                    <item dev="aircontrolopen" pointid="80792,2010000001" />
+                    <item dev="powercontrolopen" pointid="80793,3000000001" />
                 </classroom>
-				<classroom classname="电脑室608-2" floor="6" closeair="" code="12_608_2" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="80912,2010500002"/>
-					<item dev="lampstate" pointid="80913,3000300001"/>
-					<item dev="linestate" pointid="80914,000001"/>
-					<item dev="temp" pointid="80912,2010101001"/>
-					<item dev="hum" pointid="80912,2010102001"/>
-					<item dev="ammeterstate" pointid="80914,000001"/>
-					<item dev="roompower" pointid="80911,3050314001"/>
-					<item dev="aircontrol" pointid="80912,2010000003"/>
-					<item dev="powercontrol" pointid="80913,3000000002"/>
-					<item dev="powerdegree" pointid="80911,3050618001"/>
-					<item dev="aircontrolopen" pointid="80912,2010000001"/>
-					<item dev="powercontrolopen" pointid="80913,3000000001"/>
+                <classroom classname="电脑室608-2" floor="6" closeair="" code="12_608_2" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="80912,2010500002" />
+                    <item dev="lampstate" pointid="80913,3000300001" />
+                    <item dev="linestate" pointid="80914,000001" />
+                    <item dev="temp" pointid="80912,2010101001" />
+                    <item dev="hum" pointid="80912,2010102001" />
+                    <item dev="ammeterstate" pointid="80914,000001" />
+                    <item dev="roompower" pointid="80911,3050314001" />
+                    <item dev="aircontrol" pointid="80912,2010000003" />
+                    <item dev="powercontrol" pointid="80913,3000000002" />
+                    <item dev="powerdegree" pointid="80911,3050618001" />
+                    <item dev="aircontrolopen" pointid="80912,2010000001" />
+                    <item dev="powercontrolopen" pointid="80913,3000000001" />
                 </classroom>
-				<classroom classname="实训室610" floor="6" closeair="" code="12_610" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="80932,2010500002"/>
-					<item dev="lampstate" pointid="80933,3000300001"/>
-					<item dev="linestate" pointid="80934,000001"/>
-					<item dev="temp" pointid="80932,2010101001"/>
-					<item dev="hum" pointid="80932,2010102001"/>
-					<item dev="ammeterstate" pointid="80934,000001"/>
-					<item dev="roompower" pointid="80931,3050314001"/>
-					<item dev="aircontrol" pointid="80932,2010000003"/>
-					<item dev="powercontrol" pointid="80933,3000000002"/>
-					<item dev="powerdegree" pointid="80931,3050618001"/>
-					<item dev="aircontrolopen" pointid="80932,2010000001"/>
-					<item dev="powercontrolopen" pointid="80933,3000000001"/>
+                <classroom classname="实训室610" floor="6" closeair="" code="12_610" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="80932,2010500002" />
+                    <item dev="lampstate" pointid="80933,3000300001" />
+                    <item dev="linestate" pointid="80934,000001" />
+                    <item dev="temp" pointid="80932,2010101001" />
+                    <item dev="hum" pointid="80932,2010102001" />
+                    <item dev="ammeterstate" pointid="80934,000001" />
+                    <item dev="roompower" pointid="80931,3050314001" />
+                    <item dev="aircontrol" pointid="80932,2010000003" />
+                    <item dev="powercontrol" pointid="80933,3000000002" />
+                    <item dev="powerdegree" pointid="80931,3050618001" />
+                    <item dev="aircontrolopen" pointid="80932,2010000001" />
+                    <item dev="powercontrolopen" pointid="80933,3000000001" />
                 </classroom>
-				<classroom classname="实训室610_2" floor="6" closeair="" code="12_610_2" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="80942,2010500002"/>
-					<item dev="lampstate" pointid="80943,3000300001"/>
-					<item dev="linestate" pointid="80944,000001"/>
-					<item dev="temp" pointid="80942,2010101001"/>
-					<item dev="hum" pointid="80942,2010102001"/>
-					<item dev="ammeterstate" pointid="80944,000001"/>
-					<item dev="roompower" pointid="80941,3050314001"/>
-					<item dev="aircontrol" pointid="80942,2010000003"/>
-					<item dev="powercontrol" pointid="80943,3000000002"/>
-					<item dev="powerdegree" pointid="80941,3050618001"/>
-					<item dev="aircontrolopen" pointid="80942,2010000001"/>
-					<item dev="powercontrolopen" pointid="80943,3000000001"/>
+                <classroom classname="实训室610_2" floor="6" closeair="" code="12_610_2" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="80942,2010500002" />
+                    <item dev="lampstate" pointid="80943,3000300001" />
+                    <item dev="linestate" pointid="80944,000001" />
+                    <item dev="temp" pointid="80942,2010101001" />
+                    <item dev="hum" pointid="80942,2010102001" />
+                    <item dev="ammeterstate" pointid="80944,000001" />
+                    <item dev="roompower" pointid="80941,3050314001" />
+                    <item dev="aircontrol" pointid="80942,2010000003" />
+                    <item dev="powercontrol" pointid="80943,3000000002" />
+                    <item dev="powerdegree" pointid="80941,3050618001" />
+                    <item dev="aircontrolopen" pointid="80942,2010000001" />
+                    <item dev="powercontrolopen" pointid="80943,3000000001" />
                 </classroom>
-				<classroom classname="办公室702" floor="7" closeair="" code="12_702" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="80962,2010500002"/>
-					<item dev="lampstate" pointid="80963,3000300001"/>
-					<item dev="linestate" pointid="80964,000001"/>
-					<item dev="temp" pointid="80962,2010101001"/>
-					<item dev="hum" pointid="80962,2010102001"/>
-					<item dev="ammeterstate" pointid="80964,000001"/>
-					<item dev="roompower" pointid="80961,3050314001"/>
-					<item dev="aircontrol" pointid="80962,2010000003"/>
-					<item dev="powercontrol" pointid="80963,3000000002"/>
-					<item dev="powerdegree" pointid="80961,3050618001"/>
-					<item dev="aircontrolopen" pointid="80962,2010000001"/>
-					<item dev="powercontrolopen" pointid="80963,3000000001"/>
+                <classroom classname="办公室702" floor="7" closeair="" code="12_702" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="80962,2010500002" />
+                    <item dev="lampstate" pointid="80963,3000300001" />
+                    <item dev="linestate" pointid="80964,000001" />
+                    <item dev="temp" pointid="80962,2010101001" />
+                    <item dev="hum" pointid="80962,2010102001" />
+                    <item dev="ammeterstate" pointid="80964,000001" />
+                    <item dev="roompower" pointid="80961,3050314001" />
+                    <item dev="aircontrol" pointid="80962,2010000003" />
+                    <item dev="powercontrol" pointid="80963,3000000002" />
+                    <item dev="powerdegree" pointid="80961,3050618001" />
+                    <item dev="aircontrolopen" pointid="80962,2010000001" />
+                    <item dev="powercontrolopen" pointid="80963,3000000001" />
                 </classroom>
-				<classroom classname="办公室703" floor="7" closeair="" code="12_703" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="80972,2010500002"/>
-					<item dev="lampstate" pointid="80973,3000300001"/>
-					<item dev="linestate" pointid="80974,000001"/>
-					<item dev="temp" pointid="80972,2010101001"/>
-					<item dev="hum" pointid="80972,2010102001"/>
-					<item dev="ammeterstate" pointid="80974,000001"/>
-					<item dev="roompower" pointid="80971,3050314001"/>
-					<item dev="aircontrol" pointid="80972,2010000003"/>
-					<item dev="powercontrol" pointid="80973,3000000002"/>
-					<item dev="powerdegree" pointid="80971,3050618001"/>
-					<item dev="aircontrolopen" pointid="80972,2010000001"/>
-					<item dev="powercontrolopen" pointid="80973,3000000001"/>
+                <classroom classname="办公室703" floor="7" closeair="" code="12_703" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="80972,2010500002" />
+                    <item dev="lampstate" pointid="80973,3000300001" />
+                    <item dev="linestate" pointid="80974,000001" />
+                    <item dev="temp" pointid="80972,2010101001" />
+                    <item dev="hum" pointid="80972,2010102001" />
+                    <item dev="ammeterstate" pointid="80974,000001" />
+                    <item dev="roompower" pointid="80971,3050314001" />
+                    <item dev="aircontrol" pointid="80972,2010000003" />
+                    <item dev="powercontrol" pointid="80973,3000000002" />
+                    <item dev="powerdegree" pointid="80971,3050618001" />
+                    <item dev="aircontrolopen" pointid="80972,2010000001" />
+                    <item dev="powercontrolopen" pointid="80973,3000000001" />
                 </classroom>
-				<classroom classname="办公室704" floor="7" closeair="" code="12_704" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="80982,2010500002"/>
-					<item dev="lampstate" pointid="80983,3000300001"/>
-					<item dev="linestate" pointid="80984,000001"/>
-					<item dev="temp" pointid="80982,2010101001"/>
-					<item dev="hum" pointid="80982,2010102001"/>
-					<item dev="ammeterstate" pointid="80984,000001"/>
-					<item dev="roompower" pointid="80981,3050314001"/>
-					<item dev="aircontrol" pointid="80982,2010000003"/>
-					<item dev="powercontrol" pointid="80983,3000000002"/>
-					<item dev="powerdegree" pointid="80981,3050618001"/>
-					<item dev="aircontrolopen" pointid="80982,2010000001"/>
-					<item dev="powercontrolopen" pointid="80983,3000000001"/>
+                <classroom classname="办公室704" floor="7" closeair="" code="12_704" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="80982,2010500002" />
+                    <item dev="lampstate" pointid="80983,3000300001" />
+                    <item dev="linestate" pointid="80984,000001" />
+                    <item dev="temp" pointid="80982,2010101001" />
+                    <item dev="hum" pointid="80982,2010102001" />
+                    <item dev="ammeterstate" pointid="80984,000001" />
+                    <item dev="roompower" pointid="80981,3050314001" />
+                    <item dev="aircontrol" pointid="80982,2010000003" />
+                    <item dev="powercontrol" pointid="80983,3000000002" />
+                    <item dev="powerdegree" pointid="80981,3050618001" />
+                    <item dev="aircontrolopen" pointid="80982,2010000001" />
+                    <item dev="powercontrolopen" pointid="80983,3000000001" />
                 </classroom>
-				<classroom classname="教材室" floor="7" closeair="" code="12_jcs" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="80992,2010500002"/>
-					<item dev="lampstate" pointid="80993,3000300001"/>
-					<item dev="linestate" pointid="80994,000001"/>
-					<item dev="temp" pointid="80992,2010101001"/>
-					<item dev="hum" pointid="80992,2010102001"/>
-					<item dev="ammeterstate" pointid="80994,000001"/>
-					<item dev="roompower" pointid="80991,3050314001"/>
-					<item dev="aircontrol" pointid="80992,2010000003"/>
-					<item dev="powercontrol" pointid="80993,3000000002"/>
-					<item dev="powerdegree" pointid="80991,3050618001"/>
-					<item dev="aircontrolopen" pointid="80992,2010000001"/>
-					<item dev="powercontrolopen" pointid="80993,3000000001"/>
+                <classroom classname="教材室" floor="7" closeair="" code="12_jcs" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="80992,2010500002" />
+                    <item dev="lampstate" pointid="80993,3000300001" />
+                    <item dev="linestate" pointid="80994,000001" />
+                    <item dev="temp" pointid="80992,2010101001" />
+                    <item dev="hum" pointid="80992,2010102001" />
+                    <item dev="ammeterstate" pointid="80994,000001" />
+                    <item dev="roompower" pointid="80991,3050314001" />
+                    <item dev="aircontrol" pointid="80992,2010000003" />
+                    <item dev="powercontrol" pointid="80993,3000000002" />
+                    <item dev="powerdegree" pointid="80991,3050618001" />
+                    <item dev="aircontrolopen" pointid="80992,2010000001" />
+                    <item dev="powercontrolopen" pointid="80993,3000000001" />
                 </classroom>
-				<classroom classname="办公室801" floor="8" closeair="" code="12_801" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="801062,2010500002"/>
-					<item dev="lampstate" pointid="801063,3000300001"/>
-					<item dev="linestate" pointid="801064,000001"/>
-					<item dev="temp" pointid="801062,2010101001"/>
-					<item dev="hum" pointid="801062,2010102001"/>
-					<item dev="ammeterstate" pointid="801064,000001"/>
-					<item dev="roompower" pointid="801061,3050314001"/>
-					<item dev="aircontrol" pointid="801062,2010000003"/>
-					<item dev="powercontrol" pointid="801063,3000000002"/>
-					<item dev="powerdegree" pointid="801061,3050618001"/>
-					<item dev="aircontrolopen" pointid="801062,2010000001"/>
-					<item dev="powercontrolopen" pointid="801063,3000000001"/>
+                <classroom classname="办公室801" floor="8" closeair="29" code="12_801" model="0" openair="null" timegroup="" times="15">
+                    <item dev="airstate" pointid="801062,2010500002" />
+                    <item dev="lampstate" pointid="801063,3000300001" />
+                    <item dev="linestate" pointid="801064,000001" />
+                    <item dev="temp" pointid="801062,2010101001" />
+                    <item dev="hum" pointid="801062,2010102001" />
+                    <item dev="ammeterstate" pointid="801064,000001" />
+                    <item dev="roompower" pointid="801061,3050314001" />
+                    <item dev="aircontrol" pointid="801062,2010000003" />
+                    <item dev="powercontrol" pointid="801063,3000000002" />
+                    <item dev="powerdegree" pointid="801061,3050618001" />
+                    <item dev="aircontrolopen" pointid="801062,2010000001" />
+                    <item dev="powercontrolopen" pointid="801063,3000000001" />
                 </classroom>
-				<classroom classname="办公室802" floor="8" closeair="" code="12_802" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="801072,2010500002"/>
-					<item dev="lampstate" pointid="801073,3000300001"/>
-					<item dev="linestate" pointid="801074,000001"/>
-					<item dev="temp" pointid="801072,2010101001"/>
-					<item dev="hum" pointid="801072,2010102001"/>
-					<item dev="ammeterstate" pointid="801074,000001"/>
-					<item dev="roompower" pointid="801071,3050314001"/>
-					<item dev="aircontrol" pointid="801072,2010000003"/>
-					<item dev="powercontrol" pointid="801073,3000000002"/>
-					<item dev="powerdegree" pointid="801071,3050618001"/>
-					<item dev="aircontrolopen" pointid="801072,2010000001"/>
-					<item dev="powercontrolopen" pointid="801073,3000000001"/>
+                <classroom classname="办公室802" floor="8" closeair="" code="12_802" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="801072,2010500002" />
+                    <item dev="lampstate" pointid="801073,3000300001" />
+                    <item dev="linestate" pointid="801074,000001" />
+                    <item dev="temp" pointid="801072,2010101001" />
+                    <item dev="hum" pointid="801072,2010102001" />
+                    <item dev="ammeterstate" pointid="801074,000001" />
+                    <item dev="roompower" pointid="801071,3050314001" />
+                    <item dev="aircontrol" pointid="801072,2010000003" />
+                    <item dev="powercontrol" pointid="801073,3000000002" />
+                    <item dev="powerdegree" pointid="801071,3050618001" />
+                    <item dev="aircontrolopen" pointid="801072,2010000001" />
+                    <item dev="powercontrolopen" pointid="801073,3000000001" />
                 </classroom>
-				<classroom classname="办公室803" floor="8" closeair="" code="12_803" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="801082,2010500002"/>
-					<item dev="lampstate" pointid="801083,3000300001"/>
-					<item dev="linestate" pointid="801084,000001"/>
-					<item dev="temp" pointid="801082,2010101001"/>
-					<item dev="hum" pointid="801082,2010102001"/>
-					<item dev="ammeterstate" pointid="801084,000001"/>
-					<item dev="roompower" pointid="801081,3050314001"/>
-					<item dev="aircontrol" pointid="801082,2010000003"/>
-					<item dev="powercontrol" pointid="801083,3000000002"/>
-					<item dev="powerdegree" pointid="801081,3050618001"/>
-					<item dev="aircontrolopen" pointid="801082,2010000001"/>
-					<item dev="powercontrolopen" pointid="801083,3000000001"/>
+                <classroom classname="办公室803" floor="8" closeair="" code="12_803" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="801082,2010500002" />
+                    <item dev="lampstate" pointid="801083,3000300001" />
+                    <item dev="linestate" pointid="801084,000001" />
+                    <item dev="temp" pointid="801082,2010101001" />
+                    <item dev="hum" pointid="801082,2010102001" />
+                    <item dev="ammeterstate" pointid="801084,000001" />
+                    <item dev="roompower" pointid="801081,3050314001" />
+                    <item dev="aircontrol" pointid="801082,2010000003" />
+                    <item dev="powercontrol" pointid="801083,3000000002" />
+                    <item dev="powerdegree" pointid="801081,3050618001" />
+                    <item dev="aircontrolopen" pointid="801082,2010000001" />
+                    <item dev="powercontrolopen" pointid="801083,3000000001" />
                 </classroom>
-				<classroom classname="办公室804" floor="8" closeair="" code="12_804" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="801092,2010500002"/>
-					<item dev="lampstate" pointid="801093,3000300001"/>
-					<item dev="linestate" pointid="801094,000001"/>
-					<item dev="temp" pointid="801092,2010101001"/>
-					<item dev="hum" pointid="801092,2010102001"/>
-					<item dev="ammeterstate" pointid="801094,000001"/>
-					<item dev="roompower" pointid="801091,3050314001"/>
-					<item dev="aircontrol" pointid="801092,2010000003"/>
-					<item dev="powercontrol" pointid="801093,3000000002"/>
-					<item dev="powerdegree" pointid="801091,3050618001"/>
-					<item dev="aircontrolopen" pointid="801092,2010000001"/>
-					<item dev="powercontrolopen" pointid="801093,3000000001"/>
+                <classroom classname="办公室804" floor="8" closeair="" code="12_804" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="801092,2010500002" />
+                    <item dev="lampstate" pointid="801093,3000300001" />
+                    <item dev="linestate" pointid="801094,000001" />
+                    <item dev="temp" pointid="801092,2010101001" />
+                    <item dev="hum" pointid="801092,2010102001" />
+                    <item dev="ammeterstate" pointid="801094,000001" />
+                    <item dev="roompower" pointid="801091,3050314001" />
+                    <item dev="aircontrol" pointid="801092,2010000003" />
+                    <item dev="powercontrol" pointid="801093,3000000002" />
+                    <item dev="powerdegree" pointid="801091,3050618001" />
+                    <item dev="aircontrolopen" pointid="801092,2010000001" />
+                    <item dev="powercontrolopen" pointid="801093,3000000001" />
                 </classroom>
-				<classroom classname="办公室805" floor="8" closeair="" code="12_805" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="801102,2010500002"/>
-					<item dev="lampstate" pointid="801103,3000300001"/>
-					<item dev="linestate" pointid="801104,000001"/>
-					<item dev="temp" pointid="801102,2010101001"/>
-					<item dev="hum" pointid="801102,2010102001"/>
-					<item dev="ammeterstate" pointid="801104,000001"/>
-					<item dev="roompower" pointid="801101,3050314001"/>
-					<item dev="aircontrol" pointid="801102,2010000003"/>
-					<item dev="powercontrol" pointid="801103,3000000002"/>
-					<item dev="powerdegree" pointid="801101,3050618001"/>
-					<item dev="aircontrolopen" pointid="801102,2010000001"/>
-					<item dev="powercontrolopen" pointid="801103,3000000001"/>
+                <classroom classname="办公室805" floor="8" closeair="" code="12_805" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="801102,2010500002" />
+                    <item dev="lampstate" pointid="801103,3000300001" />
+                    <item dev="linestate" pointid="801104,000001" />
+                    <item dev="temp" pointid="801102,2010101001" />
+                    <item dev="hum" pointid="801102,2010102001" />
+                    <item dev="ammeterstate" pointid="801104,000001" />
+                    <item dev="roompower" pointid="801101,3050314001" />
+                    <item dev="aircontrol" pointid="801102,2010000003" />
+                    <item dev="powercontrol" pointid="801103,3000000002" />
+                    <item dev="powerdegree" pointid="801101,3050618001" />
+                    <item dev="aircontrolopen" pointid="801102,2010000001" />
+                    <item dev="powercontrolopen" pointid="801103,3000000001" />
                 </classroom>
-				<classroom classname="办公室806" floor="8" closeair="" code="12_806" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="801112,2010500002"/>
-					<item dev="lampstate" pointid="801113,3000300001"/>
-					<item dev="linestate" pointid="801114,000001"/>
-					<item dev="temp" pointid="801112,2010101001"/>
-					<item dev="hum" pointid="801112,2010102001"/>
-					<item dev="ammeterstate" pointid="801114,000001"/>
-					<item dev="roompower" pointid="801111,3050314001"/>
-					<item dev="aircontrol" pointid="801112,2010000003"/>
-					<item dev="powercontrol" pointid="801113,3000000002"/>
-					<item dev="powerdegree" pointid="801111,3050618001"/>
-					<item dev="aircontrolopen" pointid="801112,2010000001"/>
-					<item dev="powercontrolopen" pointid="801113,3000000001"/>
+                <classroom classname="办公室806" floor="8" closeair="34" code="12_806" model="0" openair="null" timegroup="" times="1">
+                    <item dev="airstate" pointid="801112,2010500002" />
+                    <item dev="lampstate" pointid="801113,3000300001" />
+                    <item dev="linestate" pointid="801114,000001" />
+                    <item dev="temp" pointid="801112,2010101001" />
+                    <item dev="hum" pointid="801112,2010102001" />
+                    <item dev="ammeterstate" pointid="801114,000001" />
+                    <item dev="roompower" pointid="801111,3050314001" />
+                    <item dev="aircontrol" pointid="801112,2010000003" />
+                    <item dev="powercontrol" pointid="801113,3000000002" />
+                    <item dev="powerdegree" pointid="801111,3050618001" />
+                    <item dev="aircontrolopen" pointid="801112,2010000001" />
+                    <item dev="powercontrolopen" pointid="801113,3000000001" />
                 </classroom>
-				<classroom classname="办公室807" floor="8" closeair="" code="12_807" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="801122,2010500002"/>
-					<item dev="lampstate" pointid="801123,3000300001"/>
-					<item dev="linestate" pointid="801124,000001"/>
-					<item dev="temp" pointid="801122,2010101001"/>
-					<item dev="hum" pointid="801122,2010102001"/>
-					<item dev="ammeterstate" pointid="801124,000001"/>
-					<item dev="roompower" pointid="801121,3050314001"/>
-					<item dev="aircontrol" pointid="801122,2010000003"/>
-					<item dev="powercontrol" pointid="801123,3000000002"/>
-					<item dev="powerdegree" pointid="801121,3050618001"/>
-					<item dev="aircontrolopen" pointid="801122,2010000001"/>
-					<item dev="powercontrolopen" pointid="801123,3000000001"/>
+                <classroom classname="办公室807" floor="8" closeair="34" code="12_807" model="0" openair="null" timegroup="" times="1">
+                    <item dev="airstate" pointid="801122,2010500002" />
+                    <item dev="lampstate" pointid="801123,3000300001" />
+                    <item dev="linestate" pointid="801124,000001" />
+                    <item dev="temp" pointid="801122,2010101001" />
+                    <item dev="hum" pointid="801122,2010102001" />
+                    <item dev="ammeterstate" pointid="801124,000001" />
+                    <item dev="roompower" pointid="801121,3050314001" />
+                    <item dev="aircontrol" pointid="801122,2010000003" />
+                    <item dev="powercontrol" pointid="801123,3000000002" />
+                    <item dev="powerdegree" pointid="801121,3050618001" />
+                    <item dev="aircontrolopen" pointid="801122,2010000001" />
+                    <item dev="powercontrolopen" pointid="801123,3000000001" />
                 </classroom>
-				<classroom classname="办公室8081#" floor="8" closeair="" code="12_808_1" model="0" openair="" timegroup="" times="15" subcodes="12_808_2;12_808_3">
-                    <item dev="airstate" pointid="801132,2010500002"/>
-					<item dev="lampstate" pointid="801133,3000300001"/>
-					<item dev="linestate" pointid="801134,000001"/>
-					<item dev="temp" pointid="801132,2010101001"/>
-					<item dev="hum" pointid="801132,2010102001"/>
-					<item dev="ammeterstate" pointid="801134,000001"/>
-					<item dev="roompower" pointid="801131,3050314001"/>
-					<item dev="aircontrol" pointid="801132,2010000003"/>
-					<item dev="powercontrol" pointid="801133,3000000002"/>
-					<item dev="powerdegree" pointid="801131,3050618001"/>
-					<item dev="aircontrolopen" pointid="801132,2010000001"/>
-					<item dev="powercontrolopen" pointid="801133,3000000001"/>
+                <classroom classname="办公室8081#" floor="8" closeair="" code="12_808_1" model="0" openair="" timegroup="" times="15" subcodes="12_808_2;12_808_3">
+                    <item dev="airstate" pointid="801132,2010500002" />
+                    <item dev="lampstate" pointid="801133,3000300001" />
+                    <item dev="linestate" pointid="801134,000001" />
+                    <item dev="temp" pointid="801132,2010101001" />
+                    <item dev="hum" pointid="801132,2010102001" />
+                    <item dev="ammeterstate" pointid="801134,000001" />
+                    <item dev="roompower" pointid="801131,3050314001" />
+                    <item dev="aircontrol" pointid="801132,2010000003" />
+                    <item dev="powercontrol" pointid="801133,3000000002" />
+                    <item dev="powerdegree" pointid="801131,3050618001" />
+                    <item dev="aircontrolopen" pointid="801132,2010000001" />
+                    <item dev="powercontrolopen" pointid="801133,3000000001" />
                 </classroom>
-				<classroom classname="办公室8082#" floor="8" closeair="" code="12_808_2" model="0" openair="" timegroup="" times="15" element="child">
-                    <item dev="airstate" pointid="801142,2010500002"/>
-					<item dev="lampstate" pointid=""/>
-					<item dev="linestate" pointid="801144,000001"/>
-					<item dev="temp" pointid="801142,2010101001"/>
-					<item dev="hum" pointid="801142,2010102001"/>
-					<item dev="ammeterstate" pointid="801144,000001"/>
-					<item dev="roompower" pointid=""/>
-					<item dev="aircontrol" pointid="801142,2010000003"/>
-					<item dev="powercontrol" pointid=""/>
-					<item dev="powerdegree" pointid=""/>
-					<item dev="aircontrolopen" pointid="801142,2010000001"/>
-					<item dev="powercontrolopen" pointid=""/>
+                <classroom classname="办公室8082#" floor="8" closeair="" code="12_808_2" model="0" openair="" timegroup="" times="15" element="child">
+                    <item dev="airstate" pointid="801142,2010500002" />
+                    <item dev="lampstate" pointid="" />
+                    <item dev="linestate" pointid="801144,000001" />
+                    <item dev="temp" pointid="801142,2010101001" />
+                    <item dev="hum" pointid="801142,2010102001" />
+                    <item dev="ammeterstate" pointid="801144,000001" />
+                    <item dev="roompower" pointid="" />
+                    <item dev="aircontrol" pointid="801142,2010000003" />
+                    <item dev="powercontrol" pointid="" />
+                    <item dev="powerdegree" pointid="" />
+                    <item dev="aircontrolopen" pointid="801142,2010000001" />
+                    <item dev="powercontrolopen" pointid="" />
                 </classroom>
-				<classroom classname="办公室8083#" floor="8" closeair="" code="12_808_3" model="0" openair="" timegroup="" times="15" element="child">
-                    <item dev="airstate" pointid="801152,2010500002"/>
-					<item dev="lampstate" pointid=""/>
-					<item dev="linestate" pointid="801154,000001"/>
-					<item dev="temp" pointid="801152,2010101001"/>
-					<item dev="hum" pointid="801152,2010102001"/>
-					<item dev="ammeterstate" pointid="801154,000001"/>
-					<item dev="roompower" pointid=""/>
-					<item dev="aircontrol" pointid="801152,2010000003"/>
-					<item dev="powercontrol" pointid=""/>
-					<item dev="powerdegree" pointid=""/>
-					<item dev="aircontrolopen" pointid="801152,2010000001"/>
-					<item dev="powercontrolopen" pointid=""/>
+                <classroom classname="办公室8083#" floor="8" closeair="" code="12_808_3" model="0" openair="" timegroup="" times="15" element="child">
+                    <item dev="airstate" pointid="801152,2010500002" />
+                    <item dev="lampstate" pointid="" />
+                    <item dev="linestate" pointid="801154,000001" />
+                    <item dev="temp" pointid="801152,2010101001" />
+                    <item dev="hum" pointid="801152,2010102001" />
+                    <item dev="ammeterstate" pointid="801154,000001" />
+                    <item dev="roompower" pointid="" />
+                    <item dev="aircontrol" pointid="801152,2010000003" />
+                    <item dev="powercontrol" pointid="" />
+                    <item dev="powerdegree" pointid="" />
+                    <item dev="aircontrolopen" pointid="801152,2010000001" />
+                    <item dev="powercontrolopen" pointid="" />
                 </classroom>
-				<classroom classname="办公室8091#" floor="8" closeair="" code="12_809_1" model="0" openair="" timegroup="" times="15" subcodes="12_809_2;12_809_3">
-                    <item dev="airstate" pointid="801162,2010500002"/>
-					<item dev="lampstate" pointid="801163,3000300001"/>
-					<item dev="linestate" pointid="801164,000001"/>
-					<item dev="temp" pointid="801162,2010101001"/>
-					<item dev="hum" pointid="801162,2010102001"/>
-					<item dev="ammeterstate" pointid="801164,000001"/>
-					<item dev="roompower" pointid="801161,3050314001"/>
-					<item dev="aircontrol" pointid="801162,2010000003"/>
-					<item dev="powercontrol" pointid="801163,3000000002"/>
-					<item dev="powerdegree" pointid="801161,3050618001"/>
-					<item dev="aircontrolopen" pointid="801162,2010000001"/>
-					<item dev="powercontrolopen" pointid="801163,3000000001"/>
+                <classroom classname="办公室8091#" floor="8" closeair="20" code="12_809_1" model="0" openair="null" timegroup="" times="30" subcodes="12_809_2;12_809_3">
+                    <item dev="airstate" pointid="801162,2010500002" />
+                    <item dev="lampstate" pointid="801163,3000300001" />
+                    <item dev="linestate" pointid="801164,000001" />
+                    <item dev="temp" pointid="801162,2010101001" />
+                    <item dev="hum" pointid="801162,2010102001" />
+                    <item dev="ammeterstate" pointid="801164,000001" />
+                    <item dev="roompower" pointid="801161,3050314001" />
+                    <item dev="aircontrol" pointid="801162,2010000003" />
+                    <item dev="powercontrol" pointid="801163,3000000002" />
+                    <item dev="powerdegree" pointid="801161,3050618001" />
+                    <item dev="aircontrolopen" pointid="801162,2010000001" />
+                    <item dev="powercontrolopen" pointid="801163,3000000001" />
                 </classroom>
-				<classroom classname="办公室8092#" floor="8" closeair="" code="12_809_2" model="0" openair="" timegroup="" times="15" element="child">
-                    <item dev="airstate" pointid="801172,2010500002"/>
-					<item dev="lampstate" pointid=""/>
-					<item dev="linestate" pointid="801174,000001"/>
-					<item dev="temp" pointid="801172,2010101001"/>
-					<item dev="hum" pointid="801172,2010102001"/>
-					<item dev="ammeterstate" pointid="801174,000001"/>
-					<item dev="roompower" pointid=""/>
-					<item dev="aircontrol" pointid="801172,2010000003"/>
-					<item dev="powercontrol" pointid=""/>
-					<item dev="powerdegree" pointid=""/>
-					<item dev="aircontrolopen" pointid="801172,2010000001"/>
-					<item dev="powercontrolopen" pointid=""/>
+                <classroom classname="办公室8092#" floor="8" closeair="20" code="12_809_2" model="0" openair="null" timegroup="" times="1" element="child">
+                    <item dev="airstate" pointid="801172,2010500002" />
+                    <item dev="lampstate" pointid="" />
+                    <item dev="linestate" pointid="801174,000001" />
+                    <item dev="temp" pointid="801172,2010101001" />
+                    <item dev="hum" pointid="801172,2010102001" />
+                    <item dev="ammeterstate" pointid="801174,000001" />
+                    <item dev="roompower" pointid="" />
+                    <item dev="aircontrol" pointid="801172,2010000003" />
+                    <item dev="powercontrol" pointid="" />
+                    <item dev="powerdegree" pointid="" />
+                    <item dev="aircontrolopen" pointid="801172,2010000001" />
+                    <item dev="powercontrolopen" pointid="" />
                 </classroom>
-				<classroom classname="办公室8093#" floor="8" closeair="" code="12_809_3" model="0" openair="" timegroup="" times="15" element="child">
-                    <item dev="airstate" pointid="801182,2010500002"/>
-					<item dev="lampstate" pointid=""/>
-					<item dev="linestate" pointid="801184,000001"/>
-					<item dev="temp" pointid="801182,2010101001"/>
-					<item dev="hum" pointid="801182,2010102001"/>
-					<item dev="ammeterstate" pointid="801184,000001"/>
-					<item dev="roompower" pointid=""/>
-					<item dev="aircontrol" pointid="801182,2010000003"/>
-					<item dev="powercontrol" pointid=""/>
-					<item dev="powerdegree" pointid=""/>
-					<item dev="aircontrolopen" pointid="801182,2010000001"/>
-					<item dev="powercontrolopen" pointid=""/>
+                <classroom classname="办公室8093#" floor="8" closeair="20" code="12_809_3" model="1" openair="null" timegroup="" times="1" element="child">
+                    <item dev="airstate" pointid="801182,2010500002" />
+                    <item dev="lampstate" pointid="" />
+                    <item dev="linestate" pointid="801184,000001" />
+                    <item dev="temp" pointid="801182,2010101001" />
+                    <item dev="hum" pointid="801182,2010102001" />
+                    <item dev="ammeterstate" pointid="801184,000001" />
+                    <item dev="roompower" pointid="" />
+                    <item dev="aircontrol" pointid="801182,2010000003" />
+                    <item dev="powercontrol" pointid="" />
+                    <item dev="powerdegree" pointid="" />
+                    <item dev="aircontrolopen" pointid="801182,2010000001" />
+                    <item dev="powercontrolopen" pointid="" />
                 </classroom>
-				<classroom classname="办公室810" floor="8" closeair="" code="12_810" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="801192,2010500002"/>
-					<item dev="lampstate" pointid="801193,3000300001"/>
-					<item dev="linestate" pointid="801194,000001"/>
-					<item dev="temp" pointid="801192,2010101001"/>
-					<item dev="hum" pointid="801192,2010102001"/>
-					<item dev="ammeterstate" pointid="801194,000001"/>
-					<item dev="roompower" pointid="801191,3050314001"/>
-					<item dev="aircontrol" pointid="801192,2010000003"/>
-					<item dev="powercontrol" pointid="801193,3000000002"/>
-					<item dev="powerdegree" pointid="801191,3050618001"/>
-					<item dev="aircontrolopen" pointid="801192,2010000001"/>
-					<item dev="powercontrolopen" pointid="801193,3000000001"/>
+                <classroom classname="办公室810" floor="8" closeair="28" code="12_810" model="0" openair="null" timegroup="" times="1">
+                    <item dev="airstate" pointid="801192,2010500002" />
+                    <item dev="lampstate" pointid="801193,3000300001" />
+                    <item dev="linestate" pointid="801194,000001" />
+                    <item dev="temp" pointid="801192,2010101001" />
+                    <item dev="hum" pointid="801192,2010102001" />
+                    <item dev="ammeterstate" pointid="801194,000001" />
+                    <item dev="roompower" pointid="801191,3050314001" />
+                    <item dev="aircontrol" pointid="801192,2010000003" />
+                    <item dev="powercontrol" pointid="801193,3000000002" />
+                    <item dev="powerdegree" pointid="801191,3050618001" />
+                    <item dev="aircontrolopen" pointid="801192,2010000001" />
+                    <item dev="powercontrolopen" pointid="801193,3000000001" />
                 </classroom>
-				<classroom classname="办公室812" floor="8" closeair="" code="12_812" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="801212,2010500002"/>
-					<item dev="lampstate" pointid="801213,3000300001"/>
-					<item dev="linestate" pointid="801214,000001"/>
-					<item dev="temp" pointid="801212,2010101001"/>
-					<item dev="hum" pointid="801212,2010102001"/>
-					<item dev="ammeterstate" pointid="801214,000001"/>
-					<item dev="roompower" pointid="801211,3050314001"/>
-					<item dev="aircontrol" pointid="801212,2010000003"/>
-					<item dev="powercontrol" pointid="801213,3000000002"/>
-					<item dev="powerdegree" pointid="801211,3050618001"/>
-					<item dev="aircontrolopen" pointid="801212,2010000001"/>
-					<item dev="powercontrolopen" pointid="801213,3000000001"/>
+                <classroom classname="办公室812" floor="8" closeair="" code="12_812" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="801212,2010500002" />
+                    <item dev="lampstate" pointid="801213,3000300001" />
+                    <item dev="linestate" pointid="801214,000001" />
+                    <item dev="temp" pointid="801212,2010101001" />
+                    <item dev="hum" pointid="801212,2010102001" />
+                    <item dev="ammeterstate" pointid="801214,000001" />
+                    <item dev="roompower" pointid="801211,3050314001" />
+                    <item dev="aircontrol" pointid="801212,2010000003" />
+                    <item dev="powercontrol" pointid="801213,3000000002" />
+                    <item dev="powerdegree" pointid="801211,3050618001" />
+                    <item dev="aircontrolopen" pointid="801212,2010000001" />
+                    <item dev="powercontrolopen" pointid="801213,3000000001" />
                 </classroom>
-				<classroom classname="办公室901" floor="9" closeair="" code="12_901" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="801222,2010500002"/>
-					<item dev="lampstate" pointid="801223,3000300001"/>
-					<item dev="linestate" pointid="801224,000001"/>
-					<item dev="temp" pointid="801222,2010101001"/>
-					<item dev="hum" pointid="801222,2010102001"/>
-					<item dev="ammeterstate" pointid="801224,000001"/>
-					<item dev="roompower" pointid="801221,3050314001"/>
-					<item dev="aircontrol" pointid="801222,2010000003"/>
-					<item dev="powercontrol" pointid="801223,3000000002"/>
-					<item dev="powerdegree" pointid="801221,3050618001"/>
-					<item dev="aircontrolopen" pointid="801222,2010000001"/>
-					<item dev="powercontrolopen" pointid="801223,3000000001"/>
+                <classroom classname="办公室901" floor="9" closeair="33.5" code="12_901" model="0" openair="null" timegroup="" times="15">
+                    <item dev="airstate" pointid="801222,2010500002" />
+                    <item dev="lampstate" pointid="801223,3000300001" />
+                    <item dev="linestate" pointid="801224,000001" />
+                    <item dev="temp" pointid="801222,2010101001" />
+                    <item dev="hum" pointid="801222,2010102001" />
+                    <item dev="ammeterstate" pointid="801224,000001" />
+                    <item dev="roompower" pointid="801221,3050314001" />
+                    <item dev="aircontrol" pointid="801222,2010000003" />
+                    <item dev="powercontrol" pointid="801223,3000000002" />
+                    <item dev="powerdegree" pointid="801221,3050618001" />
+                    <item dev="aircontrolopen" pointid="801222,2010000001" />
+                    <item dev="powercontrolopen" pointid="801223,3000000001" />
                 </classroom>
-				<classroom classname="办公室902" floor="9" closeair="" code="12_902" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="801232,2010500002"/>
-					<item dev="lampstate" pointid="801233,3000300001"/>
-					<item dev="linestate" pointid="801234,000001"/>
-					<item dev="temp" pointid="801232,2010101001"/>
-					<item dev="hum" pointid="801232,2010102001"/>
-					<item dev="ammeterstate" pointid="801234,000001"/>
-					<item dev="roompower" pointid="801231,3050314001"/>
-					<item dev="aircontrol" pointid="801232,2010000003"/>
-					<item dev="powercontrol" pointid="801233,3000000002"/>
-					<item dev="powerdegree" pointid="801231,3050618001"/>
-					<item dev="aircontrolopen" pointid="801232,2010000001"/>
-					<item dev="powercontrolopen" pointid="801233,3000000001"/>
+                <classroom classname="办公室902" floor="9" closeair="" code="12_902" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="801232,2010500002" />
+                    <item dev="lampstate" pointid="801233,3000300001" />
+                    <item dev="linestate" pointid="801234,000001" />
+                    <item dev="temp" pointid="801232,2010101001" />
+                    <item dev="hum" pointid="801232,2010102001" />
+                    <item dev="ammeterstate" pointid="801234,000001" />
+                    <item dev="roompower" pointid="801231,3050314001" />
+                    <item dev="aircontrol" pointid="801232,2010000003" />
+                    <item dev="powercontrol" pointid="801233,3000000002" />
+                    <item dev="powerdegree" pointid="801231,3050618001" />
+                    <item dev="aircontrolopen" pointid="801232,2010000001" />
+                    <item dev="powercontrolopen" pointid="801233,3000000001" />
                 </classroom>
-				<classroom classname="办公室903" floor="9" closeair="" code="12_903" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="801242,2010500002"/>
-					<item dev="lampstate" pointid="801243,3000300001"/>
-					<item dev="linestate" pointid="801244,000001"/>
-					<item dev="temp" pointid="801242,2010101001"/>
-					<item dev="hum" pointid="801242,2010102001"/>
-					<item dev="ammeterstate" pointid="801244,000001"/>
-					<item dev="roompower" pointid="801241,3050314001"/>
-					<item dev="aircontrol" pointid="801242,2010000003"/>
-					<item dev="powercontrol" pointid="801243,3000000002"/>
-					<item dev="powerdegree" pointid="801241,3050618001"/>
-					<item dev="aircontrolopen" pointid="801242,2010000001"/>
-					<item dev="powercontrolopen" pointid="801243,3000000001"/>
+                <classroom classname="办公室903" floor="9" closeair="" code="12_903" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="801242,2010500002" />
+                    <item dev="lampstate" pointid="801243,3000300001" />
+                    <item dev="linestate" pointid="801244,000001" />
+                    <item dev="temp" pointid="801242,2010101001" />
+                    <item dev="hum" pointid="801242,2010102001" />
+                    <item dev="ammeterstate" pointid="801244,000001" />
+                    <item dev="roompower" pointid="801241,3050314001" />
+                    <item dev="aircontrol" pointid="801242,2010000003" />
+                    <item dev="powercontrol" pointid="801243,3000000002" />
+                    <item dev="powerdegree" pointid="801241,3050618001" />
+                    <item dev="aircontrolopen" pointid="801242,2010000001" />
+                    <item dev="powercontrolopen" pointid="801243,3000000001" />
                 </classroom>
-				<classroom classname="办公室904" floor="9" closeair="" code="12_904" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="801252,2010500002"/>
-					<item dev="lampstate" pointid="801253,3000300001"/>
-					<item dev="linestate" pointid="801254,000001"/>
-					<item dev="temp" pointid="801252,2010101001"/>
-					<item dev="hum" pointid="801252,2010102001"/>
-					<item dev="ammeterstate" pointid="801254,000001"/>
-					<item dev="roompower" pointid="801251,3050314001"/>
-					<item dev="aircontrol" pointid="801252,2010000003"/>
-					<item dev="powercontrol" pointid="801253,3000000002"/>
-					<item dev="powerdegree" pointid="801251,3050618001"/>
-					<item dev="aircontrolopen" pointid="801252,2010000001"/>
-					<item dev="powercontrolopen" pointid="801253,3000000001"/>
+                <classroom classname="办公室904" floor="9" closeair="34" code="12_904" model="0" openair="null" timegroup="" times="30">
+                    <item dev="airstate" pointid="801252,2010500002" />
+                    <item dev="lampstate" pointid="801253,3000300001" />
+                    <item dev="linestate" pointid="801254,000001" />
+                    <item dev="temp" pointid="801252,2010101001" />
+                    <item dev="hum" pointid="801252,2010102001" />
+                    <item dev="ammeterstate" pointid="801254,000001" />
+                    <item dev="roompower" pointid="801251,3050314001" />
+                    <item dev="aircontrol" pointid="801252,2010000003" />
+                    <item dev="powercontrol" pointid="801253,3000000002" />
+                    <item dev="powerdegree" pointid="801251,3050618001" />
+                    <item dev="aircontrolopen" pointid="801252,2010000001" />
+                    <item dev="powercontrolopen" pointid="801253,3000000001" />
                 </classroom>
-				<classroom classname="办公室905" floor="9" closeair="" code="12_905" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="801262,2010500002"/>
-					<item dev="lampstate" pointid="801263,3000300001"/>
-					<item dev="linestate" pointid="801264,000001"/>
-					<item dev="temp" pointid="801262,2010101001"/>
-					<item dev="hum" pointid="801262,2010102001"/>
-					<item dev="ammeterstate" pointid="801264,000001"/>
-					<item dev="roompower" pointid="801261,3050314001"/>
-					<item dev="aircontrol" pointid="801262,2010000003"/>
-					<item dev="powercontrol" pointid="801263,3000000002"/>
-					<item dev="powerdegree" pointid="801261,3050618001"/>
-					<item dev="aircontrolopen" pointid="801262,2010000001"/>
-					<item dev="powercontrolopen" pointid="801263,3000000001"/>
+                <classroom classname="办公室905" floor="9" closeair="" code="12_905" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="801262,2010500002" />
+                    <item dev="lampstate" pointid="801263,3000300001" />
+                    <item dev="linestate" pointid="801264,000001" />
+                    <item dev="temp" pointid="801262,2010101001" />
+                    <item dev="hum" pointid="801262,2010102001" />
+                    <item dev="ammeterstate" pointid="801264,000001" />
+                    <item dev="roompower" pointid="801261,3050314001" />
+                    <item dev="aircontrol" pointid="801262,2010000003" />
+                    <item dev="powercontrol" pointid="801263,3000000002" />
+                    <item dev="powerdegree" pointid="801261,3050618001" />
+                    <item dev="aircontrolopen" pointid="801262,2010000001" />
+                    <item dev="powercontrolopen" pointid="801263,3000000001" />
                 </classroom>
-				<classroom classname="办公室906" floor="9" closeair="" code="12_906" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="801272,2010500002"/>
-					<item dev="lampstate" pointid="801273,3000300001"/>
-					<item dev="linestate" pointid="801274,000001"/>
-					<item dev="temp" pointid="801272,2010101001"/>
-					<item dev="hum" pointid="801272,2010102001"/>
-					<item dev="ammeterstate" pointid="801274,000001"/>
-					<item dev="roompower" pointid="801271,3050314001"/>
-					<item dev="aircontrol" pointid="801272,2010000003"/>
-					<item dev="powercontrol" pointid="801273,3000000002"/>
-					<item dev="powerdegree" pointid="801271,3050618001"/>
-					<item dev="aircontrolopen" pointid="801272,2010000001"/>
-					<item dev="powercontrolopen" pointid="801273,3000000001"/>
+                <classroom classname="办公室906" floor="9" closeair="" code="12_906" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="801272,2010500002" />
+                    <item dev="lampstate" pointid="801273,3000300001" />
+                    <item dev="linestate" pointid="801274,000001" />
+                    <item dev="temp" pointid="801272,2010101001" />
+                    <item dev="hum" pointid="801272,2010102001" />
+                    <item dev="ammeterstate" pointid="801274,000001" />
+                    <item dev="roompower" pointid="801271,3050314001" />
+                    <item dev="aircontrol" pointid="801272,2010000003" />
+                    <item dev="powercontrol" pointid="801273,3000000002" />
+                    <item dev="powerdegree" pointid="801271,3050618001" />
+                    <item dev="aircontrolopen" pointid="801272,2010000001" />
+                    <item dev="powercontrolopen" pointid="801273,3000000001" />
                 </classroom>
-				<classroom classname="办公室907" floor="9" closeair="" code="12_907" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="801282,2010500002"/>
-					<item dev="lampstate" pointid="801283,3000300001"/>
-					<item dev="linestate" pointid="801284,000001"/>
-					<item dev="temp" pointid="801282,2010101001"/>
-					<item dev="hum" pointid="801282,2010102001"/>
-					<item dev="ammeterstate" pointid="801284,000001"/>
-					<item dev="roompower" pointid="801281,3050314001"/>
-					<item dev="aircontrol" pointid="801282,2010000003"/>
-					<item dev="powercontrol" pointid="801283,3000000002"/>
-					<item dev="powerdegree" pointid="801281,3050618001"/>
-					<item dev="aircontrolopen" pointid="801282,2010000001"/>
-					<item dev="powercontrolopen" pointid="801283,3000000001"/>
+                <classroom classname="办公室907" floor="9" closeair="" code="12_907" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="801282,2010500002" />
+                    <item dev="lampstate" pointid="801283,3000300001" />
+                    <item dev="linestate" pointid="801284,000001" />
+                    <item dev="temp" pointid="801282,2010101001" />
+                    <item dev="hum" pointid="801282,2010102001" />
+                    <item dev="ammeterstate" pointid="801284,000001" />
+                    <item dev="roompower" pointid="801281,3050314001" />
+                    <item dev="aircontrol" pointid="801282,2010000003" />
+                    <item dev="powercontrol" pointid="801283,3000000002" />
+                    <item dev="powerdegree" pointid="801281,3050618001" />
+                    <item dev="aircontrolopen" pointid="801282,2010000001" />
+                    <item dev="powercontrolopen" pointid="801283,3000000001" />
                 </classroom>
-				<classroom classname="办公室908" floor="9" closeair="" code="12_908" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="801292,2010500002"/>
-					<item dev="lampstate" pointid="801293,3000300001"/>
-					<item dev="linestate" pointid="801294,000001"/>
-					<item dev="temp" pointid="801292,2010101001"/>
-					<item dev="hum" pointid="801292,2010102001"/>
-					<item dev="ammeterstate" pointid="801294,000001"/>
-					<item dev="roompower" pointid="801291,3050314001"/>
-					<item dev="aircontrol" pointid="801292,2010000003"/>
-					<item dev="powercontrol" pointid="801293,3000000002"/>
-					<item dev="powerdegree" pointid="801291,3050618001"/>
-					<item dev="aircontrolopen" pointid="801292,2010000001"/>
-					<item dev="powercontrolopen" pointid="801293,3000000001"/>
+                <classroom classname="办公室908" floor="9" closeair="" code="12_908" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="801292,2010500002" />
+                    <item dev="lampstate" pointid="801293,3000300001" />
+                    <item dev="linestate" pointid="801294,000001" />
+                    <item dev="temp" pointid="801292,2010101001" />
+                    <item dev="hum" pointid="801292,2010102001" />
+                    <item dev="ammeterstate" pointid="801294,000001" />
+                    <item dev="roompower" pointid="801291,3050314001" />
+                    <item dev="aircontrol" pointid="801292,2010000003" />
+                    <item dev="powercontrol" pointid="801293,3000000002" />
+                    <item dev="powerdegree" pointid="801291,3050618001" />
+                    <item dev="aircontrolopen" pointid="801292,2010000001" />
+                    <item dev="powercontrolopen" pointid="801293,3000000001" />
                 </classroom>
-				<classroom classname="办公室909-2" floor="9" closeair="" code="12_909_2" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="801312,2010500002"/>
-					<item dev="lampstate" pointid="801313,3000300001"/>
-					<item dev="linestate" pointid="801314,000001"/>
-					<item dev="temp" pointid="801312,2010101001"/>
-					<item dev="hum" pointid="801312,2010102001"/>
-					<item dev="ammeterstate" pointid="801314,000001"/>
-					<item dev="roompower" pointid="801311,3050314001"/>
-					<item dev="aircontrol" pointid="801312,2010000003"/>
-					<item dev="powercontrol" pointid="801313,3000000002"/>
-					<item dev="powerdegree" pointid="801311,3050618001"/>
-					<item dev="aircontrolopen" pointid="801312,2010000001"/>
-					<item dev="powercontrolopen" pointid="801313,3000000001"/>
+                <classroom classname="办公室909-2" floor="9" closeair="" code="12_909_2" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="801312,2010500002" />
+                    <item dev="lampstate" pointid="801313,3000300001" />
+                    <item dev="linestate" pointid="801314,000001" />
+                    <item dev="temp" pointid="801312,2010101001" />
+                    <item dev="hum" pointid="801312,2010102001" />
+                    <item dev="ammeterstate" pointid="801314,000001" />
+                    <item dev="roompower" pointid="801311,3050314001" />
+                    <item dev="aircontrol" pointid="801312,2010000003" />
+                    <item dev="powercontrol" pointid="801313,3000000002" />
+                    <item dev="powerdegree" pointid="801311,3050618001" />
+                    <item dev="aircontrolopen" pointid="801312,2010000001" />
+                    <item dev="powercontrolopen" pointid="801313,3000000001" />
                 </classroom>
-				<classroom classname="办公室910" floor="9" closeair="" code="12_910" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="801322,2010500002"/>
-					<item dev="lampstate" pointid="801323,3000300001"/>
-					<item dev="linestate" pointid="801324,000001"/>
-					<item dev="temp" pointid="801322,2010101001"/>
-					<item dev="hum" pointid="801322,2010102001"/>
-					<item dev="ammeterstate" pointid="801324,000001"/>
-					<item dev="roompower" pointid="801321,3050314001"/>
-					<item dev="aircontrol" pointid="801322,2010000003"/>
-					<item dev="powercontrol" pointid="801323,3000000002"/>
-					<item dev="powerdegree" pointid="801321,3050618001"/>
-					<item dev="aircontrolopen" pointid="801322,2010000001"/>
-					<item dev="powercontrolopen" pointid="801323,3000000001"/>
+                <classroom classname="办公室910" floor="9" closeair="" code="12_910" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="801322,2010500002" />
+                    <item dev="lampstate" pointid="801323,3000300001" />
+                    <item dev="linestate" pointid="801324,000001" />
+                    <item dev="temp" pointid="801322,2010101001" />
+                    <item dev="hum" pointid="801322,2010102001" />
+                    <item dev="ammeterstate" pointid="801324,000001" />
+                    <item dev="roompower" pointid="801321,3050314001" />
+                    <item dev="aircontrol" pointid="801322,2010000003" />
+                    <item dev="powercontrol" pointid="801323,3000000002" />
+                    <item dev="powerdegree" pointid="801321,3050618001" />
+                    <item dev="aircontrolopen" pointid="801322,2010000001" />
+                    <item dev="powercontrolopen" pointid="801323,3000000001" />
                 </classroom>
-				<classroom classname="办公室911" floor="9" closeair="" code="12_911" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="801332,2010500002"/>
-					<item dev="lampstate" pointid="801333,3000300001"/>
-					<item dev="linestate" pointid="801334,000001"/>
-					<item dev="temp" pointid="801332,2010101001"/>
-					<item dev="hum" pointid="801332,2010102001"/>
-					<item dev="ammeterstate" pointid="801334,000001"/>
-					<item dev="roompower" pointid="801331,3050314001"/>
-					<item dev="aircontrol" pointid="801332,2010000003"/>
-					<item dev="powercontrol" pointid="801333,3000000002"/>
-					<item dev="powerdegree" pointid="801331,3050618001"/>
-					<item dev="aircontrolopen" pointid="801332,2010000001"/>
-					<item dev="powercontrolopen" pointid="801333,3000000001"/>
+                <classroom classname="办公室911" floor="9" closeair="" code="12_911" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="801332,2010500002" />
+                    <item dev="lampstate" pointid="801333,3000300001" />
+                    <item dev="linestate" pointid="801334,000001" />
+                    <item dev="temp" pointid="801332,2010101001" />
+                    <item dev="hum" pointid="801332,2010102001" />
+                    <item dev="ammeterstate" pointid="801334,000001" />
+                    <item dev="roompower" pointid="801331,3050314001" />
+                    <item dev="aircontrol" pointid="801332,2010000003" />
+                    <item dev="powercontrol" pointid="801333,3000000002" />
+                    <item dev="powerdegree" pointid="801331,3050618001" />
+                    <item dev="aircontrolopen" pointid="801332,2010000001" />
+                    <item dev="powercontrolopen" pointid="801333,3000000001" />
                 </classroom>
-				<classroom classname="办公室912" floor="9" closeair="" code="12_912" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="801342,2010500002"/>
-					<item dev="lampstate" pointid="801343,3000300001"/>
-					<item dev="linestate" pointid="801344,000001"/>
-					<item dev="temp" pointid="801342,2010101001"/>
-					<item dev="hum" pointid="801342,2010102001"/>
-					<item dev="ammeterstate" pointid="801344,000001"/>
-					<item dev="roompower" pointid="801341,3050314001"/>
-					<item dev="aircontrol" pointid="801342,2010000003"/>
-					<item dev="powercontrol" pointid="801343,3000000002"/>
-					<item dev="powerdegree" pointid="801341,3050618001"/>
-					<item dev="aircontrolopen" pointid="801342,2010000001"/>
-					<item dev="powercontrolopen" pointid="801343,3000000001"/>
+                <classroom classname="办公室912" floor="9" closeair="" code="12_912" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="801342,2010500002" />
+                    <item dev="lampstate" pointid="801343,3000300001" />
+                    <item dev="linestate" pointid="801344,000001" />
+                    <item dev="temp" pointid="801342,2010101001" />
+                    <item dev="hum" pointid="801342,2010102001" />
+                    <item dev="ammeterstate" pointid="801344,000001" />
+                    <item dev="roompower" pointid="801341,3050314001" />
+                    <item dev="aircontrol" pointid="801342,2010000003" />
+                    <item dev="powercontrol" pointid="801343,3000000002" />
+                    <item dev="powerdegree" pointid="801341,3050618001" />
+                    <item dev="aircontrolopen" pointid="801342,2010000001" />
+                    <item dev="powercontrolopen" pointid="801343,3000000001" />
                 </classroom>
-				<classroom classname="办公室913" floor="9" closeair="" code="12_913" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="801352,2010500002"/>
-					<item dev="lampstate" pointid="801353,3000300001"/>
-					<item dev="linestate" pointid="801354,000001"/>
-					<item dev="temp" pointid="801352,2010101001"/>
-					<item dev="hum" pointid="801352,2010102001"/>
-					<item dev="ammeterstate" pointid="801354,000001"/>
-					<item dev="roompower" pointid="801351,3050314001"/>
-					<item dev="aircontrol" pointid="801352,2010000003"/>
-					<item dev="powercontrol" pointid="801353,3000000002"/>
-					<item dev="powerdegree" pointid="801351,3050618001"/>
-					<item dev="aircontrolopen" pointid="801352,2010000001"/>
-					<item dev="powercontrolopen" pointid="801353,3000000001"/>
+                <classroom classname="办公室913" floor="9" closeair="" code="12_913" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="801352,2010500002" />
+                    <item dev="lampstate" pointid="801353,3000300001" />
+                    <item dev="linestate" pointid="801354,000001" />
+                    <item dev="temp" pointid="801352,2010101001" />
+                    <item dev="hum" pointid="801352,2010102001" />
+                    <item dev="ammeterstate" pointid="801354,000001" />
+                    <item dev="roompower" pointid="801351,3050314001" />
+                    <item dev="aircontrol" pointid="801352,2010000003" />
+                    <item dev="powercontrol" pointid="801353,3000000002" />
+                    <item dev="powerdegree" pointid="801351,3050618001" />
+                    <item dev="aircontrolopen" pointid="801352,2010000001" />
+                    <item dev="powercontrolopen" pointid="801353,3000000001" />
                 </classroom>
-				<classroom classname="办公室915" floor="9" closeair="" code="12_915" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="801372,2010500002"/>
-					<item dev="lampstate" pointid="801373,3000300001"/>
-					<item dev="linestate" pointid="801374,000001"/>
-					<item dev="temp" pointid="801372,2010101001"/>
-					<item dev="hum" pointid="801372,2010102001"/>
-					<item dev="ammeterstate" pointid="801374,000001"/>
-					<item dev="roompower" pointid="801371,3050314001"/>
-					<item dev="aircontrol" pointid="801372,2010000003"/>
-					<item dev="powercontrol" pointid="801373,3000000002"/>
-					<item dev="powerdegree" pointid="801371,3050618001"/>
-					<item dev="aircontrolopen" pointid="801372,2010000001"/>
-					<item dev="powercontrolopen" pointid="801373,3000000001"/>
+                <classroom classname="办公室915" floor="9" closeair="" code="12_915" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="801372,2010500002" />
+                    <item dev="lampstate" pointid="801373,3000300001" />
+                    <item dev="linestate" pointid="801374,000001" />
+                    <item dev="temp" pointid="801372,2010101001" />
+                    <item dev="hum" pointid="801372,2010102001" />
+                    <item dev="ammeterstate" pointid="801374,000001" />
+                    <item dev="roompower" pointid="801371,3050314001" />
+                    <item dev="aircontrol" pointid="801372,2010000003" />
+                    <item dev="powercontrol" pointid="801373,3000000002" />
+                    <item dev="powerdegree" pointid="801371,3050618001" />
+                    <item dev="aircontrolopen" pointid="801372,2010000001" />
+                    <item dev="powercontrolopen" pointid="801373,3000000001" />
                 </classroom>
             </officegroup>
         </group>
-        <group acreage="152464" classroomcount="1000" countnumber="3100" details="2#楼" dormcount="1000" groupname="2#楼" groupno="2" groupfloor="9">
+        <group acreage="152464" classroomcount="1000" countnumber="3100" details="2#楼" dormcount="1000" groupname="2#楼" groupno="2" groupfloor="10">
             <classroomgroup name="教室" roomno="21" />
             <officegroup name="办公室" roomno="22">
                 <classroom classname="汽车车身实训室1#" floor="1" closeair="" code="22_qccssxs1" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="801392,2010500002"/>
-					<item dev="lampstate" pointid="801393,3000300001"/>
-					<item dev="linestate" pointid="801394,000001"/>
-					<item dev="temp" pointid="801392,2010101001"/>
-					<item dev="hum" pointid="801392,2010102001"/>
-					<item dev="ammeterstate" pointid="801394,000001"/>
-					<item dev="roompower" pointid="801391,3050314001"/>
-					<item dev="aircontrol" pointid="801392,2010000003"/>
-					<item dev="powercontrol" pointid="801393,3000000002"/>
-					<item dev="powerdegree" pointid="801391,3050618001"/>
-					<item dev="aircontrolopen" pointid="801392,2010000001"/>
-					<item dev="powercontrolopen" pointid="801393,3000000001"/>
+                    <item dev="airstate" pointid="801392,2010500002" />
+                    <item dev="lampstate" pointid="801393,3000300001" />
+                    <item dev="linestate" pointid="801394,000001" />
+                    <item dev="temp" pointid="801392,2010101001" />
+                    <item dev="hum" pointid="801392,2010102001" />
+                    <item dev="ammeterstate" pointid="801394,000001" />
+                    <item dev="roompower" pointid="801391,3050314001" />
+                    <item dev="aircontrol" pointid="801392,2010000003" />
+                    <item dev="powercontrol" pointid="801393,3000000002" />
+                    <item dev="powerdegree" pointid="801391,3050618001" />
+                    <item dev="aircontrolopen" pointid="801392,2010000001" />
+                    <item dev="powercontrolopen" pointid="801393,3000000001" />
                 </classroom>
-				<classroom classname="汽车车身实训室2#" floor="1" closeair="" code="22_qccssxs2" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="801402,2010500002"/>
-					<item dev="lampstate" pointid="801403,3000300001"/>
-					<item dev="linestate" pointid="801404,000001"/>
-					<item dev="temp" pointid="801402,2010101001"/>
-					<item dev="hum" pointid="801402,2010102001"/>
-					<item dev="ammeterstate" pointid="801404,000001"/>
-					<item dev="roompower" pointid="801401,3050314001"/>
-					<item dev="aircontrol" pointid="801402,2010000003"/>
-					<item dev="powercontrol" pointid="801403,3000000002"/>
-					<item dev="powerdegree" pointid="801401,3050618001"/>
-					<item dev="aircontrolopen" pointid="801402,2010000001"/>
-					<item dev="powercontrolopen" pointid="801403,3000000001"/>
+                <classroom classname="汽车车身实训室2#" floor="1" closeair="" code="22_qccssxs2" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="801402,2010500002" />
+                    <item dev="lampstate" pointid="801403,3000300001" />
+                    <item dev="linestate" pointid="801404,000001" />
+                    <item dev="temp" pointid="801402,2010101001" />
+                    <item dev="hum" pointid="801402,2010102001" />
+                    <item dev="ammeterstate" pointid="801404,000001" />
+                    <item dev="roompower" pointid="801401,3050314001" />
+                    <item dev="aircontrol" pointid="801402,2010000003" />
+                    <item dev="powercontrol" pointid="801403,3000000002" />
+                    <item dev="powerdegree" pointid="801401,3050618001" />
+                    <item dev="aircontrolopen" pointid="801402,2010000001" />
+                    <item dev="powercontrolopen" pointid="801403,3000000001" />
                 </classroom>
-				<classroom classname="实训室201-202" floor="2" closeair="" code="22_201_202" model="0" openair="" timegroup="" times="15" element="child">
-                    <item dev="airstate" pointid="801412,2010500002"/>
-					<item dev="lampstate" pointid=""/>
-					<item dev="linestate" pointid="801414,000001"/>
-					<item dev="temp" pointid="801412,2010101001"/>
-					<item dev="hum" pointid="801412,2010102001"/>
-					<item dev="ammeterstate" pointid="801414,000001"/>
-					<item dev="roompower" pointid=""/>
-					<item dev="aircontrol" pointid="801412,2010000003"/>
-					<item dev="powercontrol" pointid=""/>
-					<item dev="powerdegree" pointid=""/>
-					<item dev="aircontrolopen" pointid="801412,2010000001"/>
-					<item dev="powercontrolopen" pointid=""/>
+                <classroom classname="实训室201-202" floor="2" closeair="" code="22_201_202" model="0" openair="" timegroup="" times="15" element="child">
+                    <item dev="airstate" pointid="801412,2010500002" />
+                    <item dev="lampstate" pointid="" />
+                    <item dev="linestate" pointid="801414,000001" />
+                    <item dev="temp" pointid="801412,2010101001" />
+                    <item dev="hum" pointid="801412,2010102001" />
+                    <item dev="ammeterstate" pointid="801414,000001" />
+                    <item dev="roompower" pointid="" />
+                    <item dev="aircontrol" pointid="801412,2010000003" />
+                    <item dev="powercontrol" pointid="" />
+                    <item dev="powerdegree" pointid="" />
+                    <item dev="aircontrolopen" pointid="801412,2010000001" />
+                    <item dev="powercontrolopen" pointid="" />
                 </classroom>
-				<classroom classname="办公室905" floor="9" closeair="" code="22_905" model="0" openair="" timegroup="" times="15">
-					<item dev="airstate" pointid="801642,2010500002"/>
-					<item dev="lampstate" pointid="801643,3000300001"/>
-					<item dev="linestate" pointid="801644,000001"/>
-					<item dev="temp" pointid="801642,2010101001"/>
-					<item dev="hum" pointid="801642,2010102001"/>
-					<item dev="ammeterstate" pointid="801644,000001"/>
-					<item dev="roompower" pointid="801641,3050314001"/>
-					<item dev="aircontrol" pointid="801642,2010000003"/>
-					<item dev="powercontrol" pointid="801643,3000000002"/>
-					<item dev="powerdegree" pointid="801641,3050618001"/>
-					<item dev="aircontrolopen" pointid="801642,2010000001"/>
-					<item dev="powercontrolopen" pointid="801643,3000000001"/>
-				</classroom>
+                <classroom classname="办公室905" floor="9" closeair="" code="22_905" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="801642,2010500002" />
+                    <item dev="lampstate" pointid="801643,3000300001" />
+                    <item dev="linestate" pointid="801644,000001" />
+                    <item dev="temp" pointid="801642,2010101001" />
+                    <item dev="hum" pointid="801642,2010102001" />
+                    <item dev="ammeterstate" pointid="801644,000001" />
+                    <item dev="roompower" pointid="801641,3050314001" />
+                    <item dev="aircontrol" pointid="801642,2010000003" />
+                    <item dev="powercontrol" pointid="801643,3000000002" />
+                    <item dev="powerdegree" pointid="801641,3050618001" />
+                    <item dev="aircontrolopen" pointid="801642,2010000001" />
+                    <item dev="powercontrolopen" pointid="801643,3000000001" />
+                </classroom>
             </officegroup>
         </group>
-		<group acreage="152464" classroomcount="1000" countnumber="3100" details="4#楼" dormcount="1000" groupname="4#楼" groupno="4" groupfloor="2">
+        <group acreage="152464" classroomcount="1000" countnumber="3100" details="4#楼" dormcount="1000" groupname="4#楼" groupno="4" groupfloor="2">
             <classroomgroup name="教室" roomno="41" />
             <officegroup name="办公室" roomno="42">
                 <classroom classname="办公室201" floor="2" closeair="" code="42_201" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="801652,2010500002"/>
-					<item dev="lampstate" pointid="801653,3000300001"/>
-					<item dev="linestate" pointid="801654,000001"/>
-					<item dev="temp" pointid="801652,2010101001"/>
-					<item dev="hum" pointid="801652,2010102001"/>
-					<item dev="ammeterstate" pointid="801654,000001"/>
-					<item dev="roompower" pointid="801651,3050314001"/>
-					<item dev="aircontrol" pointid="801652,2010000003"/>
-					<item dev="powercontrol" pointid="801653,3000000002"/>
-					<item dev="powerdegree" pointid="801651,3050618001"/>
-					<item dev="aircontrolopen" pointid="801652,2010000001"/>
-					<item dev="powercontrolopen" pointid="801653,3000000001"/>
+                    <item dev="airstate" pointid="801652,2010500002" />
+                    <item dev="lampstate" pointid="801653,3000300001" />
+                    <item dev="linestate" pointid="801654,000001" />
+                    <item dev="temp" pointid="801652,2010101001" />
+                    <item dev="hum" pointid="801652,2010102001" />
+                    <item dev="ammeterstate" pointid="801654,000001" />
+                    <item dev="roompower" pointid="801651,3050314001" />
+                    <item dev="aircontrol" pointid="801652,2010000003" />
+                    <item dev="powercontrol" pointid="801653,3000000002" />
+                    <item dev="powerdegree" pointid="801651,3050618001" />
+                    <item dev="aircontrolopen" pointid="801652,2010000001" />
+                    <item dev="powercontrolopen" pointid="801653,3000000001" />
                 </classroom>
-				<classroom classname="办公室202" floor="2" closeair="" code="42_202" model="0" openair="" timegroup="" times="15">
-                    <item dev="airstate" pointid="801662,2010500002"/>
-					<item dev="lampstate" pointid="801663,3000300001"/>
-					<item dev="linestate" pointid="801664,000001"/>
-					<item dev="temp" pointid="801662,2010101001"/>
-					<item dev="hum" pointid="801662,2010102001"/>
-					<item dev="ammeterstate" pointid="801664,000001"/>
-					<item dev="roompower" pointid="801661,3050314001"/>
-					<item dev="aircontrol" pointid="801662,2010000003"/>
-					<item dev="powercontrol" pointid="801663,3000000002"/>
-					<item dev="powerdegree" pointid="801661,3050618001"/>
-					<item dev="aircontrolopen" pointid="801662,2010000001"/>
-					<item dev="powercontrolopen" pointid="801663,3000000001"/>
+                <classroom classname="办公室202" floor="2" closeair="" code="42_202" model="0" openair="" timegroup="" times="15">
+                    <item dev="airstate" pointid="801662,2010500002" />
+                    <item dev="lampstate" pointid="801663,3000300001" />
+                    <item dev="linestate" pointid="801664,000001" />
+                    <item dev="temp" pointid="801662,2010101001" />
+                    <item dev="hum" pointid="801662,2010102001" />
+                    <item dev="ammeterstate" pointid="801664,000001" />
+                    <item dev="roompower" pointid="801661,3050314001" />
+                    <item dev="aircontrol" pointid="801662,2010000003" />
+                    <item dev="powercontrol" pointid="801663,3000000002" />
+                    <item dev="powerdegree" pointid="801661,3050618001" />
+                    <item dev="aircontrolopen" pointid="801662,2010000001" />
+                    <item dev="powercontrolopen" pointid="801663,3000000001" />
                 </classroom>
             </officegroup>
         </group>

@@ -86,7 +86,6 @@ export default {
             handler:function(val){
                 this.infoData=val.data.list?val.data.list:[];
                 this.setValue();
-                console.log(val)
             },
             deep: true
         }

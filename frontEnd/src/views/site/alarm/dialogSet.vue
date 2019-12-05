@@ -57,7 +57,7 @@ export default {
         //获取详情
         getDetail:function(){
             this.$api.post('/alarm/threshold', {}, r => {
-                console.log(r)
+                
                 if(r.err_code=="0"){
                     if(r.data){
                         this.ruleForm=r.data;
@@ -73,7 +73,7 @@ export default {
                 if(valid){ //验证通过
                     this.loading=true;
                     this.$api.post('/alarm/updateThreshold',this.ruleForm, r => {
-                        console.log(r)
+                        
                         this.loading=false;
                         if(r.err_code=="0"){
                             this.$message.success(r.err_msg);

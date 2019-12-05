@@ -2,6 +2,7 @@
     <div class="loncom_index_body_top">
         <router-link to="/" class="loncom_logo">
             <img src="~@/assets/images/logo.png" alt="">
+            <span class="logo-title">广州市市政职业学校能耗管理系统</span>
         </router-link>
         <div class="loncom_index_top_right">
             <ul>
@@ -106,7 +107,6 @@ export default {
     methods:{
         getDetail:function(id){
             this.$api.post('/user/details', {id:id}, r => {
-                console.log(r)
                 if(r.err_code=="0"){
                     store.dispatch("setChangeUser",r.data);
                 }
@@ -114,7 +114,6 @@ export default {
         },
         getAlarm:function(){
             this.$api.post('/alarm/count', {createTime:this.$tool.Format('yyyy-MM-dd 00:00:00',new Date())}, r => {
-                console.log(r)
                 if(r.err_code=="0"){
                     this.alarmInfo[0].value=r.data.value;
                 }else{

@@ -74,7 +74,6 @@ export default {
     watch:{
         info:{
             handler:function(val){
-                console.log(val)
                 this.infoData=val;
                 let list=val.data.list?val.data.list:[];
                 if(list.length>0){

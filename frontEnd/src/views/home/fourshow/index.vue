@@ -45,7 +45,6 @@ export default {
     props:["info"],
     created () {
         this.infoData=this.info.data.list?this.info.data.list:[];
-        console.log(this.infoData)
     },
     mounted() {
             

@@ -143,7 +143,7 @@ export default {
         getTitle:function(){
             return new Promise ((resolve, reject) => {
                 this.$api.post('/service/tableTitle', {}, r => {
-                    console.log(r)
+                    
                     if(r.err_code=="0"){
                         let table_columns=[
                             { prop: 'TIME', label: '时间',minWidth:20,slotName:'preview-time'},
@@ -165,7 +165,7 @@ export default {
             }
             return new Promise ((resolve, reject) => {
                 this.$api.post('/service/tableInfo', {startTime:this.search[0],endTime:this.search[1]}, r => {
-                    console.log(r)
+                    
                     if(r.err_code=="0"){
                         let xData=[],yData=[];
                         this.table_data=r.data.table;
@@ -220,7 +220,7 @@ export default {
     },
     watch:{
         time:function(val){
-            console.log(val)
+            
             if(val=="day"){
                 this.search=[this.$tool.Format("yyyy-MM-dd 00:00:00",new Date()),this.$tool.Format("yyyy-MM-dd hh:mm:ss",new Date())];
             }else if(val=="week"){

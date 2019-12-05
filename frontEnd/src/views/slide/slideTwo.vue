@@ -49,7 +49,7 @@ export default {
     watch: {
         topInfo:{
             handler:function(val){
-                console.log(val)
+                
                 this.top_data1=val.classtopy;  //教室能耗
                 this.top_data2=val.classtopn;  //教室节能
                 this.top_data3=val.officetopy;

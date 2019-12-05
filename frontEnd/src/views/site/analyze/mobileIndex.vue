@@ -92,7 +92,7 @@ export default {
     },
     watch:{
         'typeInfo.roomtype':function(val){
-            console.log(val)
+            
             if(val){
                 if(val=="classroom"){
                     this.dataInfo=this.topData.classtopy;

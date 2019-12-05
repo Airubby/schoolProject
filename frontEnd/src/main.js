@@ -42,7 +42,6 @@ function getServerConfig () {
       require('@/permission')
       resolve();
     }).catch((error) => {
-      console.log(error)
       reject()
     })
   })
